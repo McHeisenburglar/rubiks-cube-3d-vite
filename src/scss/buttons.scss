@@ -1,0 +1,60 @@
+.btn {
+	padding: 0.5em 1em;
+	border: none;
+	outline: none;
+	margin: 0.5em 0.2em;
+	transition: 0.3s;
+}
+.btn:focus,
+.btn {
+	border: 1px solid #999;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.btn:hover {
+	background: #ddd;
+}
+.btn:active {
+	transition: 0s;
+	background: #ccc;
+}
+
+.btn.primary,
+.btn-switch.active {
+	color: white;
+	background: #0d45e0;
+	border-color: #1a3c99;
+}
+
+.btn.primary:hover,
+.btn-switch.active:hover {
+	background: #113db8;
+}
+.btn.primary:active,
+.btn-switch.active:active {
+	background: #113db8;
+}
+
+.btn.destructive {
+	color: #a41d1d;
+	border-color: #ca4040;
+	background: white;
+}
+.btn.full-width {
+	width: 100%;
+}
+
+.btn.play-btn.idle {
+	color: white;
+	background: hsl(120, 87%, 41%);
+}
+.btn.play-btn.idle:hover {
+	background: hsl(120, 87%, 36%);
+}
+.btn.play-btn.playing {
+	color: white;
+	background: hsl(332, 89%, 52%);
+}
+.btn.play-btn.playing:hover {
+	background: hsl(332, 89%, 48%);
+}

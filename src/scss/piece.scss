@@ -1,0 +1,55 @@
+.piece-container {
+	--piece-size: calc(var(--side-size) * 0.3);
+	width: 200px;
+	height: 200px;
+	border: 1px solid blue;
+	background: white;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+
+	.piece {
+		position: absolute;
+		top: 100px;
+		left: 100px;
+		transform-style: preserve-3d;
+		transform: rotateX(45deg) rotateY(45deg);
+		background: var(--cube-color);
+		.piece-side {
+			position: absolute;
+			padding: var(--sticker-padding);
+			background: var(--cube-color);
+			width: calc(var(--piece-size) * 2);
+			height: calc(var(--piece-size) * 2);
+		}
+		.piece-sticker {
+			border-radius: var(--sticker-radius);
+			width: 100%;
+			height: 100%;
+		}
+		.piece-side-back {
+			transform: rotateY(180deg) translateZ(var(--piece-size));
+		}
+
+		.piece-side-top {
+			transform: rotateX(90deg) translateZ(var(--piece-size));
+		}
+
+		.piece-side-left {
+			transform: rotateY(-90deg) translateZ(var(--piece-size));
+		}
+
+		.piece-side-right {
+			transform: rotateY(90deg) translateZ(var(--piece-size));
+		}
+
+		.piece-side-bottom {
+			transform: rotateX(-90deg) translateZ(var(--piece-size));
+		}
+
+		.piece-side-front {
+			transform: rotateX(0deg) translateZ(var(--piece-size));
+		}
+	}
+}

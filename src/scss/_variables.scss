@@ -1,0 +1,32 @@
+:root {
+	// Cube size
+	--side-size: 100px;
+	--cube-zoom: 1;
+	--cube-block-zoom: 0.3;
+
+	// Cube style
+	--cube-color: #111;
+	--sticker-padding: 2px;
+	--sticker-radius: 1px;
+	--sticker-corner-radius: 12px;
+	--sticker-border-color: #444;
+
+	// Sticker states
+	--opacity-normal: 0.8;
+	--opacity-dim: 0.4;
+	--opacity-adjacent: 0.7;
+	--opacity-highlight: 1;
+
+	// Side colors
+	--color-front: hsl(120, 87%, 41%);
+	--color-left: hsl(39, 100%, 50%);
+	--color-right: hsl(342, 100%, 50%);
+	--color-top: hsl(0, 0%, 100%);
+	--color-bottom: hsl(60, 100%, 50%);
+	--color-back: hsl(213, 100%, 50%);
+
+	// Rotation
+	--rotate-x: 0deg;
+	--rotate-y: 0deg;
+	--rotate-z: 0deg;
+}

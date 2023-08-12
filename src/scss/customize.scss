@@ -1,0 +1,44 @@
+.color-pickers {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.color-picker-container {
+	position: relative;
+}
+
+.color-box {
+	width: 40px;
+	height: 20px;
+	display: inline-block;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+
+.swatch-container {
+	position: absolute;
+	z-index: 2;
+	top: 100%;
+}
+.customize-cube {
+	border: 1px solid #c9cbd5;
+	background: #fcfcfc;
+	border-radius: 10px;
+	padding: 24px;
+}
+.customize-cube h3 {
+	margin: 0;
+}
+
+p.error {
+	font-size: 12px;
+	margin: 0.5em 0;
+	color: darkred;
+}
+
+span.clickable {
+	cursor: pointer;
+	color: blue;
+	font-weight: bold;
+}

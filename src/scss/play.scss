@@ -1,0 +1,18 @@
+.view-panel,
+.play-panel {
+	padding: 24px;
+	outline: 1px solid blue;
+}
+.play-panel {
+	padding: 24px;
+	outline: 1px solid blue;
+
+	.log-list-item {
+		&.correct {
+			color: green;
+		}
+		&.incorrect {
+			color: darkred;
+		}
+	}
+}

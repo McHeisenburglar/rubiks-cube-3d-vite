@@ -1,0 +1,55 @@
+.dev-stuff {
+	.component__state-logger {
+		position: fixed;
+		background: white;
+		bottom: 10px;
+		left: 10px;
+
+		min-width: 160px;
+
+		font-family: 'Courier New', Courier, monospace;
+		font-weight: 600;
+		font-size: 14px;
+
+		.state-header {
+			padding: 16px 16px 16px;
+			display: flex;
+			cursor: pointer;
+			h3 {
+				flex: 1 1 auto;
+				margin: 0;
+				color: #555;
+				font-size: 12px;
+			}
+		}
+		.state-main {
+			padding: 0 16px 0px;
+		}
+
+		.state-row {
+			margin: 0 0 0.5em;
+		}
+		.state-value {
+			font-weight: 600;
+		}
+		.state-value.boolean.true {
+			color: green;
+		}
+		.state-value.boolean.false {
+			color: rgb(161, 13, 42);
+		}
+		.state-value.string {
+			color: rgb(171, 112, 4);
+			font-style: italic;
+			&::before {
+				content: "'";
+			}
+			&::after {
+				content: "'";
+			}
+		}
+		.state-value.null {
+			color: #999;
+		}
+	}
+}
