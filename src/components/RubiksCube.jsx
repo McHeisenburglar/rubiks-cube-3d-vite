@@ -34,7 +34,7 @@ function MainComponent() {
 	}, [])
 
 	const handleKeyPress2 = (e) => {
-		// console.log(e);
+		// console.log(e)
 		setLatestKeyPress(e)
 	}
 
@@ -85,7 +85,7 @@ function MainComponent() {
 	}
 
 	useEffect(() => {
-		console.log('Cube changed!')
+		// console.log('Cube changed!')
 	}, [cube, cube.state])
 
 	// ------------------
@@ -96,18 +96,18 @@ function MainComponent() {
 	const appModeRef = useRef(appMode)
 	// let CURRENT_MODE = MODES[appMode;
 	useEffect(() => {
-		console.log('changing mode.')
+		// console.log('changing mode.')
 		appModeRef.current = appMode
 		setEditingSticker(null)
 		SCENE.clearSpotlight()
-		// console.log(MODES[appMode]);
+		// console.log(MODES[appMode])
 		setLatestKeyPress(null)
 		setHighlightedSide(null)
 		if (appMode === 'EDIT') {
 			cube.reset()
 			rerender()
 		}
-		// console.log('me and junco', latestKeyPress);
+		// console.log('me and junco', latestKeyPress)
 	}, [appMode])
 
 	const isViewing = () => appMode === 'VIEW'
@@ -213,7 +213,7 @@ function MainComponent() {
 
 	// clickOutside
 	const handleClickOutside = (e) => {
-		// console.log(e);
+		// console.log(e)
 		MODES[appModeRef.current].handleClickOutside()
 	}
 
@@ -322,7 +322,7 @@ function MainComponent() {
 			e.target.blur()
 		},
 		play: (e) => {
-			console.log('called play button')
+			// console.log('called play button')
 			if (isPlayingRef()) {
 				setAppMode('VIEW')
 			} else {
@@ -375,7 +375,7 @@ function MainComponent() {
 		cube.cubeStyle = cubeStyle
 		localStorage.setItem('my-cube-colors', JSON.stringify(colors))
 		localStorage.setItem('my-cube-style', JSON.stringify(cubeStyle))
-		console.log(cube.colors, cube.cubeStyle)
+		// console.log(cube.colors, cube.cubeStyle)
 		rerender()
 	}
 
@@ -504,7 +504,7 @@ function MainComponent() {
 							<button className="btn" onClick={buttonMethods.spotlight}>
 								Focus on current
 							</button>
-							{/* <button
+							{/* <N
 								className={`btn play-btn ${
 									isPlayingRef() ? 'playing' : 'idle'
 								}`}
@@ -553,7 +553,7 @@ function MainComponent() {
 
 const Cube = ({ options, handleStickerClick }) => {
 	const { cube, appMode, editMode, highlightedSide } = useContext(CubeContext)
-	console.log('Rendered cube.', cube.colors.right)
+	// console.log('Rendered cube.', cube.colors.right)
 	const { forceShowingIndexes, forceShowingLetters } = options
 
 	const { isSpaceHeld } = useContext(UserInputContext)
@@ -598,7 +598,7 @@ const StickerCard = ({ cube, sticker }) => {
 }
 
 const CubeBlock = ({ cube, sticker }) => {
-	console.log('Rendered cube.', cube.colors.right)
+	// console.log('Rendered cube.', cube.colors.right)
 
 	const { type, side, neighbors } = sticker
 
@@ -651,7 +651,7 @@ const CubeBlock = ({ cube, sticker }) => {
 }
 
 const Sticker = ({ sticker, index }) => {
-	// console.log('Renderd sticker');
+	// console.log('Renderd sticker')
 	const { side, name, type, id } = sticker
 
 	const {

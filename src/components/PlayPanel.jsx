@@ -14,7 +14,7 @@ function GameTimer({ isPlaying, onTimerEnd }) {
 
 	useEffect(() => {
 		return () => {
-			console.log('Clearing interval.')
+			// console.log('Clearing interval.')
 			clearInterval(countdown)
 		}
 	}, [])
@@ -34,7 +34,7 @@ function GameTimer({ isPlaying, onTimerEnd }) {
 			return
 		}
 		setMsRemaining(secondsInGame * 1000)
-		console.log('Setting a new interval!')
+		// console.log('Setting a new interval!')
 		countdown = setInterval(onInterval, INTERVAL)
 	}
 
@@ -157,13 +157,13 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 			return setNewTarget()
 		}
 		if (targetIdRef) {
-			console.log()
+			// console.log()
 		}
 		setTargetId(nextSticker.id)
 	}
 
 	const handleKeyPress = (e) => {
-		console.log('Received', e.key)
+		// console.log('Received', e.key)
 		const sticker = getStickerByKeypress(e)
 		if (sticker && isPlayingRef.current) {
 			isGuessCorrect(sticker.id) ? onCorrectGuess() : onWrongGuess(sticker)
@@ -183,13 +183,13 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 	}
 
 	const onCorrectGuess = () => {
-		console.log('✅ CORRECT!')
+		// console.log('✅ CORRECT!')
 		setGameScore((s) => s + 1)
 		setNewTarget()
 	}
 
 	const onWrongGuess = (sticker) => {
-		console.log(`❌ WRONG (${sticker.name})`)
+		// console.log(`❌ WRONG (${sticker.name})`)
 		// setIncorrectGuessCount((score) => score + 1);
 		const selector = `.sticker.id-${sticker.id}`
 		const domElement = document.querySelector(selector)
@@ -212,11 +212,11 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 
 	const setDimCSS = (bool) => {
 		if (bool) {
-			console.log('Called with', bool)
+			// console.log('Called with', bool)
 			setCSS('--opacity-dim', 0.01)
 			setCSS('--opacity-normal', 0.01)
 		} else {
-			console.log('Called with', bool)
+			// console.log('Called with', bool)
 			setCSS('--opacity-dim', 0.4)
 			setCSS('--opacity-normal', 0.7)
 		}
@@ -254,10 +254,11 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 
 	return (
 		<>
-			<div className="play-panel">
+			<div className="play-panel white-panel">
 				{isPlaying && <h3 className="game-score">{gameScore.toString()}</h3>}
 				{!isPlaying && (
 					<>
+						<h1>Play (practice mode)</h1>
 						<div className="game-options">
 							Game options
 							<div>

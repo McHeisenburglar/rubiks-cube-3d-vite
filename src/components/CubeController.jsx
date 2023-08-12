@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 function CubeController() {
-	console.log('CubeController rendered.');
+	// console.log('CubeController rendered.');
 
 	const cubeStyles = {
 		black: {
@@ -22,8 +22,8 @@ function CubeController() {
 			sideRadius: '1px',
 			stickerCornerRadius: '12px',
 		},
-	};
-	return <div>CubeController</div>;
+	}
+	return <div>CubeController</div>
 }
 
-export default CubeController;
+export default CubeController

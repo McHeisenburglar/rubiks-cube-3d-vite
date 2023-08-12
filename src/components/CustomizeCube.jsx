@@ -56,7 +56,7 @@ function RenameSticker({ cube, stickerId }) {
 				.getStickersByType([sticker.type])
 				.some((s) => s.name.toLowerCase() === newName.toLowerCase())
 		) {
-			console.log('Name already taken. Replace?')
+			// console.log('Name already taken. Replace?')
 			setError('Name already taken. Please pick a different name.')
 			return
 		}
@@ -186,12 +186,12 @@ function CustomizeCube({ onCommitChanges }) {
 	const [localCubeColors, setLocalCubeColors] = useState(cube.colors)
 
 	useEffect(() => {
-		// console.log('🔁 localCubeStyle changed.', localCubeStyle);
+		// console.log('🔁 localCubeStyle changed.', localCubeStyle)
 		applyCubeStyleCSS()
 	}, [localCubeStyle])
 
 	useEffect(() => {
-		// console.log('🔁 localCubeColors changed.', localCubeColors);
+		// console.log('🔁 localCubeColors changed.', localCubeColors)
 		applyCubeColorsCSS()
 	}, [localCubeColors])
 
@@ -222,7 +222,7 @@ function CustomizeCube({ onCommitChanges }) {
 	}
 
 	const onColorClick = (side) => {
-		console.log('onColorClick')
+		// console.log('onColorClick')
 		const newVal = side === openColorPicker ? null : side
 		setOpenColorPicker(newVal)
 		// else setOpenColorPicker(side);

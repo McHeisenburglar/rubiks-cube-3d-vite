@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import React from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 function RotationController({
 	rotation,
@@ -7,87 +7,87 @@ function RotationController({
 	setRotation,
 	handleClickOutside,
 }) {
-	// console.log('rendered RotationController');
-	const rotationRef = useRef(rotation);
+	// console.log('rendered RotationController')
+	const rotationRef = useRef(rotation)
 
 	useEffect(() => {
-		rotationRef.current = { ...rotation };
-		['x', 'y', 'z'].forEach((d) => {
-			setRotationCSS(d, rotation[d]);
-		});
-	}, [rotation]);
+		rotationRef.current = { ...rotation }
+		;['x', 'y', 'z'].forEach((d) => {
+			setRotationCSS(d, rotation[d])
+		})
+	}, [rotation])
 
 	const setCSS = (property, value) => {
-		document.documentElement.style.setProperty(property, value);
-	};
+		document.documentElement.style.setProperty(property, value)
+	}
 
 	const setRotationCSS = (dimension, value) => {
-		setCSS(`--rotate-${dimension}`, `${value}deg`);
-	};
+		setCSS(`--rotate-${dimension}`, `${value}deg`)
+	}
 
 	const applyRotationSet = (rotationSet) => {
-		const [x, y, z] = rotationSet;
-		rotationRef.current = { x, y, z };
-		['x', 'y', 'z'].forEach((d, i) => setRotationCSS(d, rotationSet[i]));
-	};
+		const [x, y, z] = rotationSet
+		rotationRef.current = { x, y, z }
+		;['x', 'y', 'z'].forEach((d, i) => setRotationCSS(d, rotationSet[i]))
+	}
 
-	const DRAG_CONTROLS = {};
-	const dragSpeed = 0.25;
+	const DRAG_CONTROLS = {}
+	const dragSpeed = 0.25
 
-	const [isDragging, setIsDragging] = useState(false);
-	const isDraggingRef = useRef(false);
-	const previousX = useRef(null);
-	const previousY = useRef(null);
+	const [isDragging, setIsDragging] = useState(false)
+	const isDraggingRef = useRef(false)
+	const previousX = useRef(null)
+	const previousY = useRef(null)
 
-	DRAG_CONTROLS.eventListeners = {};
+	DRAG_CONTROLS.eventListeners = {}
 
-	DRAG_CONTROLS.eventListeners.onClick = (e) => {};
+	DRAG_CONTROLS.eventListeners.onClick = (e) => {}
 
 	DRAG_CONTROLS.eventListeners.onMouseDown = (e) => {
-		isDraggingRef.current = true;
-		previousX.current = e.clientX;
-		previousY.current = e.clientY;
+		isDraggingRef.current = true
+		previousX.current = e.clientX
+		previousY.current = e.clientY
 
-		setIsDragging(true);
-	};
+		setIsDragging(true)
+	}
 	DRAG_CONTROLS.eventListeners.onMouseMove = (e) => {
 		if (isDraggingRef.current) {
 			// to toggle 'smooth' class
 
 			// Get difference from previous frame
-			const diffX = e.clientX - previousX.current;
-			const diffY = e.clientY - previousY.current;
+			const diffX = e.clientX - previousX.current
+			const diffY = e.clientY - previousY.current
 
 			// Generate rotation
 			const rotationSet = [
 				rotationRef.current.x - diffY * dragSpeed,
 				rotationRef.current.y + diffX * dragSpeed,
 				rotationRef.current.z,
-			];
+			]
 
 			// Apply rotation
-			applyRotationSet(rotationSet);
+			applyRotationSet(rotationSet)
 
 			// Reset difference to 0
 			// i.e make previous catch up with current
-			previousX.current = e.clientX;
-			previousY.current = e.clientY;
+			previousX.current = e.clientX
+			previousY.current = e.clientY
 		}
-	};
+	}
 
 	DRAG_CONTROLS.eventListeners.onMouseUp =
 		DRAG_CONTROLS.eventListeners.onMouseLeave = (e) => {
 			if (isDraggingRef.current) {
-				isDraggingRef.current = false;
-				previousX.current = null;
-				previousY.current = null;
+				isDraggingRef.current = false
+				previousX.current = null
+				previousY.current = null
 
-				setRotation({ ...rotationRef.current });
+				setRotation({ ...rotationRef.current })
 
 				// to toggle 'smooth' class
-				setIsDragging(false);
+				setIsDragging(false)
 			}
-		};
+		}
 
 	return (
 		<div
@@ -96,7 +96,7 @@ function RotationController({
 		>
 			{children}
 		</div>
-	);
+	)
 }
 
-export default RotationController;
+export default RotationController
