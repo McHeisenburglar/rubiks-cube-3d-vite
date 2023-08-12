@@ -77,7 +77,7 @@ function GameTimer({ isPlaying, onTimerEnd }) {
 					<h4>Seconds in game</h4>
 					<SwitchBar
 						activeItem={secondsInGame}
-						items={[15, 30, 60, 120, '–']}
+						items={[15, 30, 60, 120, '—']}
 						onSwitch={(val) => setSecondsInGame(val)}
 					/>
 				</div>
@@ -101,6 +101,8 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 			setDimCSS(false)
 		}
 	}, [])
+
+	const showGameLog = false
 
 	useEffect(() => {
 		if (latestKeyPress) handleKeyPress(latestKeyPress)
@@ -305,22 +307,24 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 						{isPlaying ? 'Stop' : 'Play'}
 					</button>
 				</div>
-				<div className="game-log">
-					<ul>
-						{gameLog.map(({ target, guess, isCorrect }) => {
-							return (
-								<li
-									className={`log-list-item ${
-										isCorrect ? 'correct' : 'incorrect'
-									}`}
-								>
-									{target.name.toUpperCase()} - Guessed{' '}
-									{guess.name.toUpperCase()}.
-								</li>
-							)
-						})}
-					</ul>
-				</div>
+				{showGameLog && (
+					<div className="game-log">
+						<ul>
+							{gameLog.map(({ target, guess, isCorrect }) => {
+								return (
+									<li
+										className={`log-list-item ${
+											isCorrect ? 'correct' : 'incorrect'
+										}`}
+									>
+										{target.name.toUpperCase()} - Guessed{' '}
+										{guess.name.toUpperCase()}.
+									</li>
+								)
+							})}
+						</ul>
+					</div>
+				)}
 			</div>
 		</>
 	)

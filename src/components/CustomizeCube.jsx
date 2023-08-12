@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
-import { CubeContext, UserInputContext } from './RubiksCube';
-import { SIDES, cubeStyles, availableColors } from '../js/helper';
-import SwitchBar from './Switch';
-import { CubeWithPos } from '../js/CubeClass2';
-import { setCSS } from './RubiksCube';
-import { SketchPicker } from 'react-color';
+import React, { useEffect, useState, useContext, useRef } from 'react'
+import { CubeContext, UserInputContext } from './RubiksCube'
+import { SIDES, cubeStyles, availableColors } from '../js/helper'
+import SwitchBar from './Switch'
+import { CubeWithPos } from '../js/CubeClass2'
+import { setCSS } from './RubiksCube'
+import { SketchPicker } from 'react-color'
 
 const ColorSwatch = (props) => {
 	const {
@@ -14,16 +14,20 @@ const ColorSwatch = (props) => {
 		handleClick,
 		handleChange,
 		handleChangeComplete,
-	} = props;
+	} = props
 
 	const style = {
 		background: activeColor,
-	};
+	}
 
 	return (
 		<>
 			<div className="color-picker-container">
-				<div className="color-box" style={style} onClick={handleClick}></div>
+				<div
+					className={`color-box ${isOpen ? 'open' : ''}`}
+					style={style}
+					onClick={handleClick}
+				></div>
 				{isOpen && (
 					<div className="swatch-container">
 						<SketchPicker
@@ -37,14 +41,14 @@ const ColorSwatch = (props) => {
 				)}
 			</div>
 		</>
-	);
-};
+	)
+}
 
 function RenameSticker({ cube, stickerId }) {
 	const { setEditingSticker, handleChildEvent, rerender } =
-		useContext(CubeContext);
+		useContext(CubeContext)
 
-	const [error, setError] = useState('');
+	const [error, setError] = useState('')
 	const onRenameSticker = (sticker, newName) => {
 		if (
 			newName &&
@@ -52,45 +56,45 @@ function RenameSticker({ cube, stickerId }) {
 				.getStickersByType([sticker.type])
 				.some((s) => s.name.toLowerCase() === newName.toLowerCase())
 		) {
-			console.log('Name already taken. Replace?');
-			setError('Name already taken. Please pick a different name.');
-			return;
+			console.log('Name already taken. Replace?')
+			setError('Name already taken. Please pick a different name.')
+			return
 		}
-		cube.renameSticker(sticker.id, newName);
-		setEditingSticker(null);
-		handleChildEvent('handleRenameSticker', sticker.id);
-	};
+		cube.renameSticker(sticker.id, newName)
+		setEditingSticker(null)
+		handleChildEvent('handleRenameSticker', sticker.id)
+	}
 	const onCancelRename = () => {
-		setEditingSticker(null);
-	};
-	const sticker = cube.getStickerById(stickerId);
-	const inputRef = useRef(null);
-	const [inputValue, setInputValue] = useState(sticker.name.toUpperCase());
+		setEditingSticker(null)
+	}
+	const sticker = cube.getStickerById(stickerId)
+	const inputRef = useRef(null)
+	const [inputValue, setInputValue] = useState(sticker.name.toUpperCase())
 	useEffect(() => {
-		inputRef.current.focus({ preventScroll: true });
-		setInputValue(sticker.name.toUpperCase());
-	}, [stickerId]);
+		inputRef.current.focus({ preventScroll: true })
+		setInputValue(sticker.name.toUpperCase())
+	}, [stickerId])
 
 	const onInput = (e) => {
-		setError('');
-		setInputValue(e.target.value.toUpperCase());
-	};
+		setError('')
+		setInputValue(e.target.value.toUpperCase())
+	}
 
 	const onReplaceName = (e) => {
-		const stickerToReplace = cube.getStickerByLetter(inputValue, sticker.type);
-		cube.renameSticker(stickerToReplace.id, '');
-		onRenameSticker(sticker, inputValue);
-		e.target.blur();
-	};
+		const stickerToReplace = cube.getStickerByLetter(inputValue, sticker.type)
+		cube.renameSticker(stickerToReplace.id, '')
+		onRenameSticker(sticker, inputValue)
+		e.target.blur()
+	}
 
-	const disabled = sticker.name.toLowerCase() === inputValue.toLowerCase();
+	const disabled = sticker.name.toLowerCase() === inputValue.toLowerCase()
 	return (
 		<div>
 			<h4>Rename sticker {sticker.name}</h4>
 			<form
 				onSubmit={(e) => {
-					e.preventDefault();
-					onRenameSticker(sticker, inputValue);
+					e.preventDefault()
+					onRenameSticker(sticker, inputValue)
 				}}
 			>
 				<input
@@ -105,8 +109,8 @@ function RenameSticker({ cube, stickerId }) {
 					className="btn"
 					disabled={disabled}
 					onSubmit={(e) => {
-						e.preventDefault();
-						onRenameSticker(sticker, inputValue);
+						e.preventDefault()
+						onRenameSticker(sticker, inputValue)
 					}}
 				>
 					{inputValue ? 'Rename' : 'Clear name'}
@@ -124,7 +128,7 @@ function RenameSticker({ cube, stickerId }) {
 				)}
 			</form>
 		</div>
-	);
+	)
 }
 
 function CustomizeCube({ onCommitChanges }) {
@@ -139,140 +143,140 @@ function CustomizeCube({ onCommitChanges }) {
 		setEditingSticker,
 		highlightedSide,
 		rerender,
-	} = useContext(CubeContext);
+	} = useContext(CubeContext)
 
-	const { latestKeyPress } = useContext(UserInputContext);
+	const { latestKeyPress } = useContext(UserInputContext)
 
-	const [isExpanded, setIsExpanded] = useState(true);
-	const [isEdited, setIsEdited] = useState(false);
-	const isEditedRef = useRef(isEdited);
+	const [isExpanded, setIsExpanded] = useState(true)
+	const [isEdited, setIsEdited] = useState(false)
+	const isEditedRef = useRef(isEdited)
 	useEffect(() => {
-		isEditedRef.current = isEdited;
-	}, [isEdited]);
-	const [openColorPicker, setOpenColorPicker] = useState(null);
+		isEditedRef.current = isEdited
+	}, [isEdited])
+	const [openColorPicker, setOpenColorPicker] = useState(null)
 
 	// ensure revert changes
 	useEffect(() => {
 		return () => {
 			if (isEditedRef.current) {
-				applyCubeStyleCSS();
-				applyCubeColorsCSS();
+				applyCubeStyleCSS()
+				applyCubeColorsCSS()
 			}
-		};
-	}, []);
+		}
+	}, [])
 
 	// handle keypress
 
 	const handleKeyPress = (e) => {
-		e.preventDefault();
-		const letter = e.key.toLowerCase();
-		const pieceType = e.shiftKey ? 'corner' : 'edge';
-		const sticker = cube.getStickerByLetter(letter, pieceType);
-		if (sticker) spotlight(sticker.id);
+		e.preventDefault()
+		const letter = e.key.toLowerCase()
+		const pieceType = e.shiftKey ? 'corner' : 'edge'
+		const sticker = cube.getStickerByLetter(letter, pieceType)
+		if (sticker) spotlight(sticker.id)
 		// setLatestKeyPress(null);
-	};
+	}
 
 	useEffect(() => {
-		setLocalCubeStyle(cube.cubeStyle);
-		setLocalCubeColors(cube.colors);
-	}, [cube.cubeStyle, cube.colors]);
+		setLocalCubeStyle(cube.cubeStyle)
+		setLocalCubeColors(cube.colors)
+	}, [cube.cubeStyle, cube.colors])
 
 	// style state
-	const [localCubeStyle, setLocalCubeStyle] = useState(cube.cubeStyle);
-	const [localCubeColors, setLocalCubeColors] = useState(cube.colors);
+	const [localCubeStyle, setLocalCubeStyle] = useState(cube.cubeStyle)
+	const [localCubeColors, setLocalCubeColors] = useState(cube.colors)
 
 	useEffect(() => {
 		// console.log('🔁 localCubeStyle changed.', localCubeStyle);
-		applyCubeStyleCSS();
-	}, [localCubeStyle]);
+		applyCubeStyleCSS()
+	}, [localCubeStyle])
 
 	useEffect(() => {
 		// console.log('🔁 localCubeColors changed.', localCubeColors);
-		applyCubeColorsCSS();
-	}, [localCubeColors]);
+		applyCubeColorsCSS()
+	}, [localCubeColors])
 
 	// apply CSS
 	const applyCubeStyleCSS = () => {
 		const { color, stickerPadding, sideRadius, stickerCornerRadius } =
-			cubeStyles[localCubeStyle];
-		setCSS('--cube-color', color);
-		setCSS('--sticker-padding', stickerPadding);
-		setCSS('--sticker-radius', sideRadius);
-		setCSS('--sticker-corner-radius', stickerCornerRadius);
-	};
+			cubeStyles[localCubeStyle]
+		setCSS('--cube-color', color)
+		setCSS('--sticker-padding', stickerPadding)
+		setCSS('--sticker-radius', sideRadius)
+		setCSS('--sticker-corner-radius', stickerCornerRadius)
+	}
 
 	const applyCubeColorsCSS = () => {
 		SIDES.forEach((side) => {
-			const val = localCubeColors[side];
-			setSideColorCSS(side, val);
-		});
-	};
+			const val = localCubeColors[side]
+			setSideColorCSS(side, val)
+		})
+	}
 
-	const setSideColorCSS = (side, val) => setCSS(`--color-${side}`, val);
+	const setSideColorCSS = (side, val) => setCSS(`--color-${side}`, val)
 
 	// Events
 
 	const onCubeStyleChange = (newStyle) => {
-		setLocalCubeStyle(newStyle);
-		setIsEdited(true);
-	};
+		setLocalCubeStyle(newStyle)
+		setIsEdited(true)
+	}
 
 	const onColorClick = (side) => {
-		console.log('onColorClick');
-		const newVal = side === openColorPicker ? null : side;
-		setOpenColorPicker(newVal);
+		console.log('onColorClick')
+		const newVal = side === openColorPicker ? null : side
+		setOpenColorPicker(newVal)
 		// else setOpenColorPicker(side);
-		handleChildEvent('handleSideHighlight', newVal);
-	};
+		handleChildEvent('handleSideHighlight', newVal)
+	}
 
 	useEffect(() => {
-		setOpenColorPicker(highlightedSide);
-	}, [highlightedSide]);
+		setOpenColorPicker(highlightedSide)
+	}, [highlightedSide])
 
 	useEffect(() => {
 		// if (highlightedSide !== openColorPicker)
 		// 	setHighlightedSide(openColorPicker);
-	}, [openColorPicker]);
+	}, [openColorPicker])
 
 	const onColorChange = (side, val) => {
 		setLocalCubeColors((arr) => {
-			return { ...arr, [side]: val.hex };
-		});
-		setIsEdited(true);
-	};
+			return { ...arr, [side]: val.hex }
+		})
+		setIsEdited(true)
+	}
 
 	const onColorChangeComplete = (side, val) => {
-		onColorChange(side, val);
-		setIsEdited(true);
-	};
+		onColorChange(side, val)
+		setIsEdited(true)
+	}
 
 	const onResetAll = () => {
-		const { colors, cubeStyle } = new CubeWithPos();
-		onCommitChanges({ colors, cubeStyle });
-	};
+		const { colors, cubeStyle } = new CubeWithPos()
+		onCommitChanges({ colors, cubeStyle })
+	}
 
 	const onResetColors = () => {
-		const { colors } = new CubeWithPos();
-		onCommitChanges({ colors, cubeStyle: localCubeStyle });
-	};
+		const { colors } = new CubeWithPos()
+		onCommitChanges({ colors, cubeStyle: localCubeStyle })
+	}
 
 	const onSave = () => {
-		onCommitChanges({ colors: localCubeColors, cubeStyle: localCubeStyle });
-		onColorClick(null);
-		setIsEdited(false);
-	};
+		onCommitChanges({ colors: localCubeColors, cubeStyle: localCubeStyle })
+		onColorClick(null)
+		setIsEdited(false)
+	}
 
 	const onRevert = () => {
-		setLocalCubeStyle(cube.cubeStyle);
-		setLocalCubeColors(cube.colors);
-		setIsEdited(false);
-	};
+		setLocalCubeStyle(cube.cubeStyle)
+		setLocalCubeColors(cube.colors)
+		setIsEdited(false)
+	}
 
 	const clearAllNames = () => {
-		cube.allStickers.forEach((sticker) => (sticker.name = ''));
-		setEditingSticker(null);
-		rerender();
-	};
+		cube.allStickers.forEach((sticker) => (sticker.name = ''))
+		setEditingSticker(null)
+		rerender()
+	}
 
 	return (
 		<>
@@ -328,7 +332,7 @@ function CustomizeCube({ onCommitChanges }) {
 													}
 												></ColorSwatch>
 											</div>
-										);
+										)
 									})}
 								</div>
 								<div>
@@ -374,6 +378,6 @@ function CustomizeCube({ onCommitChanges }) {
 				)}
 			</div>
 		</>
-	);
+	)
 }
-export default CustomizeCube;
+export default CustomizeCube
