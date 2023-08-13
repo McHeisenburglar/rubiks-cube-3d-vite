@@ -2,6 +2,7 @@ import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass2.js'
 import React, { useMemo, useState } from 'react'
 import { SIDES } from '../ts/helper.js'
 import RotationController from './RotationController.js'
+import { FaPalette } from 'react-icons/fa'
 
 interface IProps {}
 
@@ -55,6 +56,8 @@ interface StickerProps {
 const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 	const { side, name, type, id } = sticker
 
+	const mode = 'edit-colors'
+
 	const handleClick = (id: StickerId) => {
 		console.log(id)
 	}
@@ -63,8 +66,50 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 		<div
 			onClick={() => handleClick(id)}
 			className={`sticker side-${name} color-${side} ${name} letter-${name.toLowerCase()} type-${type} index-${index} id-${id} `}
-		></div>
+		>
+			<StickerContent mode={mode} sticker={sticker} index={index} />
+		</div>
 	)
+}
+
+interface StickerContentProps {
+	mode: string
+	sticker: StickerData
+	index: number
+}
+
+const StickerContent: React.FC<StickerContentProps> = ({
+	mode,
+	sticker,
+	index,
+}) => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { side, name, type, id } = sticker
+
+	if (mode === 'letter') {
+		return (
+			<span className="sticker-letter">
+				{type === 'corner' ? name.toUpperCase() : name}
+			</span>
+		)
+	}
+
+	if (mode === 'arrow') {
+		const arrow = () => {
+			if (index === 1) return '⬆'
+			if (index === 3) return '⬅'
+			if (index === 5) return '➡'
+			if (index === 7) return '⬇'
+			return ''
+		}
+		return <span className="sticker-arrow">{arrow()}</span>
+	}
+
+	if (mode === 'edit-colors') {
+		if (type === 'center') return <FaPalette />
+	}
+
+	return <></>
 }
 
 export default RubiksCube
