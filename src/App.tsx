@@ -1,4 +1,4 @@
-import MainComponent from './components/RubiksCube'
+declare module './components/RubiksCube'
 
 import './scss/_variables.scss'
 import './scss/style.scss'
@@ -10,10 +10,12 @@ import './scss/buttons.scss'
 import './scss/customize.scss'
 import './scss/play.scss'
 
+import RubiksCube from './components/RubiksCube'
+
 function App() {
 	return (
 		<div className="App">
-			<MainComponent />
+			<RubiksCube />
 		</div>
 	)
 }

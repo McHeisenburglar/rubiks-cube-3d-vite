@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { CubeContext, UserInputContext } from './RubiksCube'
-import { randomElement } from '../js/helper'
+import { randomElement } from '../ts/helper'
 import SwitchBar, { Switch } from './Switch'
 import { setCSS } from './RubiksCube'
 
@@ -308,6 +308,10 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 						{isPlaying ? 'Stop' : 'Play'}
 					</button>
 				</div>
+				<p class="small-caption">
+					Hint: Holding down <strong>space</strong> will reveal the sticker
+					names.
+				</p>
 				{showGameLog && (
 					<div className="game-log">
 						<ul>

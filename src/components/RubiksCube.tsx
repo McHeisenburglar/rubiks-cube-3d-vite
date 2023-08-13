@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useContext, useMemo } from 'react'
 
-import { SIDES, cubeStyles } from '../js/helper'
-import { rotationsToPos } from '../js/helper'
-import { CubeWithPos } from '../js/CubeClass2'
+import { SIDES, cubeStyles } from '../ts/helper'
+import { rotationsToPos } from '../ts/helper'
+import { CubeWithPos } from '../ts/CubeClass2'
 import { FaPalette } from 'react-icons/fa'
 
 import SwitchBar, { Switch } from './Switch'
@@ -259,7 +259,7 @@ function MainComponent() {
 		}
 	}, [highlightedStickerId])
 
-	const [highlightedSide, setHighlightedSide] = useState(null)
+	const [highlightedSide, setHighlightedSide] = useState<Side>(null)
 	useEffect(() => {
 		if (highlightedSide) {
 			const sticker = cube.getStickerByPosition(highlightedSide, 2)
@@ -468,7 +468,7 @@ function MainComponent() {
 								{showDevStateLogger && (
 									<DevStateLogger stateObject={devStateLoggerProps} />
 								)}
-								<div>
+								{/* <div>
 									<Switch
 										active={forceShowingIndexes}
 										onSwitch={() =>
@@ -485,9 +485,9 @@ function MainComponent() {
 									>
 										Show letters
 									</Switch>
-								</div>
+								</div> */}
 							</div>
-							<button
+							{/* <button
 								className="btn"
 								onClick={buttonMethods.scramble}
 								disabled={isPlayingRef()}
@@ -504,7 +504,7 @@ function MainComponent() {
 							<button className="btn" onClick={buttonMethods.spotlight}>
 								Focus on current
 							</button>
-							{/* <N
+							<button
 								className={`btn play-btn ${
 									isPlayingRef() ? 'playing' : 'idle'
 								}`}
@@ -512,7 +512,7 @@ function MainComponent() {
 							>
 								{isPlayingRef() ? 'Stop' : 'Play'}
 							</button> */}
-							<div>
+							{/* <div>
 								Turn:
 								{SIDES.map((side, index) => {
 									return (
@@ -526,6 +526,9 @@ function MainComponent() {
 									)
 								})}
 							</div>
+							<button className="btn" onClick={buttonMethods.reset}>
+								Reset
+							</button> */}
 							{/* <div>Playing:</div> */}
 							{/* <div>
 								Piece type:

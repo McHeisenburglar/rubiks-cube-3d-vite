@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { CubeContext, UserInputContext } from './RubiksCube'
-import { SIDES, cubeStyles, availableColors } from '../js/helper'
+import { SIDES, cubeStyles, availableColors } from '../ts/helper'
 import SwitchBar from './Switch'
-import { CubeWithPos } from '../js/CubeClass2'
+import { CubeWithPos } from '../ts/CubeClass2'
 import { setCSS } from './RubiksCube'
 import { SketchPicker } from 'react-color'
 

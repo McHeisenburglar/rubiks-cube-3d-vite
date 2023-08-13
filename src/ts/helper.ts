@@ -1,6 +1,7 @@
-export const SIDES = ['top', 'left', 'front', 'right', 'back', 'bottom'];
-export const stickerMoveMapArr = [2, 5, 8, 1, 4, 7, 0, 3, 6];
-export const neighborIndexMap = {
+export const SIDES: Side[] = ['top', 'left', 'front', 'right', 'back', 'bottom']
+export const stickerMoveMapArr = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+
+export const neighborIndexMap: SideMap<[Side, number][][]> = {
 	top: [
 		[
 			['left', 0],
@@ -139,15 +140,15 @@ export const neighborIndexMap = {
 			['back', 6],
 		],
 	],
-};
+}
 
-export function neighborsOfPosition(side, index) {
+export function neighborsOfPosition(side: Side, index: number) {
 	return neighborIndexMap[side][index].map((neighbor) => {
 		return {
 			side: neighbor[0],
 			index: neighbor[1],
-		};
-	});
+		}
+	})
 }
 
 export const rotations = {
@@ -203,7 +204,7 @@ export const rotations = {
 		w: [120, 0, 15],
 		x: [75, 0, -30],
 	},
-};
+}
 export const availableColors = [
 	'#0dc40d',
 	'#ffa600',
@@ -213,7 +214,7 @@ export const availableColors = [
 	'#0073ff',
 	'#222222',
 	'#9A3FF2',
-];
+]
 export const cubeStyles = {
 	black: {
 		color: '#111',
@@ -233,7 +234,7 @@ export const cubeStyles = {
 		sideRadius: '1px',
 		stickerCornerRadius: '12px',
 	},
-};
+}
 
 export const rotationsToPos = {
 	top: [
@@ -302,12 +303,12 @@ export const rotationsToPos = {
 		[120, 0, 15],
 		[120, 15, 15],
 	],
-};
-
-export function randomNumber(min, max) {
-	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export function randomElement(arr) {
-	return arr[Math.floor(Math.random() * arr.length)];
+export function randomNumber(min: number, max: number) {
+	return Math.floor(Math.random() * (max - min)) + min
+}
+
+export function randomElement(arr: unknown[]) {
+	return arr[Math.floor(Math.random() * arr.length)]
 }

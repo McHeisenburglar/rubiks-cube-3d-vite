@@ -1,30 +1,31 @@
-import { useState, useEffect, useRef } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect, useRef } from 'react'
 
-export function useKeyhold(key, dependencies) {
-	const [isHeld, setIsHeld] = useState(false);
-	const isHeldRef = useRef(isHeld);
+export function useKeyhold(key: string, dependencies: unknown[]) {
+	const [isHeld, setIsHeld] = useState(false)
+	const isHeldRef = useRef(isHeld)
 
 	useEffect(() => {
-		const handleDown = (e) => {
+		const handleDown = (e: KeyboardEvent) => {
 			if (!isHeldRef.current && e.key.toLowerCase() === key) {
-				setIsHeld(true);
-				isHeldRef.current = true; // prevents key repeat
+				setIsHeld(true)
+				isHeldRef.current = true // prevents key repeat
 			}
-		};
-		const handleUp = (e) => {
+		}
+		const handleUp = (e: KeyboardEvent) => {
 			if (isHeldRef.current && e.key.toLowerCase() === key) {
-				setIsHeld(false);
-				isHeldRef.current = false; // prevents key repeat
+				setIsHeld(false)
+				isHeldRef.current = false // prevents key repeat
 			}
-		};
+		}
 
-		document.addEventListener('keydown', handleDown);
-		document.addEventListener('keyup', handleUp);
+		document.addEventListener('keydown', handleDown)
+		document.addEventListener('keyup', handleUp)
 		return () => {
-			document.removeEventListener('keydown', handleDown);
-			document.removeEventListener('keyup', handleUp);
-		};
-	}, [...dependencies]);
+			document.removeEventListener('keydown', handleDown)
+			document.removeEventListener('keyup', handleUp)
+		}
+	}, [...dependencies])
 
-	return [isHeld];
+	return [isHeld]
 }

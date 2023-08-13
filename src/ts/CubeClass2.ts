@@ -23,9 +23,13 @@ const rotationOrder = {
 
 const frontEdgeOrder = [1, 5, 7, 3]
 
-const sideIndex = (side) => SIDES.indexOf(side)
+const sideIndex = (side: Side) => SIDES.indexOf(side)
 
-const rotationalDistnace = (origin, target, arr) => {
+const rotationalDistance = (
+	origin: number,
+	target: number,
+	arr: unknown[]
+): number | null => {
 	const a = arr.indexOf(origin)
 	const b = arr.indexOf(target)
 	if (a < 0 || b < 0) return null
@@ -34,7 +38,7 @@ const rotationalDistnace = (origin, target, arr) => {
 	else return b + arr.length - a
 }
 
-const moveMap = {
+const moveMap: MoveMap<Side> = {
 	U: 'top',
 	F: 'front',
 	L: 'left',
@@ -43,7 +47,7 @@ const moveMap = {
 	D: 'bottom',
 }
 
-const cubeFaceToStickerMap = [
+const cubeFaceToStickerMap: [string, number][] = [
 	['corner', 0],
 	['edge', 0],
 	['corner', 1],
@@ -55,8 +59,8 @@ const cubeFaceToStickerMap = [
 	['corner', 2],
 ]
 
-function generateRandomMove(previousMove) {
-	let move = randomElement(MOVE_TYPES)
+function generateRandomMove(previousMove: string | null): string {
+	const move = randomElement(MOVE_TYPES) as string
 	if (move === previousMove) return generateRandomMove(previousMove)
 
 	const random = Math.random()
@@ -80,40 +84,59 @@ function generateScramble() {
 }
 
 class Position {
-	constructor(side, index) {
+	public side: Side
+	public index: number
+
+	constructor(side: Side, index: number) {
 		this.side = side
 		this.index = index
 	}
 }
 
 class Sticker {
-	constructor(side, index, name = '') {
+	public side: Side
+	public index: number
+	public name: string
+	public neighbors: Sticker[]
+	public currentPosition: Position
+
+	constructor(side: Side, index: number, name: string = '') {
 		this.side = side
 		this.index = index
 		this.name = name
 		this.neighbors = []
 		this.currentPosition = new Position(side, index)
 	}
-	get type() {
+	get type(): PieceType {
 		if (this.neighbors.length === 2) return 'corner'
 		if (this.neighbors.length === 1) return 'edge'
 		if (this.neighbors.length === 0) return 'center'
 		return 'unknown'
 	}
-	get id() {
+	get id(): string {
 		return `${this.side}-${this.index}`
 	}
-	setPosition(side, index) {
+	setPosition(side: Side, index: number) {
 		this.currentPosition.side = side
 		this.currentPosition.index = index
 	}
 
-	isSameAs(sticker) {
+	isSameAs(sticker: Sticker) {
 		return this === sticker
 	}
 }
 
 export class CubeWithPos {
+	public dimensions: number
+	public stickerNames: SideMap<string[]>
+	public pieceTypeStickerNames: {
+		[key: string]: { [key: string]: string[] }
+	}
+	public colors: SideMap<string>
+	public cubeStyle: string
+	// public state: SideMap<Sticker[]>
+	public state: { [side in Side]: Sticker[] }
+	public renderState: { showStickers: boolean }
 	constructor() {
 		this.dimensions = 3
 		this.stickerNames = {
@@ -158,8 +181,15 @@ export class CubeWithPos {
 			bottom: '#ffff00',
 			back: '#0073ff',
 		}
-		this.cubeStyle = 'stickerless'
-		this.state = {}
+		this.cubeStyle = 'black'
+		this.state = {
+			top: [],
+			left: [],
+			front: [],
+			right: [],
+			back: [],
+			bottom: [],
+		}
 
 		this.renderState = {
 			showStickers: true,
@@ -170,7 +200,7 @@ export class CubeWithPos {
 		// console.log('Cube initialized.')
 	}
 
-	loadCube(cube) {
+	loadCube(cube: CubeWithPos) {
 		this.colors = cube.colors
 		this.cubeStyle = cube.cubeStyle
 		this.pieceTypeStickerNames = cube.pieceTypeStickerNames
@@ -190,7 +220,7 @@ export class CubeWithPos {
 	}
 
 	reset() {
-		SIDES.forEach((side) => {
+		SIDES.forEach((side: Side) => {
 			this.state[side] = []
 			for (let i = 0; i < Math.pow(this.dimensions, 2); i++) {
 				const [pieceType, stickerNameIndex] = cubeFaceToStickerMap[i]
@@ -205,21 +235,23 @@ export class CubeWithPos {
 		this.initializeNeighbors()
 	}
 
-	get allStickers() {
-		const arr = []
+	get allStickers(): Sticker[] {
+		const arr: Sticker[] = []
 		SIDES.forEach((side) => {
 			this.state[side].forEach((sticker) => arr.push(sticker))
 		})
 		return arr
 	}
 
-	getStickersByType(types) {
+	getStickersByType(types: PieceType[]) {
 		return this.allStickers.filter((sticker) => types.includes(sticker.type))
 	}
 
-	getStickersArray(options = { pieceTypes: ['corner', 'edge'], sides: SIDES }) {
-		const { pieceTypes, sides } = options
-		const arr = []
+	getStickersArray(
+		options = { pieceTypes: ['corner', 'edge'], sides: SIDES }
+	): Sticker[] {
+		const { pieceTypes } = options
+		const arr: Sticker[] = []
 		SIDES.forEach((side) => {
 			this.state[side].forEach((sticker) => {
 				if (pieceTypes.includes(sticker.type)) arr.push(sticker)
@@ -228,7 +260,7 @@ export class CubeWithPos {
 		return arr
 	}
 
-	getStickerByLetter(letter, type) {
+	getStickerByLetter(letter: string, type: PieceType) {
 		// console.log('getting sticker by letter', letter)
 		let result = null
 		SIDES.forEach((side) => {
@@ -244,11 +276,12 @@ export class CubeWithPos {
 		return result
 	}
 
-	getStickerById(id) {
-		return this.allStickers.find((sticker) => sticker.id === id)
+	getStickerById(id: string): Sticker | null {
+		const sticker = this.allStickers.find((sticker) => sticker.id === id)
+		return sticker ? sticker : null
 	}
 
-	getPositionOfSticker(letter) {
+	getPositionOfSticker(letter: string): Position | null {
 		let result = null
 		SIDES.forEach((side) => {
 			this.state[side].forEach((sticker) => {
@@ -263,9 +296,7 @@ export class CubeWithPos {
 		return result
 	}
 
-	getStickerByPosition(sideIndex, index) {
-		let side = sideIndex
-		if (typeof side === 'number') side = SIDES[sideIndex]
+	getStickerByPosition(side: Side, index: number): Sticker | null {
 		return this.state[side][index]
 	}
 
@@ -279,14 +310,14 @@ export class CubeWithPos {
 		})
 	}
 
-	get sides() {
-		return Object.keys(this.state)
+	get sides(): Side[] {
+		return Object.keys(this.state) as Side[]
 	}
 
-	turn(side, amount = 1) {
+	turn(side: Side, amount = 1) {
 		for (let i = 0; i < amount; i++) {
 			// Current state of side
-			const arr = new Array(this.side)
+			const arr: Sticker[] = new Array(...this.state[side])
 
 			// For each sticker
 			this.state[side].forEach((sticker, index) => {
@@ -307,8 +338,9 @@ export class CubeWithPos {
 		}
 	}
 
-	makeMove(move) {
-		const face = moveMap[move[0]]
+	makeMove(move: string) {
+		const moveType = move[0] as MoveType
+		const face: Side = moveMap[moveType]
 
 		let amount = 1 // e.g "R"
 		if (move.includes('2')) amount = 2 // e.g "R2"
@@ -318,7 +350,7 @@ export class CubeWithPos {
 	}
 
 	getAvailableLetters(pieceTypes = ['corner', 'edge']) {
-		const arr = []
+		const arr: string[] = []
 		SIDES.forEach((side) => {
 			this.state[side].forEach((sticker) => {
 				if (
@@ -331,7 +363,7 @@ export class CubeWithPos {
 		return arr
 	}
 
-	performAlgorithm(alg) {
+	performAlgorithm(alg: string) {
 		alg.split(' ').forEach((move) => this.makeMove(move))
 	}
 
@@ -344,15 +376,18 @@ export class CubeWithPos {
 		return scramble
 	}
 
-	renameSticker(stickerId, name) {
+	renameSticker(stickerId: string, name: string) {
 		const sticker = this.getStickerById(stickerId)
+
+		if (!sticker) return
+
 		sticker.name = name.toLowerCase()
 		const [type, nameIndex] = cubeFaceToStickerMap[sticker.index]
 		const { side } = sticker
 		this.pieceTypeStickerNames[type][side][nameIndex] = name.toLowerCase()
 	}
 
-	rotateColors(dimension) {
+	rotateColors(dimension: Dimension) {
 		// console.log('Rotating', dimension)
 		const oldColors = SIDES.map((side) => this.colors[side])
 		const newColors = new Array(SIDES.length)
@@ -365,16 +400,18 @@ export class CubeWithPos {
 		SIDES.forEach((side, index) => (this.colors[side] = newColors[index]))
 	}
 
-	rotateColorsNTimes(dimension, amount) {
+	rotateColorsNTimes(dimension: Dimension, amount: number) {
 		// console.log(`Rotating ${dimension} - ${amount} times`)
 		for (let i = 0; i < amount; i++) {
 			this.rotateColors(dimension)
 		}
 	}
 
-	rotateColorsToNewSticker(idOfTargetSticker) {
+	rotateColorsToNewSticker(idOfTargetSticker: string) {
 		const currentFU = this.getStickerByPosition('front', 1)
 		const targetFU = this.getStickerById(idOfTargetSticker)
+
+		if (!currentFU || !targetFU) return console.error('Invalid sticker ID')
 
 		const currentSideIndex = sideIndex(currentFU.side)
 		const targetSideIndex = sideIndex(targetFU.side)
@@ -383,33 +420,33 @@ export class CubeWithPos {
 
 		if (currentSideIndex !== targetSideIndex) {
 			if (rotationOrder.x.includes(targetSideIndex)) {
-				const dist = rotationalDistnace(
+				const dist = rotationalDistance(
 					currentSideIndex,
 					targetSideIndex,
 					rotationOrder.x
 				)
-				this.rotateColorsNTimes('x', dist)
+				if (dist) this.rotateColorsNTimes('x', dist)
 			} else if (rotationOrder.y.includes(targetSideIndex)) {
-				const dist = rotationalDistnace(
+				const dist = rotationalDistance(
 					currentSideIndex,
 					targetSideIndex,
 					rotationOrder.y
 				)
-				this.rotateColorsNTimes('y', dist)
+				if (dist) this.rotateColorsNTimes('y', dist)
 			}
 		}
 
 		if (currentFU.index !== targetFU.index) {
-			const dist = rotationalDistnace(
+			const dist = rotationalDistance(
 				currentFU.index,
 				targetFU.index,
 				frontEdgeOrder
 			)
-			this.rotateColorsNTimes('z', dist)
+			if (dist) this.rotateColorsNTimes('z', dist)
 		}
 	}
 
-	setOrientationToSticker(idOfTargetSticker) {
+	setOrientationToSticker(idOfTargetSticker: string) {
 		this.reset()
 		this.rotateColorsToNewSticker(idOfTargetSticker)
 		// console.log(this.colors)
