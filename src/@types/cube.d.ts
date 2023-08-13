@@ -10,8 +10,6 @@ const PIECE_TYPES = ['corner', 'edge', 'center'] as const
 
 type PieceType = (typeof PIECE_TYPES)[number] | 'unknown'
 
-type Dimension = 'x' | 'y' | 'z'
-
 const MOVE_TYPES_2 = ['U', 'L', 'R', 'F', 'B', 'D'] as const
 
 type MoveType = (typeof MOVE_TYPES_2)[number]

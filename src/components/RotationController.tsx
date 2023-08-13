@@ -3,12 +3,18 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 
-function RotationController({
+interface IProps {
+	rotation: RotationSet
+	setRotation: (set: RotationSet) => void
+	children: ChildElement
+}
+
+const RotationController: React.FC<IProps> = ({
 	rotation,
 	children,
 	setRotation,
 	handleClickOutside,
-}) {
+}) => {
 	// console.log('rendered RotationController')
 	const rotationRef = useRef(rotation)
 

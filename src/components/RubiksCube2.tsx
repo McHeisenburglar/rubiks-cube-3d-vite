@@ -7,7 +7,11 @@ interface IProps {}
 
 const RubiksCube: React.FC<IProps> = () => {
 	const cube = useMemo(() => new CubeWithPos(), [])
-	const [rotation, setRotation] = useState({ x: -15, y: -30, z: 0 })
+	const [rotation, setRotation] = useState<RotationSet>({
+		x: -15,
+		y: -30,
+		z: 0,
+	})
 
 	const handleRotationClick = () => {
 		console.log('got here')
@@ -57,9 +61,7 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 
 	return (
 		<div
-			onClick={() => {
-				handleClick(id)
-			}}
+			onClick={() => handleClick(id)}
 			className={`sticker side-${name} color-${side} ${name} letter-${name.toLowerCase()} type-${type} index-${index} id-${id} `}
 		></div>
 	)
