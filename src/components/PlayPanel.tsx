@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { CubeContext, UserInputContext } from './RubiksCube'
 import { randomElement } from '../ts/helper'

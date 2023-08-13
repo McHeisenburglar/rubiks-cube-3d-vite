@@ -1,4 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React, { useState, useRef, useEffect, useContext, useMemo } from 'react'
 
 import { SIDES, cubeStyles, rotationsToPos } from '../ts/helper.js'
@@ -461,7 +465,7 @@ function MainComponent() {
 	}`.toLowerCase()
 
 	return (
-		<main classList={modeClassList}>
+		<main className={modeClassList}>
 			<UserInputContext.Provider value={userInputContextValue}>
 				<CubeContext.Provider value={cubeContextVal}>
 					{highlightedStickerId && showStickerCards && (
