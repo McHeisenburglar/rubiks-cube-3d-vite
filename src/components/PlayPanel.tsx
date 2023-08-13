@@ -10,7 +10,7 @@ function GameTimer({ isPlaying, onTimerEnd }) {
 	const INTERVAL = 10
 
 	let countdown
-	const [secondsInGame, setSecondsInGame] = useState(60)
+	const [secondsInGame, setSecondsInGame] = useState('—')
 	const [msRemaining, setMsRemaining] = useState(0)
 	const [isRunning, setIsRunning] = useState(false)
 
@@ -299,7 +299,7 @@ function PlayPanel({ spotlight, pulseAnimation }) {
 						</div>
 					</>
 				)}
-				<GameTimer onTimerEnd={onTimerEnd} isPlaying={isPlaying} />
+				{/* <GameTimer onTimerEnd={onTimerEnd} isPlaying={isPlaying} /> */}
 				<div>
 					<button
 						className={`btn full-width play-btn ${
