@@ -1,24 +1,44 @@
 import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass2.js'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { SIDES } from '../ts/helper.js'
+import RotationController from './RotationController.js'
 
 interface IProps {}
 
 const RubiksCube: React.FC<IProps> = () => {
 	const cube = useMemo(() => new CubeWithPos(), [])
-	// console.log('Rendered cube.', cube.colors.right)
+	const [rotation, setRotation] = useState({ x: -15, y: -30, z: 0 })
+
+	const handleRotationClick = () => {
+		console.log('got here')
+	}
 
 	return (
-		<div className={`cube`}>
-			{SIDES.map((side, index) => (
-				<div className={`side rotate-${side}`} key={index}>
-					{cube.state[side].map((sticker: StickerData, index: number) => {
-						return (
-							<Sticker key={index} sticker={sticker} index={index}></Sticker>
-						)
-					})}
-				</div>
-			))}
+		<RotationController
+			rotation={rotation}
+			setRotation={setRotation}
+			handleClickOutside={handleRotationClick}
+		>
+			<div className={`cube`}>
+				{SIDES.map((side, index) => (
+					<CubeSide side={side} stickers={cube.state[side]} key={index} />
+				))}
+			</div>
+		</RotationController>
+	)
+}
+
+interface CubeSideProps {
+	side: Side
+	stickers: StickerData[]
+}
+
+const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
+	return (
+		<div className={`side rotate-${side}`}>
+			{stickers.map((sticker: StickerData, index: number) => {
+				return <Sticker key={index} sticker={sticker} index={index}></Sticker>
+			})}
 		</div>
 	)
 }

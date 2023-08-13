@@ -5,6 +5,7 @@ import React from 'react'
 function CubeController() {
 	// console.log('CubeController rendered.');
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const cubeStyles = {
 		black: {
 			color: '#111',
