@@ -8,7 +8,7 @@ import './scss/buttons.scss'
 import './scss/customize.scss'
 import './scss/play.scss'
 
-import RubiksCube from './components/RubiksCube'
+import RubiksCube from './components/RubiksCube2'
 
 function App() {
 	return (
