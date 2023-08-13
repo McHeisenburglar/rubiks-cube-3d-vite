@@ -215,7 +215,7 @@ export const availableColors = [
 	'#222222',
 	'#9A3FF2',
 ]
-export const cubeStyles = {
+export const cubeStyles: { [style in CubeStyleName]: CubeStyleConfig } = {
 	black: {
 		color: '#111',
 		stickerPadding: '8px',
@@ -236,7 +236,7 @@ export const cubeStyles = {
 	},
 }
 
-export const rotationsToPos = {
+export const rotationsToPos: { [side in Side]: [number, number, number][] } = {
 	top: [
 		[-105, 0, 30],
 		[-120, 0, 0],

@@ -19,3 +19,13 @@ type MoveType = (typeof MOVE_TYPES_2)[number]
 type MoveMap<T> = {
 	[move in MOVE_TYPES_2]: T
 }
+
+type CubeStyleName = 'black' | 'white' | 'stickerless'
+type CubeStyleConfig = {
+	color: string
+	stickerPadding: string
+	sideRadius: string
+	stickerCornerRadius: string
+}
+
+type StickerId = string

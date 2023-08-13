@@ -93,7 +93,7 @@ class Position {
 	}
 }
 
-class Sticker {
+export class Sticker {
 	public side: Side
 	public index: number
 	public name: string
@@ -113,7 +113,7 @@ class Sticker {
 		if (this.neighbors.length === 0) return 'center'
 		return 'unknown'
 	}
-	get id(): string {
+	get id(): StickerId {
 		return `${this.side}-${this.index}`
 	}
 	setPosition(side: Side, index: number) {
@@ -133,8 +133,7 @@ export class CubeWithPos {
 		[key: string]: { [key: string]: string[] }
 	}
 	public colors: SideMap<string>
-	public cubeStyle: string
-	// public state: SideMap<Sticker[]>
+	public cubeStyle: CubeStyleName
 	public state: { [side in Side]: Sticker[] }
 	public renderState: { showStickers: boolean }
 	constructor() {

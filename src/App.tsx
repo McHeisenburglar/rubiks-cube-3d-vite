@@ -1,5 +1,3 @@
-declare module './components/RubiksCube'
-
 import './scss/_variables.scss'
 import './scss/style.scss'
 import './scss/cube.scss'
