@@ -67,11 +67,21 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 		console.log(id)
 	}
 
+	const stickerInfoClasses = [
+		`sticker`,
+		`side-${name}`,
+		`color-${side}`,
+		`name-${name}`,
+		`letter-${name.toLowerCase()}`,
+		`type-${type}`,
+		`index-${index}`,
+		`id-${id}`,
+	]
+
+	const classList = stickerInfoClasses.join(' ')
+
 	return (
-		<div
-			onClick={() => handleClick(id)}
-			className={`sticker side-${name} color-${side} ${name} letter-${name.toLowerCase()} type-${type} index-${index} id-${id} `}
-		>
+		<div onClick={() => handleClick(id)} className={classList}>
 			<StickerContent mode={mode} sticker={sticker} index={index} />
 		</div>
 	)
