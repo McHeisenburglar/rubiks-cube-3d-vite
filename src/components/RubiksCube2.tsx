@@ -60,22 +60,11 @@ interface StickerProps {
 
 const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 	const { side, name, type, id } = sticker
-
 	const mode = 'letter'
 
 	const handleClick = (id: StickerId) => {
 		console.log(id)
 	}
-
-	const stickerInfoClasses = [
-		`sticker`,
-		`side-${name}`,
-		`name-${name}`,
-		`letter-${name.toLowerCase()}`,
-		`type-${type}`,
-		`index-${index}`,
-		`id-${id}`,
-	]
 
 	const dataAttributes = {
 		'data-sticker-side': side,
@@ -86,12 +75,10 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 		'data-piece-type': type,
 	}
 
-	const classList = stickerInfoClasses.join(' ')
-
 	return (
 		<div
 			onClick={() => handleClick(id)}
-			className={classList}
+			className="sticker"
 			{...dataAttributes}
 		>
 			<StickerContent mode={mode} sticker={sticker} index={index} />
