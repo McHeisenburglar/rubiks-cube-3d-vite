@@ -70,7 +70,6 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 	const stickerInfoClasses = [
 		`sticker`,
 		`side-${name}`,
-		`color-${side}`,
 		`name-${name}`,
 		`letter-${name.toLowerCase()}`,
 		`type-${type}`,
@@ -78,10 +77,23 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 		`id-${id}`,
 	]
 
+	const dataAttributes = {
+		'data-sticker-side': side,
+		'data-sticker-color': side,
+		'data-sticker-name': name,
+		'data-sticker-index': index,
+		'data-sticker-id': id,
+		'data-piece-type': type,
+	}
+
 	const classList = stickerInfoClasses.join(' ')
 
 	return (
-		<div onClick={() => handleClick(id)} className={classList}>
+		<div
+			onClick={() => handleClick(id)}
+			className={classList}
+			{...dataAttributes}
+		>
 			<StickerContent mode={mode} sticker={sticker} index={index} />
 		</div>
 	)
