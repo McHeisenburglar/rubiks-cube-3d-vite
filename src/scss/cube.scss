@@ -13,6 +13,10 @@
 }
 
 .cube {
+	font-size: 2em;
+	position: absolute;
+	top: var(--side-size);
+	left: var(--side-size);
 }
 
 .side {
@@ -33,11 +37,6 @@
 	.cube {
 		width: calc(2 * var(--side-size));
 		height: calc(2 * var(--side-size));
-
-		position: absolute;
-		font-size: 2em;
-		top: var(--side-size);
-		left: var(--side-size);
 
 		transform-style: preserve-3d;
 		transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y))
@@ -229,4 +228,19 @@
 }
 .sticker.index-8 {
 	border-top-left-radius: var(--sticker-corner-radius);
+}
+
+.sticker .sticker-arrow {
+	&-up {
+		transform: rotate(0);
+	}
+	&-left {
+		transform: rotate(-90deg);
+	}
+	&-right {
+		transform: rotate(90deg);
+	}
+	&-down {
+		transform: rotate(180deg);
+	}
 }

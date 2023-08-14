@@ -3,20 +3,7 @@ import React, { useMemo, useState } from 'react'
 import { SIDES } from '../ts/helper.js'
 import RotationController from './RotationController.js'
 import { FaPalette } from 'react-icons/fa'
-
-interface CubePerspectiveWrapperProps {
-	active: boolean
-	children: ChildElement
-}
-
-const CubePerspectiveWrapper: React.FC<CubePerspectiveWrapperProps> = ({
-	active,
-	children,
-}) => {
-	if (active) return <div className="cube-perspective-wrapper">{children}</div>
-
-	return children
-}
+import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
 
 interface CubeProps {}
 
@@ -28,18 +15,10 @@ const CubeComponent: React.FC<CubeProps> = () => {
 		z: 0,
 	})
 
-	const handleRotationClick = () => {
-		console.log('got here')
-	}
-
 	const foldCube = false
 
 	return (
-		<RotationController
-			rotation={rotation}
-			setRotation={setRotation}
-			handleClickOutside={handleRotationClick}
-		>
+		<RotationController rotation={rotation} setRotation={setRotation}>
 			<CubePerspectiveWrapper active={foldCube}>
 				<div className={`cube`}>
 					{SIDES.map((side, index) => (
@@ -74,7 +53,7 @@ interface StickerProps {
 const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 	const { side, name, type, id } = sticker
 
-	const mode = 'edit-colors'
+	const mode = 'arrow'
 
 	const handleClick = (id: StickerId) => {
 		console.log(id)
@@ -113,14 +92,18 @@ const StickerContent: React.FC<StickerContentProps> = ({
 	}
 
 	if (mode === 'arrow') {
-		const arrow = () => {
-			if (index === 1) return '⬆'
-			if (index === 3) return '⬅'
-			if (index === 5) return '➡'
-			if (index === 7) return '⬇'
-			return ''
+		if (type === 'edge') {
+			let direction = ''
+
+			if (index === 1) direction = 'up'
+			if (index === 3) direction = 'left'
+			if (index === 5) direction = 'right'
+			if (index === 7) direction = 'down'
+
+			return (
+				<span className={`sticker-arrow sticker-arrow-${direction}`}>⬆</span>
+			)
 		}
-		return <span className="sticker-arrow">{arrow()}</span>
 	}
 
 	if (mode === 'edit-colors') {
