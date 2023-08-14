@@ -4,9 +4,23 @@ import { SIDES } from '../ts/helper.js'
 import RotationController from './RotationController.js'
 import { FaPalette } from 'react-icons/fa'
 
-interface IProps {}
+interface CubePerspectiveWrapperProps {
+	active: boolean
+	children: ChildElement
+}
 
-const RubiksCube: React.FC<IProps> = () => {
+const CubePerspectiveWrapper: React.FC<CubePerspectiveWrapperProps> = ({
+	active,
+	children,
+}) => {
+	if (active) return <div className="cube-perspective-wrapper">{children}</div>
+
+	return children
+}
+
+interface CubeProps {}
+
+const CubeComponent: React.FC<CubeProps> = () => {
 	const cube = useMemo(() => new CubeWithPos(), [])
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: -15,
@@ -18,17 +32,21 @@ const RubiksCube: React.FC<IProps> = () => {
 		console.log('got here')
 	}
 
+	const foldCube = false
+
 	return (
 		<RotationController
 			rotation={rotation}
 			setRotation={setRotation}
 			handleClickOutside={handleRotationClick}
 		>
-			<div className={`cube`}>
-				{SIDES.map((side, index) => (
-					<CubeSide side={side} stickers={cube.state[side]} key={index} />
-				))}
-			</div>
+			<CubePerspectiveWrapper active={foldCube}>
+				<div className={`cube`}>
+					{SIDES.map((side, index) => (
+						<CubeSide side={side} stickers={cube.state[side]} key={index} />
+					))}
+				</div>
+			</CubePerspectiveWrapper>
 		</RotationController>
 	)
 }
@@ -112,4 +130,4 @@ const StickerContent: React.FC<StickerContentProps> = ({
 	return <></>
 }
 
-export default RubiksCube
+export default CubeComponent

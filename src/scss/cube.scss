@@ -13,21 +13,6 @@
 }
 
 .cube {
-	width: calc(2 * var(--side-size));
-	height: calc(2 * var(--side-size));
-
-	position: absolute;
-	font-size: 2em;
-	top: var(--side-size);
-	left: var(--side-size);
-
-	transform-style: preserve-3d;
-	transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y))
-		rotateZ(var(--rotate-z)) scaleX((var(--cube-zoom)))
-		scaleY((var(--cube-zoom))) scaleZ((var(--cube-zoom)));
-
-	cursor: default;
-	transition: 0.3s;
 }
 
 .side {
@@ -36,13 +21,58 @@
 	overflow: hidden;
 	background: var(--cube-color);
 	border-radius: calc(var(--sticker-radius) * 2);
-	position: absolute;
 	padding: var(--sticker-padding);
-	display: grid;
+	display: inline-grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
 	gap: var(--sticker-padding);
 	opacity: 1;
+}
+
+.cube-perspective-wrapper {
+	.cube {
+		width: calc(2 * var(--side-size));
+		height: calc(2 * var(--side-size));
+
+		position: absolute;
+		font-size: 2em;
+		top: var(--side-size);
+		left: var(--side-size);
+
+		transform-style: preserve-3d;
+		transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y))
+			rotateZ(var(--rotate-z)) scaleX((var(--cube-zoom)))
+			scaleY((var(--cube-zoom))) scaleZ((var(--cube-zoom)));
+
+		cursor: default;
+		transition: 0.3s;
+	}
+	.side {
+		position: absolute;
+	}
+	.rotate-back {
+		transform: rotateY(180deg) translateZ(var(--side-size));
+	}
+
+	.rotate-top {
+		transform: rotateX(90deg) translateZ(var(--side-size));
+	}
+
+	.rotate-left {
+		transform: rotateY(-90deg) translateZ(var(--side-size));
+	}
+
+	.rotate-right {
+		transform: rotateY(90deg) translateZ(var(--side-size));
+	}
+
+	.rotate-bottom {
+		transform: rotateX(-90deg) translateZ(var(--side-size));
+	}
+
+	.rotate-front {
+		transform: rotateX(0deg) translateZ(var(--side-size));
+	}
 }
 
 .side.highlight-side {
@@ -164,32 +194,6 @@
 }
 .color-back {
 	background: var(--color-back);
-}
-
-/* SIDE ROTATION / TRANSLATION */
-
-.rotate-back {
-	transform: rotateY(180deg) translateZ(var(--side-size));
-}
-
-.rotate-top {
-	transform: rotateX(90deg) translateZ(var(--side-size));
-}
-
-.rotate-left {
-	transform: rotateY(-90deg) translateZ(var(--side-size));
-}
-
-.rotate-right {
-	transform: rotateY(90deg) translateZ(var(--side-size));
-}
-
-.rotate-bottom {
-	transform: rotateX(-90deg) translateZ(var(--side-size));
-}
-
-.rotate-front {
-	transform: rotateX(0deg) translateZ(var(--side-size));
 }
 
 /* SPECIFIC CORNER STYLING */
