@@ -5,6 +5,7 @@ import RotationController from './RotationController.js'
 import { FaPalette } from 'react-icons/fa'
 import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
 
+/* MAIN COMPONENT */
 interface CubeComponentProps {}
 
 const CubeComponent: React.FC<CubeComponentProps> = () => {
@@ -24,6 +25,7 @@ const CubeComponent: React.FC<CubeComponentProps> = () => {
 	)
 }
 
+/* CUBE */
 interface CubeProps {
 	cube: CubeWithPos
 }
@@ -38,6 +40,7 @@ const Cube: React.FC<CubeProps> = ({ cube }) => {
 	)
 }
 
+/* CUBE SIDE */
 interface CubeSideProps {
 	side: Side
 	stickers: StickerData[]
@@ -45,7 +48,7 @@ interface CubeSideProps {
 
 const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
 	return (
-		<div className={`side side-${side}`}>
+		<div className={`side side-${side}`} data-side={side}>
 			{stickers.map((sticker: StickerData, index: number) => {
 				return <Sticker key={index} sticker={sticker} index={index}></Sticker>
 			})}
@@ -53,6 +56,7 @@ const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
 	)
 }
 
+/* STICKER */
 interface StickerProps {
 	sticker: StickerData
 	index: number
@@ -77,8 +81,8 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 
 	return (
 		<div
-			onClick={() => handleClick(id)}
 			className="sticker"
+			onClick={() => handleClick(id)}
 			{...dataAttributes}
 		>
 			<StickerContent mode={mode} sticker={sticker} index={index} />
@@ -86,6 +90,7 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 	)
 }
 
+/* STICKER CONTENT */
 interface StickerContentProps {
 	mode: string
 	sticker: StickerData
@@ -129,5 +134,6 @@ const StickerContent: React.FC<StickerContentProps> = ({
 
 	return <></>
 }
+/* ------- */
 
 export default CubeComponent
