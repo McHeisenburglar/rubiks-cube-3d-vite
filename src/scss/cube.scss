@@ -33,7 +33,7 @@
 	opacity: 1;
 }
 
-.cube-perspective-wrapper {
+.cube-wrapper-3d-fold {
 	.cube {
 		width: calc(2 * var(--side-size));
 		height: calc(2 * var(--side-size));
@@ -49,28 +49,56 @@
 	.side {
 		position: absolute;
 	}
-	.rotate-back {
+	.side-back {
 		transform: rotateY(180deg) translateZ(var(--side-size));
 	}
 
-	.rotate-top {
+	.side-top {
 		transform: rotateX(90deg) translateZ(var(--side-size));
 	}
 
-	.rotate-left {
+	.side-left {
 		transform: rotateY(-90deg) translateZ(var(--side-size));
 	}
 
-	.rotate-right {
+	.side-right {
 		transform: rotateY(90deg) translateZ(var(--side-size));
 	}
 
-	.rotate-bottom {
+	.side-bottom {
 		transform: rotateX(-90deg) translateZ(var(--side-size));
 	}
 
-	.rotate-front {
+	.side-front {
 		transform: rotateX(0deg) translateZ(var(--side-size));
+	}
+}
+
+.cube-wrapper-flat-fold {
+	.cube {
+		display: grid;
+		grid-template-areas:
+			'. u . .'
+			'l f r b'
+			'. d . .';
+	}
+	.side-front {
+		grid-area: f;
+	}
+	.side-top {
+		grid-area: u;
+	}
+	.side-left {
+		grid-area: l;
+	}
+	.side-right {
+		grid-area: r;
+	}
+	.side-back {
+		grid-area: b;
+	}
+	.side-bottom {
+		grid-area: d;
 	}
 }
 

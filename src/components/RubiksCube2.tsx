@@ -5,9 +5,9 @@ import RotationController from './RotationController.js'
 import { FaPalette } from 'react-icons/fa'
 import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
 
-interface CubeProps {}
+interface CubeComponentProps {}
 
-const CubeComponent: React.FC<CubeProps> = () => {
+const CubeComponent: React.FC<CubeComponentProps> = () => {
 	const cube = useMemo(() => new CubeWithPos(), [])
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: -15,
@@ -15,18 +15,26 @@ const CubeComponent: React.FC<CubeProps> = () => {
 		z: 0,
 	})
 
-	const foldCube = false
-
 	return (
 		<RotationController rotation={rotation} setRotation={setRotation}>
-			<CubePerspectiveWrapper active={foldCube}>
-				<div className={`cube`}>
-					{SIDES.map((side, index) => (
-						<CubeSide side={side} stickers={cube.state[side]} key={index} />
-					))}
-				</div>
+			<CubePerspectiveWrapper mode="flat-fold">
+				<Cube cube={cube} />
 			</CubePerspectiveWrapper>
 		</RotationController>
+	)
+}
+
+interface CubeProps {
+	cube: CubeWithPos
+}
+
+const Cube: React.FC<CubeProps> = ({ cube }) => {
+	return (
+		<div className={`cube`}>
+			{SIDES.map((side, index) => (
+				<CubeSide side={side} stickers={cube.state[side]} key={index} />
+			))}
+		</div>
 	)
 }
 
@@ -37,7 +45,7 @@ interface CubeSideProps {
 
 const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
 	return (
-		<div className={`side rotate-${side}`}>
+		<div className={`side side-${side}`}>
 			{stickers.map((sticker: StickerData, index: number) => {
 				return <Sticker key={index} sticker={sticker} index={index}></Sticker>
 			})}
@@ -53,7 +61,7 @@ interface StickerProps {
 const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
 	const { side, name, type, id } = sticker
 
-	const mode = 'arrow'
+	const mode = 'letter'
 
 	const handleClick = (id: StickerId) => {
 		console.log(id)
