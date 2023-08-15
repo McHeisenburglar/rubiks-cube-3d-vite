@@ -11,7 +11,10 @@ import '../scss/cube-v2.scss'
 interface CubeComponentProps {}
 
 const CubeComponent: React.FC<CubeComponentProps> = () => {
+	console.log('::::: Rendered CubeComponent.')
+
 	const cube = useMemo(() => new CubeWithPos(), [])
+	// cube.scramble()
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: -15,
 		y: -30,
@@ -20,11 +23,17 @@ const CubeComponent: React.FC<CubeComponentProps> = () => {
 
 	return (
 		<main className="cube-v2">
-			<RotationController rotation={rotation} setRotation={setRotation}>
-				<CubePerspectiveWrapper mode="3d-fold">
+			{/* <div className="cube-wrapper"> */}
+			<RotationController
+				disabled={true}
+				rotation={rotation}
+				setRotation={setRotation}
+			>
+				<CubePerspectiveWrapper mode="flat-fold">
 					<Cube cube={cube} />
 				</CubePerspectiveWrapper>
 			</RotationController>
+			{/* </div> */}
 		</main>
 	)
 }
@@ -35,6 +44,7 @@ interface CubeProps {
 }
 
 const Cube: React.FC<CubeProps> = ({ cube }) => {
+	console.log('::::: Rendered Cube.')
 	return (
 		<div className={`cube`}>
 			{SIDES.map((side, index) => (
@@ -51,10 +61,20 @@ interface CubeSideProps {
 }
 
 const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
+	console.log('::::: Rendered CubeSide.')
+
 	return (
 		<div className={`side side-${side}`} data-side={side}>
 			{stickers.map((sticker: StickerData, index: number) => {
-				return <Sticker key={index} sticker={sticker} index={index}></Sticker>
+				const position = `${side}-${index}`
+				return (
+					<Sticker
+						key={index}
+						sticker={sticker}
+						index={index}
+						position={position}
+					/>
+				)
 			})}
 		</div>
 	)
@@ -63,29 +83,36 @@ const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
 /* STICKER */
 interface StickerProps {
 	sticker: StickerData
+	position: string
 	index: number
 }
 
-const Sticker: React.FC<StickerProps> = ({ sticker, index }) => {
+const Sticker: React.FC<StickerProps> = ({ sticker, index, position }) => {
+	console.log('::::: Rendered Sticker.')
+
 	const { side, name, type, id } = sticker
 	const mode = 'letter'
+
+	const highlightedSticker = 'top-6'
 
 	const handleClick = (id: StickerId) => {
 		console.log(id)
 	}
 
 	const dataAttributes = {
-		'data-sticker-side': side,
 		'data-sticker-color': side,
 		'data-sticker-name': name,
-		'data-sticker-index': index,
 		'data-sticker-id': id,
 		'data-piece-type': type,
+		'data-sticker-position': position,
 	}
+
+	const classList = ['sticker', 'dim']
+	if (id === highlightedSticker) classList.push('highlight')
 
 	return (
 		<div
-			className="sticker"
+			className={classList.join(' ')}
 			onClick={() => handleClick(id)}
 			{...dataAttributes}
 		>

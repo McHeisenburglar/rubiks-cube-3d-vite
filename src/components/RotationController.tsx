@@ -7,6 +7,7 @@ interface IProps {
 	rotation: RotationSet
 	setRotation: (set: RotationSet) => void
 	children: ChildElement
+	disabled?: boolean
 	// handleClickOutside: () => void
 }
 
@@ -14,8 +15,11 @@ const RotationController: React.FC<IProps> = ({
 	rotation,
 	children,
 	setRotation,
+	disabled,
 	// handleClickOutside,
 }) => {
+	if (disabled) return children
+
 	// console.log('rendered RotationController')
 	const rotationRef = useRef(rotation)
 
