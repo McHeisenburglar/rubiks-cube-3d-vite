@@ -1,3 +1,5 @@
+import { Routes, Route } from 'react-router-dom'
+
 import './scss/_variables.scss'
 import './scss/style.scss'
 import './scss/cube.scss'
@@ -8,12 +10,16 @@ import './scss/buttons.scss'
 import './scss/customize.scss'
 import './scss/play.scss'
 
-import RubiksCube from './components/RubiksCube2'
+import RubiksCube from './components/RubiksCube'
+import CubeRefactor from './components/RubiksCube2'
 
 function App() {
 	return (
 		<div className="App">
-			<RubiksCube />
+			<Routes>
+				<Route path="/" element={<RubiksCube />} />
+				<Route path="/new-cube" element={<CubeRefactor />} />
+			</Routes>
 		</div>
 	)
 }

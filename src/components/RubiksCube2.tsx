@@ -18,7 +18,7 @@ const CubeComponent: React.FC<CubeComponentProps> = () => {
 
 	return (
 		<RotationController rotation={rotation} setRotation={setRotation}>
-			<CubePerspectiveWrapper mode="flat-fold">
+			<CubePerspectiveWrapper mode="none">
 				<Cube cube={cube} />
 			</CubePerspectiveWrapper>
 		</RotationController>
