@@ -1,7 +1,7 @@
 import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass2.js'
 import React, { useMemo, useState } from 'react'
 import { SIDES } from '../ts/helper.js'
-import RotationController from './RotationController.js'
+import RotationController from './new/RotationController.js'
 import { FaPalette } from 'react-icons/fa'
 import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
 
@@ -13,28 +13,41 @@ interface CubeComponentProps {}
 const CubeComponent: React.FC<CubeComponentProps> = () => {
 	console.log('::::: Rendered CubeComponent.')
 
-	const cube = useMemo(() => new CubeWithPos(), [])
-	// cube.scramble()
-	const [rotation, setRotation] = useState<RotationSet>({
-		x: -15,
-		y: -30,
-		z: 0,
-	})
+	const cube = useMemo(() => {
+		const cube = new CubeWithPos()
+		cube.scramble()
+		return cube
+	}, [])
+
+	// const [rotation, setRotation] = useState<RotationSet>({
+	// 	x: -15,
+	// 	y: -30,
+	// 	z: 0,
+	// })
 
 	return (
 		<main className="cube-v2">
-			{/* <div className="cube-wrapper"> */}
-			<RotationController
-				disabled={true}
-				rotation={rotation}
-				setRotation={setRotation}
-			>
-				<CubePerspectiveWrapper mode="flat-fold">
-					<Cube cube={cube} />
-				</CubePerspectiveWrapper>
-			</RotationController>
-			{/* </div> */}
+			<div className="cube-wrapper">
+				<RotationController
+				// rotation={rotation}
+				// setRotation={setRotation}
+				// disabled
+				>
+					<CubePerspectiveWrapper mode="3d-fold">
+						<Cube cube={cube} />
+					</CubePerspectiveWrapper>
+				</RotationController>
+			</div>
 		</main>
+	)
+}
+
+const ComponentExport = () => {
+	return (
+		<>
+			<CubeComponent />
+			<CubeComponent />
+		</>
 	)
 }
 
@@ -167,4 +180,4 @@ const StickerContent: React.FC<StickerContentProps> = ({
 }
 /* ------- */
 
-export default CubeComponent
+export default ComponentExport

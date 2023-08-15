@@ -11,7 +11,7 @@ import { FaPalette } from 'react-icons/fa'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import SwitchBar, { Switch } from './Switch'
-import RotationController from './RotationController'
+import RotationController from './RotationController.js'
 import CustomizeCube from './CustomizeCube'
 import PlayPanel from './PlayPanel'
 import ViewPanel from './ViewPanel'
