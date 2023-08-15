@@ -5,6 +5,8 @@ import RotationController from './RotationController.js'
 import { FaPalette } from 'react-icons/fa'
 import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
 
+import '../scss/cube-v2.scss'
+
 /* MAIN COMPONENT */
 interface CubeComponentProps {}
 
@@ -17,11 +19,13 @@ const CubeComponent: React.FC<CubeComponentProps> = () => {
 	})
 
 	return (
-		<RotationController rotation={rotation} setRotation={setRotation}>
-			<CubePerspectiveWrapper mode="none">
-				<Cube cube={cube} />
-			</CubePerspectiveWrapper>
-		</RotationController>
+		<main className="cube-v2">
+			<RotationController rotation={rotation} setRotation={setRotation}>
+				<CubePerspectiveWrapper mode="3d-fold">
+					<Cube cube={cube} />
+				</CubePerspectiveWrapper>
+			</RotationController>
+		</main>
 	)
 }
 

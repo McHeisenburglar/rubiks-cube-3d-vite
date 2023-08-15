@@ -19,6 +19,8 @@ import DevStateLogger from './DevStateLogger'
 
 import { useKeyhold } from '../hooks/useKeyhold'
 
+import '../scss/cube-v1.scss'
+
 interface LooseObject {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[key: string]: any
@@ -462,7 +464,7 @@ function MainComponent() {
 
 	const modeClassList = `mode-${appMode} ${
 		isEditing() ? `edit-mode-${editMode}` : ''
-	}`.toLowerCase()
+	} cube-v1`.toLowerCase()
 
 	return (
 		<main className={modeClassList}>

@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom'
 
 import './scss/_variables.scss'
 import './scss/style.scss'
-import './scss/cube.scss'
 import './scss/cube-block.scss'
 import './scss/piece.scss'
 import './scss/dev.scss'
