@@ -2,41 +2,8 @@
 // @ts-nocheck
 import React from 'react'
 import { useState, useRef, useEffect, useContext } from 'react'
-
-const SceneContext = React.createContext()
-
-interface SceneProps {
-	children: ChildElement
-}
-
-const SceneController: React.FC<SceneProps> = ({ children }) => {
-	console.log('hello from scene controller')
-	const sceneRotation = {
-		x: 0,
-		y: 45,
-		z: 0,
-	}
-
-	const [sceneEvent, setSceneEvent] = useState(false)
-
-	const handleButtonClick = () => {
-		setSceneEvent(!sceneEvent)
-	}
-
-	const value = {
-		sceneRotation,
-		sceneEvent,
-	}
-
-	return (
-		<>
-			<SceneContext.Provider value={value}>
-				<div className="scene-controller">{children}</div>
-				<button onClick={() => handleButtonClick()}>Hello</button>
-			</SceneContext.Provider>
-		</>
-	)
-}
+import useUpdateEffect from '../../hooks/useUpdateEffect'
+import SceneController, { SceneContext } from './SceneController'
 
 interface IProps {
 	children: ChildElement
@@ -61,13 +28,17 @@ const RotationController: React.FC<IProps> = ({
 	const rotationRef = useRef(rotation)
 	const wrapperRef = useRef()
 
-	const rotationContext = useContext(SceneContext)
-	if (rotationContext) console.log(rotationContext)
-	const { sceneRotation, sceneEvent } = rotationContext
+	let sceneRotation = null
+	let sceneEvent = null
 
-	useEffect(() => {
-		console.log('hello')
-		setRotation({ ...sceneRotation })
+	const sceneContext = useContext(SceneContext)
+	if (sceneContext) {
+		sceneRotation = sceneContext.sceneRotation
+		sceneEvent = sceneContext.sceneEvent
+	}
+
+	useUpdateEffect(() => {
+		if (sceneRotation) setRotation({ ...sceneRotation })
 	}, [sceneEvent])
 
 	useEffect(() => {
@@ -182,7 +153,7 @@ const RotationController: React.FC<IProps> = ({
 const RotationWithContext: React.FC<IProps> = ({ children }) => {
 	return (
 		<SceneController>
-			<RotationController>{children}</RotationController>
+			<RotationController debug>{children}</RotationController>
 		</SceneController>
 	)
 }
