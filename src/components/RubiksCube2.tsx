@@ -8,10 +8,12 @@ import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
 import '../scss/cube-v2.scss'
 
 /* MAIN COMPONENT */
-interface CubeComponentProps {}
+interface CubeComponentProps {
+	debug?: boolean
+}
 
-const CubeComponent: React.FC<CubeComponentProps> = () => {
-	console.log('::::: Rendered CubeComponent.')
+const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
+	if (debug) console.log('::::: Rendered CubeComponent.')
 
 	const cube = useMemo(() => {
 		const cube = new CubeWithPos()
@@ -25,18 +27,35 @@ const CubeComponent: React.FC<CubeComponentProps> = () => {
 	// 	z: 0,
 	// })
 
+	// const [externalRotation, setRotation] = useState<RotationSet>({
+	// 	x: -15,
+	// 	y: -30,
+	// 	z: 0,
+	// })
+
+	const [externalRotation, setRotation] = useState<RotationSet | null>(null)
+	const [counter, setCounter] = useState(0)
+
+	const handleButtonClick = () => {
+		const rotation = {
+			x: -15,
+			y: -30 + counter,
+			z: 0,
+		}
+		setRotation({ ...rotation })
+		setCounter(counter + 10)
+		console.log(counter)
+	}
+
 	return (
 		<main className="cube-v2">
 			<div className="cube-wrapper">
-				<RotationController
-				// rotation={rotation}
-				// setRotation={setRotation}
-				// disabled
-				>
+				<RotationController rotationEvent={externalRotation} debug>
 					<CubePerspectiveWrapper mode="3d-fold">
 						<Cube cube={cube} />
 					</CubePerspectiveWrapper>
 				</RotationController>
+				{/* <button onClick={() => handleButtonClick()}>Click Me</button> */}
 			</div>
 		</main>
 	)
@@ -54,10 +73,12 @@ const ComponentExport = () => {
 /* CUBE */
 interface CubeProps {
 	cube: CubeWithPos
+	debug?: boolean
 }
 
-const Cube: React.FC<CubeProps> = ({ cube }) => {
-	console.log('::::: Rendered Cube.')
+const Cube: React.FC<CubeProps> = ({ cube, debug }) => {
+	if (debug) console.log('::::: Rendered Cube.')
+
 	return (
 		<div className={`cube`}>
 			{SIDES.map((side, index) => (
@@ -71,10 +92,11 @@ const Cube: React.FC<CubeProps> = ({ cube }) => {
 interface CubeSideProps {
 	side: Side
 	stickers: StickerData[]
+	debug?: boolean
 }
 
-const CubeSide: React.FC<CubeSideProps> = ({ side, stickers }) => {
-	console.log('::::: Rendered CubeSide.')
+const CubeSide: React.FC<CubeSideProps> = ({ side, stickers, debug }) => {
+	if (debug) console.log('::::: Rendered CubeSide.')
 
 	return (
 		<div className={`side side-${side}`} data-side={side}>
@@ -98,10 +120,16 @@ interface StickerProps {
 	sticker: StickerData
 	position: string
 	index: number
+	debug?: boolean
 }
 
-const Sticker: React.FC<StickerProps> = ({ sticker, index, position }) => {
-	console.log('::::: Rendered Sticker.')
+const Sticker: React.FC<StickerProps> = ({
+	sticker,
+	index,
+	position,
+	debug,
+}) => {
+	if (debug) console.log('::::: Rendered Sticker.')
 
 	const { side, name, type, id } = sticker
 	const mode = 'letter'
@@ -120,7 +148,7 @@ const Sticker: React.FC<StickerProps> = ({ sticker, index, position }) => {
 		'data-sticker-position': position,
 	}
 
-	const classList = ['sticker', 'dim']
+	const classList = ['sticker']
 	if (id === highlightedSticker) classList.push('highlight')
 
 	return (

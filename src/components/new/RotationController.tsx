@@ -1,14 +1,57 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React from 'react'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
+
+const SceneContext = React.createContext()
+
+interface SceneProps {
+	children: ChildElement
+}
+
+const SceneController: React.FC<SceneProps> = ({ children }) => {
+	console.log('hello from scene controller')
+	const sceneRotation = {
+		x: 0,
+		y: 45,
+		z: 0,
+	}
+
+	const [sceneEvent, setSceneEvent] = useState(false)
+
+	const handleButtonClick = () => {
+		setSceneEvent(!sceneEvent)
+	}
+
+	const value = {
+		sceneRotation,
+		sceneEvent,
+	}
+
+	return (
+		<>
+			<SceneContext.Provider value={value}>
+				<div className="scene-controller">{children}</div>
+				<button onClick={() => handleButtonClick()}>Hello</button>
+			</SceneContext.Provider>
+		</>
+	)
+}
 
 interface IProps {
 	children: ChildElement
+	rotationEvent?: RotationSet | null
 	disabled?: boolean
+	debug?: boolean
 }
 
-const RotationController: React.FC<IProps> = ({ children, disabled }) => {
+const RotationController: React.FC<IProps> = ({
+	children,
+	disabled,
+	debug,
+}) => {
+	if (debug) console.log(':::: RotationController rendered')
+
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: -15,
 		y: -30,
@@ -18,12 +61,28 @@ const RotationController: React.FC<IProps> = ({ children, disabled }) => {
 	const rotationRef = useRef(rotation)
 	const wrapperRef = useRef()
 
+	const rotationContext = useContext(SceneContext)
+	if (rotationContext) console.log(rotationContext)
+	const { sceneRotation, sceneEvent } = rotationContext
+
+	useEffect(() => {
+		console.log('hello')
+		setRotation({ ...sceneRotation })
+	}, [sceneEvent])
+
 	useEffect(() => {
 		rotationRef.current = { ...rotation }
 		;['x', 'y', 'z'].forEach((d) => {
 			setRotationCSS(d, rotation[d])
 		})
 	}, [rotation])
+
+	// useEffect(() => {
+	// 	if (rotationEvent) {
+	// 		console.log('reached here')
+	// 		setRotation({ ...rotationEvent })
+	// 	}
+	// }, rotationEvent)
 
 	const setCSS = (property, value) => {
 		const element = wrapperRef.current
@@ -99,8 +158,6 @@ const RotationController: React.FC<IProps> = ({ children, disabled }) => {
 		}
 
 	if (disabled) return children
-	const xRotation = Math.floor(Math.random() * 90).toString()
-	console.log(xRotation)
 
 	const style = {
 		'--rotate-x': `${rotation.x}deg`,
@@ -122,4 +179,12 @@ const RotationController: React.FC<IProps> = ({ children, disabled }) => {
 	)
 }
 
-export default RotationController
+const RotationWithContext: React.FC<IProps> = ({ children }) => {
+	return (
+		<SceneController>
+			<RotationController>{children}</RotationController>
+		</SceneController>
+	)
+}
+
+export default RotationWithContext
