@@ -49,10 +49,6 @@ const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 		setHighlightEvent(!highlightEvent)
 	}
 
-	// const updateFunction: randomFunction = (id: StickerId) => {
-	// 	setHighlightValue(id)
-	// }
-
 	const value: SceneContextValue = {
 		rotation: {
 			value: rotationValue,

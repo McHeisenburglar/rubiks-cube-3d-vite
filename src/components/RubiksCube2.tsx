@@ -32,13 +32,17 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		return cube
 	}, [])
 
+	const handleStickerClick = (sticker: StickerData) => {
+		console.log('sticker clicked', sticker)
+	}
+
 	return (
 		<main className="cube-v2">
 			<div className="cube-wrapper">
 				<SceneController>
 					<RotationController debug>
 						<CubePerspectiveWrapper mode="3d-fold">
-							<Cube cube={cube} />
+							<Cube cube={cube} onStickerClick={handleStickerClick} />
 						</CubePerspectiveWrapper>
 					</RotationController>
 				</SceneController>
@@ -59,16 +63,25 @@ const ComponentExport = () => {
 /* CUBE */
 interface CubeProps {
 	cube: CubeWithPos
+	onStickerClick?: (sticker: StickerData) => void
 	debug?: boolean
 }
 
-const Cube: React.FC<CubeProps> = ({ cube, debug }) => {
+const Cube: React.FC<CubeProps> = ({ cube, onStickerClick, debug }) => {
 	if (debug) console.log('::::: Rendered Cube.')
+
+	const handleStickerClick = (sticker: StickerData) =>
+		onStickerClick && onStickerClick(sticker)
 
 	return (
 		<div className={`cube`}>
 			{SIDES.map((side, index) => (
-				<CubeSide side={side} stickers={cube.state[side]} key={index} />
+				<CubeSide
+					side={side}
+					stickers={cube.state[side]}
+					key={index}
+					onStickerClick={handleStickerClick}
+				/>
 			))}
 		</div>
 	)
@@ -79,10 +92,19 @@ interface CubeSideProps {
 	side: Side
 	stickers: StickerData[]
 	debug?: boolean
+	onStickerClick?: (sticker: StickerData) => void
 }
 
-const CubeSide: React.FC<CubeSideProps> = ({ side, stickers, debug }) => {
+const CubeSide: React.FC<CubeSideProps> = ({
+	side,
+	stickers,
+	debug,
+	onStickerClick,
+}) => {
 	if (debug) console.log('::::: Rendered CubeSide.')
+
+	const handleStickerClick = (sticker: StickerData) =>
+		onStickerClick && onStickerClick(sticker)
 
 	return (
 		<div className={`side side-${side}`} data-side={side}>
@@ -94,6 +116,7 @@ const CubeSide: React.FC<CubeSideProps> = ({ side, stickers, debug }) => {
 						sticker={sticker}
 						index={index}
 						position={position}
+						onClick={() => handleStickerClick(sticker)}
 					/>
 				)
 			})}
@@ -107,12 +130,14 @@ interface StickerProps {
 	position: string
 	index: number
 	debug?: boolean
+	onClick?: (sticker: StickerData) => void
 }
 
 const Sticker: React.FC<StickerProps> = ({
 	sticker,
 	index,
 	position,
+	onClick,
 	debug,
 }) => {
 	if (debug) console.log('::::: Rendered Sticker.')
@@ -120,10 +145,7 @@ const Sticker: React.FC<StickerProps> = ({
 	const { side, name, type, id } = sticker
 	const mode = 'letter'
 
-	// const highlightedSticker = 'top-6'
-
-	const highlight = useSceneEffect('highlight')
-
+	const classList = ['sticker', 'dim']
 	const dataAttributes = {
 		'data-sticker-color': side,
 		'data-sticker-name': name,
@@ -132,19 +154,15 @@ const Sticker: React.FC<StickerProps> = ({
 		'data-sticker-position': position,
 	}
 
-	const classList = ['sticker', 'dim']
+	const highlight = useSceneEffect('highlight')
 	if (highlight && id === highlight.value) classList.push('highlight')
 
-	const handleStickerClick = () => {
-		if (highlight && highlight.update) {
-			highlight.update(sticker)
-		}
-	}
+	const handleClick = () => onClick && onClick(sticker)
 
 	return (
 		<div
 			className={classList.join(' ')}
-			onClick={() => handleStickerClick()}
+			onClick={handleClick}
 			{...dataAttributes}
 		>
 			<StickerContent mode={mode} sticker={sticker} index={index} />
