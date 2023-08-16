@@ -1,10 +1,11 @@
 // react and hooks
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 // import useUpdateEffect from '../hooks/useUpdateEffect.js'
 import { useSceneEffect } from './new/useSceneEffect'
+import { cubeStyles } from '../ts/helper.js'
 
 // ts library
-import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass2.js'
+import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass3.js'
 import { SIDES } from '../ts/helper.js'
 
 // my components
@@ -70,11 +71,25 @@ interface CubeProps {
 const Cube: React.FC<CubeProps> = ({ cube, onStickerClick, debug }) => {
 	if (debug) console.log('::::: Rendered Cube.')
 
+	const cubeRef = useRef<HTMLDivElement>(null)
+	useEffect(() => {
+		const domElement = cubeRef.current
+
+		if (domElement) {
+			cube.cubeConfig.cubeStyle
+			const colors = { ...cube.cubeConfig.colors }
+
+			SIDES.forEach((side) => {
+				domElement.style.setProperty(`--cube-color-${side}`, colors[side])
+			})
+		}
+	}, [cube.cubeConfig])
+
 	const handleStickerClick = (sticker: StickerData) =>
 		onStickerClick && onStickerClick(sticker)
 
 	return (
-		<div className={`cube`}>
+		<div className={`cube`} ref={cubeRef}>
 			{SIDES.map((side, index) => (
 				<CubeSide
 					side={side}

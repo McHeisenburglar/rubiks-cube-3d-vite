@@ -3,7 +3,7 @@ const SIDES = ['top', 'left', 'front', 'right', 'back', 'bottom'] as const
 type Side = (typeof SIDES)[number]
 
 type SideMap<T> = {
-	[side in SIDES]: T
+	[side in Side]: T
 }
 
 const PIECE_TYPES = ['corner', 'edge', 'center'] as const
@@ -19,6 +19,7 @@ type MoveMap<T> = {
 }
 
 type CubeStyleName = 'black' | 'white' | 'stickerless'
+
 type CubeStyleConfig = {
 	color: string
 	stickerPadding: string
