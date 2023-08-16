@@ -1,10 +1,12 @@
 import { useState, createContext } from 'react'
+import { Sticker } from '../../ts/CubeClass2'
+import { rotationsToPos } from '../../ts/helper'
 
 type SceneContextValue = {
 	[key in SceneParts]: {
 		value: unknown
 		event: boolean
-		update?: (...args: unknown[]) => void
+		update?: (...args: any[]) => void
 	}
 }
 
@@ -22,11 +24,17 @@ interface SceneProps {
 
 const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 	if (debug) console.log(':::: SceneController rendered')
-	const rotationValue = {
+	// const rotationValue = {
+	// 	x: 0,
+	// 	y: 45,
+	// 	z: 0,
+	// }
+
+	const [rotationValue, setRotationValue] = useState({
 		x: 0,
 		y: 45,
 		z: 0,
-	}
+	})
 
 	const [highlightValue, setHighlightValue] = useState('top-2')
 
@@ -53,7 +61,13 @@ const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 		highlight: {
 			value: highlightValue,
 			event: highlightEvent,
-			update: (id: StickerId) => setHighlightValue(id),
+			update: (sticker: Sticker) => {
+				setHighlightValue(sticker.id)
+				const { side, index } = sticker.currentPosition
+				const [x, y, z] = rotationsToPos[side][index]
+				setRotationValue({ x, y, z })
+				setRotationEvent(!rotationEvent)
+			},
 		},
 	}
 

@@ -137,7 +137,7 @@ const Sticker: React.FC<StickerProps> = ({
 
 	const handleStickerClick = () => {
 		if (highlight && highlight.update) {
-			highlight.update(id)
+			highlight.update(sticker)
 		}
 	}
 

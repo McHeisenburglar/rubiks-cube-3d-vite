@@ -83,14 +83,9 @@ function generateScramble() {
 	return moves.join(' ')
 }
 
-class Position {
-	public side: Side
-	public index: number
-
-	constructor(side: Side, index: number) {
-		this.side = side
-		this.index = index
-	}
+type Position = {
+	side: Side
+	index: number
 }
 
 export class Sticker {
@@ -105,7 +100,7 @@ export class Sticker {
 		this.index = index
 		this.name = name
 		this.neighbors = []
-		this.currentPosition = new Position(side, index)
+		this.currentPosition = { side, index }
 	}
 	get type(): PieceType {
 		if (this.neighbors.length === 2) return 'corner'
