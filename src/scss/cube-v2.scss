@@ -1,3 +1,8 @@
+.cube-perspective-wrapper,
+.side,
+.cube {
+	transition: 0.5s ease-out;
+}
 .cube-v2 {
 	.cube-wrapper {
 		background: rgb(238, 235, 210);
@@ -45,7 +50,7 @@
 				scaleY((var(--cube-zoom))) scaleZ((var(--cube-zoom)));
 
 			cursor: default;
-			transition: 0.3s;
+			// transition: 0.3s;
 		}
 		.side {
 			position: absolute;
@@ -72,6 +77,50 @@
 
 		.side-front {
 			transform: rotateX(0deg) translateZ(var(--side-size));
+		}
+	}
+
+	.cube-wrapper-3d-flat-fold {
+		--rotate-x: 0;
+		--rotate-y: 0;
+		--rotate-z: 0;
+		.cube {
+			width: calc(2 * var(--side-size));
+			height: calc(2 * var(--side-size));
+
+			transform-style: preserve-3d;
+			transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y))
+				rotateZ(var(--rotate-z)) scaleX((var(--cube-zoom)))
+				scaleY((var(--cube-zoom))) scaleZ((var(--cube-zoom)));
+
+			cursor: default;
+			// transition: 0.3s;
+		}
+		.side {
+			position: absolute;
+		}
+		.side-back {
+			transform: translateX(calc(2 * 2 * var(--side-size)));
+		}
+
+		.side-top {
+			transform: translateY(calc(-2 * var(--side-size)));
+		}
+
+		.side-left {
+			transform: translateX(calc(-2 * var(--side-size)));
+		}
+
+		.side-right {
+			transform: translateX(calc(2 * var(--side-size)));
+		}
+
+		.side-bottom {
+			transform: translateY(calc(2 * var(--side-size)));
+		}
+
+		.side-front {
+			transform: translateZ(2px);
 		}
 	}
 

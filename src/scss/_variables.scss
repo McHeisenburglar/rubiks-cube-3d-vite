@@ -26,7 +26,15 @@
 	--color-back: hsl(213, 100%, 50%);
 
 	// Rotation
-	// --rotate-x: 45deg;
-	// --rotate-y: 0deg;
-	// --rotate-z: 45deg;
+	--rotate-x: 45deg;
+	--rotate-y: 0deg;
+	--rotate-z: 45deg;
+
+	// Cube colors
+	--cube-color-front: hsl(120, 87%, 41%);
+	--cube-color-left: hsl(39, 100%, 50%);
+	--cube-color-right: hsl(342, 100%, 50%);
+	--cube-color-top: hsl(0, 0%, 100%);
+	--cube-color-bottom: hsl(60, 100%, 50%);
+	--cube-color-back: hsl(213, 100%, 50%);
 }

@@ -28,3 +28,18 @@ type CubeStyleConfig = {
 }
 
 type StickerId = string
+
+type CubeConfig = {
+	colors: SideMap<string>
+	cubeStyle: CubeStyleName
+}
+
+interface ISticker {
+	side: Side
+	index: number
+	name: string
+	neighbors?: Sticker[]
+	currentPosition?: Position
+	type: PieceType
+	id: StickerId
+}

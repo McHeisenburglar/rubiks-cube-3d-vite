@@ -88,7 +88,7 @@ type Position = {
 	index: number
 }
 
-export class Sticker {
+export class Sticker implements ISticker {
 	public side: Side
 	public index: number
 	public name: string

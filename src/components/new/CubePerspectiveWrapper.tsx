@@ -8,8 +8,10 @@ interface IProps {
 const CubePerspectiveWrapper: React.FC<IProps> = ({ mode, children }) => {
 	let className: string = 'cube-wrapper-none'
 
-	if (mode === '3d-fold') className = 'cube-wrapper-3d-fold'
-	if (mode === 'flat-fold') className = 'cube-wrapper-flat-fold'
+	if (mode === '3d-fold')
+		className = 'cube-perspective-wrapper cube-wrapper-3d-fold'
+	if (mode === 'flat-fold')
+		className = 'cube-perspective-wrapper cube-wrapper-3d-flat-fold'
 
 	return <div className={className}>{children}</div>
 }

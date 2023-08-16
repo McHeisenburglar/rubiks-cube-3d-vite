@@ -23,7 +23,7 @@ const RotationController: React.FC<IProps> = ({
 	if (debug) console.log(':::: RotationController rendered')
 
 	const [rotation, setRotation] = useState<RotationSet>({
-		x: -15,
+		x: 15,
 		y: -30,
 		z: 0,
 	})
