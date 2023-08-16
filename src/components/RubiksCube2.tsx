@@ -1,10 +1,21 @@
-import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass2.js'
-import React, { useMemo, useState } from 'react'
-import { SIDES } from '../ts/helper.js'
-import RotationController from './new/RotationController.js'
-import { FaPalette } from 'react-icons/fa'
-import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
+// react and hooks
+import React, { useMemo } from 'react'
+// import useUpdateEffect from '../hooks/useUpdateEffect.js'
+import { useSceneEffect } from './new/useSceneEffect'
 
+// ts library
+import { CubeWithPos, Sticker as StickerData } from '../ts/CubeClass2.js'
+import { SIDES } from '../ts/helper.js'
+
+// my components
+import RotationController from './new/RotationController.js'
+import CubePerspectiveWrapper from './new/CubePerspectiveWrapper.js'
+import SceneController from './new/SceneController.js'
+
+// icons
+import { FaPalette } from 'react-icons/fa'
+
+// styles
 import '../scss/cube-v2.scss'
 
 /* MAIN COMPONENT */
@@ -21,41 +32,16 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		return cube
 	}, [])
 
-	// const [rotation, setRotation] = useState<RotationSet>({
-	// 	x: -15,
-	// 	y: -30,
-	// 	z: 0,
-	// })
-
-	// const [externalRotation, setRotation] = useState<RotationSet>({
-	// 	x: -15,
-	// 	y: -30,
-	// 	z: 0,
-	// })
-
-	const [externalRotation, setRotation] = useState<RotationSet | null>(null)
-	const [counter, setCounter] = useState(0)
-
-	const handleButtonClick = () => {
-		const rotation = {
-			x: -15,
-			y: -30 + counter,
-			z: 0,
-		}
-		setRotation({ ...rotation })
-		setCounter(counter + 10)
-		console.log(counter)
-	}
-
 	return (
 		<main className="cube-v2">
 			<div className="cube-wrapper">
-				<RotationController rotationEvent={externalRotation} debug>
-					<CubePerspectiveWrapper mode="3d-fold">
-						<Cube cube={cube} />
-					</CubePerspectiveWrapper>
-				</RotationController>
-				{/* <button onClick={() => handleButtonClick()}>Click Me</button> */}
+				<SceneController>
+					<RotationController debug>
+						<CubePerspectiveWrapper mode="3d-fold">
+							<Cube cube={cube} />
+						</CubePerspectiveWrapper>
+					</RotationController>
+				</SceneController>
 			</div>
 		</main>
 	)
@@ -134,11 +120,9 @@ const Sticker: React.FC<StickerProps> = ({
 	const { side, name, type, id } = sticker
 	const mode = 'letter'
 
-	const highlightedSticker = 'top-6'
+	// const highlightedSticker = 'top-6'
 
-	const handleClick = (id: StickerId) => {
-		console.log(id)
-	}
+	const highlight = useSceneEffect('highlight')
 
 	const dataAttributes = {
 		'data-sticker-color': side,
@@ -148,13 +132,19 @@ const Sticker: React.FC<StickerProps> = ({
 		'data-sticker-position': position,
 	}
 
-	const classList = ['sticker']
-	if (id === highlightedSticker) classList.push('highlight')
+	const classList = ['sticker', 'dim']
+	if (highlight && id === highlight.value) classList.push('highlight')
+
+	const handleStickerClick = () => {
+		if (highlight && highlight.update) {
+			highlight.update(id)
+		}
+	}
 
 	return (
 		<div
 			className={classList.join(' ')}
-			onClick={() => handleClick(id)}
+			onClick={() => handleStickerClick()}
 			{...dataAttributes}
 		>
 			<StickerContent mode={mode} sticker={sticker} index={index} />

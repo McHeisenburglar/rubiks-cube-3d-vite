@@ -1,5 +1,19 @@
 import { useState, createContext } from 'react'
-export const SceneContext = createContext({})
+
+type SceneContextValue = {
+	[key in SceneParts]: {
+		value: unknown
+		event: boolean
+		update?: (...args: unknown[]) => void
+	}
+}
+
+// type ISceneContext = {
+// 	sceneRotation: RotationSet
+// 	sceneEvent: boolean
+// } | null
+
+export const SceneContext = createContext<SceneContextValue | null>(null)
 
 interface SceneProps {
 	children: ChildElement
@@ -8,27 +22,46 @@ interface SceneProps {
 
 const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 	if (debug) console.log(':::: SceneController rendered')
-	const sceneRotation = {
+	const rotationValue = {
 		x: 0,
 		y: 45,
 		z: 0,
 	}
 
-	const [sceneEvent, setSceneEvent] = useState(false)
+	const [highlightValue, setHighlightValue] = useState('top-2')
 
-	const handleButtonClick = () => {
-		setSceneEvent(!sceneEvent)
+	const [rotationEvent, setRotationEvent] = useState(false)
+	const [highlightEvent, setHighlightEvent] = useState(false)
+
+	const handleRotationButtonClick = () => {
+		setRotationEvent(!rotationEvent)
 	}
 
-	const value = {
-		sceneRotation,
-		sceneEvent,
+	const handleHighlightButtonClick = () => {
+		setHighlightEvent(!highlightEvent)
+	}
+
+	// const updateFunction: randomFunction = (id: StickerId) => {
+	// 	setHighlightValue(id)
+	// }
+
+	const value: SceneContextValue = {
+		rotation: {
+			value: rotationValue,
+			event: rotationEvent,
+		},
+		highlight: {
+			value: highlightValue,
+			event: highlightEvent,
+			update: (id: StickerId) => setHighlightValue(id),
+		},
 	}
 
 	return (
 		<>
 			<SceneContext.Provider value={value}>{children}</SceneContext.Provider>
-			<button onClick={() => handleButtonClick()}>Hello</button>
+			<button onClick={() => handleRotationButtonClick()}>Rotate</button>
+			<button onClick={() => handleHighlightButtonClick()}>Highlight</button>
 		</>
 	)
 }

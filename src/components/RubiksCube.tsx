@@ -21,11 +21,6 @@ import { useKeyhold } from '../hooks/useKeyhold'
 
 import '../scss/cube-v1.scss'
 
-interface LooseObject {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[key: string]: any
-}
-
 export const CubeContext = React.createContext<LooseObject>({})
 export const UserInputContext = React.createContext<LooseObject>({})
 export const setCSS = (property: string, value: string) => {

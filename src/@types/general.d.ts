@@ -4,3 +4,9 @@ type ChildElement =
 	| JSX.Element[]
 	| (() => JSX.Element)
 	| ReactNode
+
+interface LooseObject {
+	[key: string]: unknown
+}
+
+type SceneParts = 'rotation' | 'highlight'

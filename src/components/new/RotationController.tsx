@@ -1,9 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React from 'react'
-import { useState, useRef, useEffect, useContext } from 'react'
+import { useState, useRef, useEffect } from 'react'
+
+// import { useContext } from 'react'
 import useUpdateEffect from '../../hooks/useUpdateEffect'
-import SceneController, { SceneContext } from './SceneController'
+import { useSceneEffect } from './useSceneEffect'
+// import { SceneContext } from './SceneController'
 
 interface IProps {
 	children: ChildElement
@@ -28,18 +31,11 @@ const RotationController: React.FC<IProps> = ({
 	const rotationRef = useRef(rotation)
 	const wrapperRef = useRef()
 
-	let sceneRotation = null
-	let sceneEvent = null
-
-	const sceneContext = useContext(SceneContext)
-	if (sceneContext) {
-		sceneRotation = sceneContext.sceneRotation
-		sceneEvent = sceneContext.sceneEvent
-	}
+	const objectmy = useSceneEffect('rotation')
 
 	useUpdateEffect(() => {
-		if (sceneRotation) setRotation({ ...sceneRotation })
-	}, [sceneEvent])
+		if (objectmy.value) setRotation({ ...objectmy.value })
+	}, [objectmy.event])
 
 	useEffect(() => {
 		rotationRef.current = { ...rotation }
@@ -47,13 +43,6 @@ const RotationController: React.FC<IProps> = ({
 			setRotationCSS(d, rotation[d])
 		})
 	}, [rotation])
-
-	// useEffect(() => {
-	// 	if (rotationEvent) {
-	// 		console.log('reached here')
-	// 		setRotation({ ...rotationEvent })
-	// 	}
-	// }, rotationEvent)
 
 	const setCSS = (property, value) => {
 		const element = wrapperRef.current
@@ -150,12 +139,12 @@ const RotationController: React.FC<IProps> = ({
 	)
 }
 
-const RotationWithContext: React.FC<IProps> = ({ children }) => {
-	return (
-		<SceneController>
-			<RotationController debug>{children}</RotationController>
-		</SceneController>
-	)
-}
+// const RotationWithContext: React.FC<IProps> = ({ children }) => {
+// 	return (
+// 		<SceneController debug>
+// 			<RotationController debug>{children}</RotationController>
+// 		</SceneController>
+// 	)
+// }
 
-export default RotationWithContext
+export default RotationController
