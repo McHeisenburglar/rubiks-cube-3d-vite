@@ -1,7 +1,7 @@
 .cube-perspective-wrapper,
 .side,
 .cube {
-	transition: 0.5s ease-out;
+	transition: 0.7s cubic-bezier(0.02, 0.44, 0.52, 0.98);
 }
 .cube-v2 {
 	.cube-wrapper {
