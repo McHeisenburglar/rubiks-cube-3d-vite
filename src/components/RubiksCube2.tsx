@@ -1,8 +1,9 @@
 // react and hooks
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 
 // ts library
 import { CubeWithPos } from '../ts/CubeClass3.js'
+import useKeypress from './new/useKeypress.js'
 
 // my components
 import CubeRotationController from './new/CubeRotationWrapper.js'
@@ -22,6 +23,10 @@ interface CubeComponentProps {
 const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
+	useKeypress((key) => {
+		console.log('latest key', key.key)
+	})
+
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
 		cube.scramble()
@@ -32,7 +37,7 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		console.log('sticker clicked', sticker)
 	}
 
-	const [perspectiveMode, setPerspectiveMode] = React.useState<
+	const [perspectiveMode, setPerspectiveMode] = useState<
 		'3d-fold' | 'flat-fold'
 	>('3d-fold')
 
@@ -44,7 +49,10 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		<main className="cube-v2">
 			<div className="cube-wrapper">
 				<SceneController>
-					<CubeRotationController debug>
+					<CubeRotationController
+						debug
+						disabled={perspectiveMode === 'flat-fold'}
+					>
 						<CubeStyleProvider config={cube.cubeConfig}>
 							<CubePerspectiveWrapper mode={perspectiveMode}>
 								<Cube cube={cube} onStickerClick={handleStickerClick} />

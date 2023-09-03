@@ -72,6 +72,7 @@ const RotationController: React.FC<IProps> = ({
 	DRAG_CONTROLS.eventListeners.onClick = () => {}
 
 	DRAG_CONTROLS.eventListeners.onMouseDown = (e) => {
+		if (disabled) return
 		isDraggingRef.current = true
 		previousX.current = e.clientX
 		previousY.current = e.clientY
@@ -79,6 +80,7 @@ const RotationController: React.FC<IProps> = ({
 		setIsDragging(true)
 	}
 	DRAG_CONTROLS.eventListeners.onMouseMove = (e) => {
+		if (disabled) return
 		if (isDraggingRef.current) {
 			// to toggle 'smooth' class
 
@@ -105,6 +107,7 @@ const RotationController: React.FC<IProps> = ({
 
 	DRAG_CONTROLS.eventListeners.onMouseUp =
 		DRAG_CONTROLS.eventListeners.onMouseLeave = () => {
+			if (disabled) return
 			if (isDraggingRef.current) {
 				isDraggingRef.current = false
 				previousX.current = null
@@ -117,7 +120,7 @@ const RotationController: React.FC<IProps> = ({
 			}
 		}
 
-	if (disabled) return children
+	// if (disabled) return children
 
 	const style = {
 		'--rotate-x': `${rotation.x}deg`,

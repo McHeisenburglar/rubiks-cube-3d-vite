@@ -49,7 +49,7 @@ const Sticker: React.FC<StickerProps> = ({
 
 /* STICKER CONTENT */
 interface StickerContentProps {
-	mode: string
+	mode: 'letter' | 'arrow' | 'edit-colors'
 	sticker: ISticker
 	index: number
 }
