@@ -15,6 +15,14 @@ import SceneController from './new/SceneController.js'
 import '../scss/cube-v2.scss'
 import Cube from './new/Cube.js'
 
+type InteractionContextValue = {
+	keypress: KeyboardEvent | null
+	stickerClick: StickerId | null
+}
+
+export const InteractionContext =
+	React.createContext<InteractionContextValue | null>(null)
+
 /* MAIN COMPONENT */
 interface CubeComponentProps {
 	debug?: boolean
@@ -23,9 +31,7 @@ interface CubeComponentProps {
 const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
-	useKeypress((key) => {
-		console.log('latest key', key.key)
-	})
+	useKeypress(() => {})
 
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
@@ -45,21 +51,25 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		setPerspectiveMode((prev) => (prev === '3d-fold' ? 'flat-fold' : '3d-fold'))
 	}
 
+	const interactionValue = {
+		keypress: null,
+		stickerClick: null,
+	}
+
 	return (
 		<main className="cube-v2">
 			<div className="cube-wrapper">
-				<SceneController>
-					<CubeRotationController
-						debug
-						disabled={perspectiveMode === 'flat-fold'}
-					>
-						<CubeStyleProvider config={cube.cubeConfig}>
-							<CubePerspectiveWrapper mode={perspectiveMode}>
-								<Cube cube={cube} onStickerClick={handleStickerClick} />
-							</CubePerspectiveWrapper>
-						</CubeStyleProvider>
-					</CubeRotationController>
-				</SceneController>
+				<InteractionContext.Provider value={interactionValue}>
+					<SceneController>
+						<CubeRotationController disabled={perspectiveMode === 'flat-fold'}>
+							<CubeStyleProvider config={cube.cubeConfig}>
+								<CubePerspectiveWrapper mode={perspectiveMode}>
+									<Cube cube={cube} onStickerClick={handleStickerClick} />
+								</CubePerspectiveWrapper>
+							</CubeStyleProvider>
+						</CubeRotationController>
+					</SceneController>
+				</InteractionContext.Provider>
 			</div>
 			<button onClick={togglePerspectiveMode}>Switch</button>
 		</main>

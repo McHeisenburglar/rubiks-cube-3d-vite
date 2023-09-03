@@ -2,11 +2,7 @@
 // @ts-nocheck
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
-
-// import { useContext } from 'react'
-import useUpdateEffect from '../../hooks/useUpdateEffect'
-import { useSceneEffect } from './useSceneEffect'
-// import { SceneContext } from './SceneController'
+import { useRotationEffect } from './useSceneEffect'
 
 interface IProps {
 	children: ChildElement
@@ -31,26 +27,28 @@ const RotationController: React.FC<IProps> = ({
 	const rotationRef = useRef(rotation)
 	const wrapperRef = useRef()
 
-	const objectmy = useSceneEffect('rotation')
+	useRotationEffect((rotationSet) => {
+		setRotation({ ...rotationSet })
+	}, [])
 
-	useUpdateEffect(() => {
-		if (objectmy.value) setRotation({ ...objectmy.value })
-	}, [objectmy.event])
+	const setRotationCSS = (dimension, value) => {
+		setCSS(`--rotate-${dimension}`, `${value}deg`)
+	}
+
+	const applyRotationSetCSS = (rotationSet) => {
+		setRotationCSS('x', rotationSet.x)
+		setRotationCSS('y', rotationSet.y)
+		setRotationCSS('z', rotationSet.z)
+	}
 
 	useEffect(() => {
 		rotationRef.current = { ...rotation }
-		;['x', 'y', 'z'].forEach((d) => {
-			setRotationCSS(d, rotation[d])
-		})
+		applyRotationSetCSS(rotation)
 	}, [rotation])
 
 	const setCSS = (property, value) => {
 		const element = wrapperRef.current
 		element.style.setProperty(property, value)
-	}
-
-	const setRotationCSS = (dimension, value) => {
-		setCSS(`--rotate-${dimension}`, `${value}deg`)
 	}
 
 	const applyRotationSet = (rotationSet) => {

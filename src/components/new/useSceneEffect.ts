@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { SceneContext } from './SceneController'
 
 const useSceneEffect = (key: SceneParts) => {
@@ -17,4 +17,18 @@ const useSceneEffect = (key: SceneParts) => {
 	// return [sceneRotation, sceneEvent]
 }
 
-export { useSceneEffect }
+const useHighlightedSticker = () => {
+	const highlight = useSceneEffect('highlight')
+	if (!highlight) return null
+	else return highlight.value
+}
+
+const useRotationEffect = (callback: (rotation: RotationSet) => void) => {
+	const rotation = useSceneEffect('rotation')!
+
+	useEffect(() => {
+		callback(rotation.value as RotationSet)
+	}, [rotation.event])
+}
+
+export { useSceneEffect, useHighlightedSticker, useRotationEffect }

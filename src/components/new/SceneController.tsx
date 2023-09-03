@@ -36,7 +36,7 @@ const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 		z: 0,
 	})
 
-	const [highlightValue, setHighlightValue] = useState('top-2')
+	const [highlightValue, setHighlightValue] = useState('top-3')
 
 	const [rotationEvent, setRotationEvent] = useState(false)
 	const [highlightEvent, setHighlightEvent] = useState(false)

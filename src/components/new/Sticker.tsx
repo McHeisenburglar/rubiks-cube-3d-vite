@@ -1,5 +1,7 @@
 import { FaPalette } from 'react-icons/fa'
-import { useSceneEffect } from './useSceneEffect'
+// import { useSceneEffect } from './useSceneEffect'
+import { useHighlightedSticker } from './useSceneEffect'
+import { useContext } from 'react'
 import useSpaceHold from './useSpaceHold'
 // import { useKeyhold } from '../../hooks/useKeyhold'
 
@@ -12,11 +14,23 @@ interface StickerProps {
 	onClick?: (sticker: ISticker) => void
 }
 
+import { InteractionContext } from '../RubiksCube2'
+import { useEffect } from 'react'
+
+export function useStickerClickEffect(callback: (sticker: StickerId) => void) {
+	const context = useContext(InteractionContext)
+	useEffect(() => {
+		if (context && context.stickerClick) {
+			callback(context.stickerClick)
+		}
+	}, [context.stickerClick])
+}
+
 const Sticker: React.FC<StickerProps> = ({
 	sticker,
 	index,
 	position,
-	onClick,
+	// onClick,
 	debug,
 }) => {
 	if (debug) console.log('::::: Rendered Sticker.')
@@ -34,10 +48,13 @@ const Sticker: React.FC<StickerProps> = ({
 		'data-sticker-position': position,
 	}
 
-	const highlight = useSceneEffect('highlight')
-	if (highlight && id === highlight.value) classList.push('highlight')
+	// const highlight = useSceneEffect('highlight')
+	// if (highlight && id === highlight.value) classList.push('highlight')
+	if (id === useHighlightedSticker()) classList.push('highlight')
 
-	const handleClick = () => onClick && onClick(sticker)
+	function handleClick() {}
+
+	// const handleClick = () => onClick && onClick(sticker)
 
 	return (
 		<div
