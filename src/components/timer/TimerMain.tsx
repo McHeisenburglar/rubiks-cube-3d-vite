@@ -29,8 +29,7 @@ interface IProps {
 
 // 	return { millisecondsLeft, start }
 // }
-
-const useCountdown = (seconds: number, onTimerEnd: () => void) => {
+const useCountdown2 = (seconds: number, onTimerEnd: () => void) => {
 	const [isRunning, setIsRunning] = useState(false)
 	const [millisecondsLeft, setMsLeft] = useState(0)
 	const [isPaused, setIsPaused] = useState(false)
@@ -83,9 +82,54 @@ const useCountdown = (seconds: number, onTimerEnd: () => void) => {
 	}
 }
 
+const useCountdown = (seconds: number, onTimerEnd: () => void) => {
+	const [isRunning, setIsRunning] = useState(false)
+	const [millisecondsLeft, setMsLeft] = useState(seconds * 1000)
+	const [expiryDate, setExpiryDate] = useState(new Date())
+
+	useEffect(() => {
+		if (!isRunning) return
+
+		const timeout = setTimeout(() => {
+			if (millisecondsLeft <= 0) {
+				setIsRunning(false)
+				setMsLeft(0)
+				console.log('got here yoooo')
+				onTimerEnd()
+				return
+			}
+
+			const now = new Date()
+			const diff = expiryDate.getTime() - now.getTime()
+
+			setMsLeft(diff)
+		}, 50)
+
+		return () => clearTimeout(timeout)
+	}, [millisecondsLeft, isRunning])
+
+	const start = () => {
+		const now = new Date()
+		console.log('starting', now.toISOString())
+		const expiryDate = new Date(now.getTime() + seconds * 1000)
+
+		setExpiryDate(expiryDate)
+		setIsRunning(true)
+	}
+
+	const stop = () => {
+		setIsRunning(false)
+		setMsLeft(seconds * 1000)
+	}
+
+	return { millisecondsLeft, start, stop }
+}
+
 export default function TimerMain() {
-	const timer = useCountdown(10, () => {
-		console.log('timer done', new Date().toISOString())
+	const seconds = 5
+	const timer = useCountdown(seconds, () => {
+		const now = new Date()
+		console.log('ending', now.toISOString())
 	})
 
 	const { millisecondsLeft } = timer
@@ -96,9 +140,6 @@ export default function TimerMain() {
 			<span>{millisecondsLeft}</span>
 			<div>
 				<button onClick={() => timer.start()}>Start</button>
-				<button onClick={() => timer.togglePause()}>
-					{timer.isPaused ? 'Unpause' : 'Pause'}
-				</button>
 				<button onClick={() => timer.stop()}>Stop</button>
 			</div>
 		</>
