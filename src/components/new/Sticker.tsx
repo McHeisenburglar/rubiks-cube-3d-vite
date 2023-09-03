@@ -1,5 +1,7 @@
 import { FaPalette } from 'react-icons/fa'
 import { useSceneEffect } from './useSceneEffect'
+import useSpaceHold from './useSpaceHold'
+// import { useKeyhold } from '../../hooks/useKeyhold'
 
 /* STICKER */
 interface StickerProps {
@@ -20,7 +22,7 @@ const Sticker: React.FC<StickerProps> = ({
 	if (debug) console.log('::::: Rendered Sticker.')
 
 	const { side, name, type, id } = sticker
-	const mode = 'letter'
+	const mode = useSpaceHold() ? 'letter' : 'none'
 
 	const classList = ['sticker', 'dim']
 	const dataAttributes = {
@@ -49,7 +51,7 @@ const Sticker: React.FC<StickerProps> = ({
 
 /* STICKER CONTENT */
 interface StickerContentProps {
-	mode: 'letter' | 'arrow' | 'edit-colors'
+	mode: 'letter' | 'arrow' | 'edit-colors' | 'none'
 	sticker: ISticker
 	index: number
 }
@@ -60,6 +62,10 @@ const StickerContent: React.FC<StickerContentProps> = ({
 	index,
 }) => {
 	const { name, type } = sticker
+
+	if (mode === 'none') {
+		return <></>
+	}
 
 	if (mode === 'letter') {
 		return (
