@@ -4,8 +4,8 @@ const useKeypress = (callback: (key: KeyboardEvent) => void) => {
 	const [keypress, setKeypress] = useState<KeyboardEvent | null>(null)
 
 	useEffect(() => {
-		document.removeEventListener('keypress', handleKeyPress)
 		document.addEventListener('keypress', handleKeyPress)
+		return () => document.removeEventListener('keypress', handleKeyPress)
 	}, [])
 
 	const handleKeyPress = (e: KeyboardEvent) => {
@@ -16,7 +16,6 @@ const useKeypress = (callback: (key: KeyboardEvent) => void) => {
 
 	useEffect(() => {
 		if (keypress) callback(keypress)
-		return () => setKeypress(null)
 	}, [keypress, callback])
 }
 
