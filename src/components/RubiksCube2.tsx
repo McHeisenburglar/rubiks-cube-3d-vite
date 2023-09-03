@@ -14,14 +14,18 @@ import SceneController from './new/SceneController.js'
 // styles
 import '../scss/cube-v2.scss'
 import Cube from './new/Cube.js'
+// import { useStickerClickEffect } from './new/Sticker.js'
+import { useStickerClickEffect } from './new/useStickerClickEffect.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
 	stickerClick: StickerId | null
 }
 
-export const InteractionContext =
-	React.createContext<InteractionContextValue | null>(null)
+export const InteractionContext = React.createContext<InteractionContextValue>({
+	keypress: null,
+	stickerClick: null,
+})
 
 /* MAIN COMPONENT */
 interface CubeComponentProps {
@@ -31,7 +35,11 @@ interface CubeComponentProps {
 const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
+	// Custom hooks
 	useKeypress(() => {})
+	useStickerClickEffect((id: StickerId) => {
+		console.log('Sticker clicked:', id)
+	})
 
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
