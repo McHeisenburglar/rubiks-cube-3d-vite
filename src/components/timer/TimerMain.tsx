@@ -33,49 +33,73 @@ interface IProps {
 const useCountdown = (seconds: number, onTimerEnd: () => void) => {
 	const [isRunning, setIsRunning] = useState(false)
 	const [millisecondsLeft, setMsLeft] = useState(0)
+	const [isPaused, setIsPaused] = useState(false)
 
 	useEffect(() => {
+		if (isPaused) return
 		if (!isRunning) return
 
-		if (millisecondsLeft <= 0) return onTimerEnd()
+		if (millisecondsLeft <= 0) {
+			if (onTimerEnd) return onTimerEnd()
+			return
+		}
 
 		const timeout = setTimeout(() => {
 			setMsLeft(millisecondsLeft - 1)
 		}, 1)
 
 		return () => clearTimeout(timeout)
-	}, [millisecondsLeft])
+	}, [millisecondsLeft, isPaused, isRunning])
 
 	const start = () => {
+		const time = new Date()
+		console.log('started at', time.toISOString())
+		setIsPaused(false)
 		setIsRunning(true)
 		setMsLeft(seconds * 1000)
 	}
 
-	const pause = () => {
-		setIsRunning(false)
-	}
-
 	const stop = () => {
-		setMsLeft(seconds * 1000)
+		setIsPaused(false)
 		setIsRunning(false)
+		setMsLeft(seconds * 1000)
 	}
 
-	return { millisecondsLeft, start, stop, pause }
+	const togglePause = () => {
+		setIsPaused((p) => !p)
+	}
+	const pause = () => setIsPaused(true)
+	const unpause = () => setIsPaused(false)
+
+	return {
+		millisecondsLeft,
+		isRunning,
+		start,
+		stop,
+		isPaused,
+		togglePause,
+		pause,
+		unpause,
+	}
 }
 
 export default function TimerMain() {
-	const { millisecondsLeft, start, pause, stop } = useCountdown(60, () => {
-		console.log('hello')
+	const timer = useCountdown(10, () => {
+		console.log('timer done', new Date().toISOString())
 	})
+
+	const { millisecondsLeft } = timer
 
 	return (
 		<>
 			<div>Timer</div>
 			<span>{millisecondsLeft}</span>
 			<div>
-				<button onClick={start}>Start</button>
-				<button onClick={pause}>Pause</button>
-				<button onClick={stop}>Stop</button>
+				<button onClick={() => timer.start()}>Start</button>
+				<button onClick={() => timer.togglePause()}>
+					{timer.isPaused ? 'Unpause' : 'Pause'}
+				</button>
+				<button onClick={() => timer.stop()}>Stop</button>
 			</div>
 		</>
 	)
