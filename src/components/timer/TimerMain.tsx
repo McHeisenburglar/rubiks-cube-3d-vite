@@ -29,66 +29,15 @@ interface IProps {
 
 // 	return { millisecondsLeft, start }
 // }
-const useCountdown2 = (seconds: number, onTimerEnd: () => void) => {
-	const [isRunning, setIsRunning] = useState(false)
-	const [millisecondsLeft, setMsLeft] = useState(0)
-	const [isPaused, setIsPaused] = useState(false)
-
-	useEffect(() => {
-		if (isPaused) return
-		if (!isRunning) return
-
-		if (millisecondsLeft <= 0) {
-			if (onTimerEnd) return onTimerEnd()
-			return
-		}
-
-		const timeout = setTimeout(() => {
-			setMsLeft(millisecondsLeft - 1)
-		}, 1)
-
-		return () => clearTimeout(timeout)
-	}, [millisecondsLeft, isPaused, isRunning])
-
-	const start = () => {
-		const time = new Date()
-		console.log('started at', time.toISOString())
-		setIsPaused(false)
-		setIsRunning(true)
-		setMsLeft(seconds * 1000)
-	}
-
-	const stop = () => {
-		setIsPaused(false)
-		setIsRunning(false)
-		setMsLeft(seconds * 1000)
-	}
-
-	const togglePause = () => {
-		setIsPaused((p) => !p)
-	}
-	const pause = () => setIsPaused(true)
-	const unpause = () => setIsPaused(false)
-
-	return {
-		millisecondsLeft,
-		isRunning,
-		start,
-		stop,
-		isPaused,
-		togglePause,
-		pause,
-		unpause,
-	}
-}
 
 const useCountdown = (seconds: number, onTimerEnd: () => void) => {
 	const [isRunning, setIsRunning] = useState(false)
 	const [millisecondsLeft, setMsLeft] = useState(seconds * 1000)
 	const [expiryDate, setExpiryDate] = useState(new Date())
+	const [isPaused, setIsPaused] = useState(false)
 
 	useEffect(() => {
-		if (!isRunning) return
+		if (!isRunning || isPaused) return
 
 		const timeout = setTimeout(() => {
 			if (millisecondsLeft <= 0) {
@@ -106,30 +55,56 @@ const useCountdown = (seconds: number, onTimerEnd: () => void) => {
 		}, 50)
 
 		return () => clearTimeout(timeout)
-	}, [millisecondsLeft, isRunning])
+	}, [millisecondsLeft, isRunning, isPaused])
+
+	const resetMsLeft = () => setMsLeft(seconds * 1000)
 
 	const start = () => {
-		const now = new Date()
-		console.log('starting', now.toISOString())
-		const expiryDate = new Date(now.getTime() + seconds * 1000)
+		console.log('started: ', new Date().toISOString())
+		resetMsLeft()
 
+		const expiryDate = new Date(new Date().getTime() + seconds * 1000)
 		setExpiryDate(expiryDate)
+
 		setIsRunning(true)
 	}
 
 	const stop = () => {
+		resetMsLeft()
 		setIsRunning(false)
-		setMsLeft(seconds * 1000)
 	}
 
-	return { millisecondsLeft, start, stop }
+	const pause = () => {
+		console.log('paused: ', new Date().toISOString())
+		setIsPaused(true)
+	}
+
+	const unpause = () => {
+		console.log('unpaused: ', new Date().toISOString())
+		setExpiryDate(new Date(new Date().getTime() + millisecondsLeft))
+		setIsPaused(false)
+	}
+
+	const togglePause = () => {
+		isPaused ? unpause() : pause()
+	}
+
+	return {
+		millisecondsLeft,
+		start,
+		stop,
+		pause,
+		unpause,
+		isPaused,
+		togglePause,
+	}
 }
 
 export default function TimerMain() {
 	const seconds = 5
+
 	const timer = useCountdown(seconds, () => {
-		const now = new Date()
-		console.log('ending', now.toISOString())
+		console.log('ended:', new Date().toISOString())
 	})
 
 	const { millisecondsLeft } = timer
@@ -141,6 +116,9 @@ export default function TimerMain() {
 			<div>
 				<button onClick={() => timer.start()}>Start</button>
 				<button onClick={() => timer.stop()}>Stop</button>
+				<button onClick={() => timer.togglePause()}>
+					{timer.isPaused ? 'Unpause' : 'Pause'}
+				</button>
 			</div>
 		</>
 	)
