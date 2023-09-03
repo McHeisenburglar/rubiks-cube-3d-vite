@@ -22,7 +22,8 @@ const Sticker: React.FC<StickerProps> = ({
 	if (debug) console.log('::::: Rendered Sticker.')
 
 	const { side, name, type, id } = sticker
-	const mode = useSpaceHold() ? 'letter' : 'none'
+	// const mode = useSpaceHold() ? 'letter' : 'none'
+	const mode = 'letter'
 
 	const classList = ['sticker', 'dim']
 	const dataAttributes = {

@@ -9,6 +9,7 @@ const useKeypress = (callback: (key: KeyboardEvent) => void) => {
 	}, [])
 
 	const handleKeyPress = (e: KeyboardEvent) => {
+		if (e.key === ' ') e.preventDefault()
 		if (e.repeat) return
 		setKeypress(e)
 	}
