@@ -13,6 +13,7 @@ import './scss/play.scss'
 
 import RubiksCube from './components/RubiksCube'
 import CubeRefactor from './components/RubiksCube2'
+import CubeRefactor2 from './components/scene-refactor/Main'
 import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 
@@ -24,6 +25,7 @@ function App() {
 				<Route path="/new-cube" element={<CubeRefactor />} />
 				<Route path="/timer" element={<TimerMain />} />
 				<Route path="/play-mode" element={<PlayMode />} />
+				<Route path="/scene-refactor" element={<CubeRefactor2 />} />
 			</Routes>
 		</div>
 	)
