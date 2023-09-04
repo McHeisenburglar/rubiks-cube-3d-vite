@@ -21,22 +21,22 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 
 	return (
 		<>
-			<div className="flex flex-col gap-y-2 p-5 w-full max-w-3xl mx-auto">
+			<div className="flex flex-col gap-y-4 p-5 w-full max-w-3xl mx-auto">
 				<div className="flex flex-1 justify-between items-center">
-					<span className="text-3xl">{secondsLeft.toFixed(1)}</span>
+					<span className="text-4xl">{secondsLeft.toFixed(1)}</span>
 					<div className="flex gap-x-8">
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-xl font-medium text-slate-900">
+							<span className="text-2xl font-medium text-slate-900">
 								{correctGuesses}
 							</span>
 							<span className="text-sm text-gray-500">Correct</span>
 						</div>
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-xl font-light">{incorrectGuesses}</span>
+							<span className="text-2xl font-light">{incorrectGuesses}</span>
 							<span className="text-sm text-gray-500">Incorrect</span>
 						</div>
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-xl font-light">
+							<span className="text-2xl font-light">
 								{accuracy.toFixed(1) + '%'}
 							</span>
 							<span className="text-sm text-gray-500">Accuracy</span>
@@ -70,7 +70,7 @@ export default function TimerMain() {
 		},
 	})
 
-	const { millisecondsLeft, isRunning } = timer
+	const { millisecondsLeft, isRunning, markers } = timer
 
 	const [times, setTimes] = useState<string[]>([])
 
@@ -116,14 +116,40 @@ export default function TimerMain() {
 				<button className={buttonClasses} onClick={() => timer.togglePause()}>
 					{timer.isPaused ? 'Unpause' : 'Pause'}
 				</button>
+				<button className={buttonClasses} onClick={() => timer.addMarker()}>
+					Add marker
+				</button>
+				<button className={buttonClasses} onClick={() => timer.clearMarkers()}>
+					Clear markers
+				</button>
 			</div>
-			<div>
+
+			{markers.length > 0 && (
+				<div>
+					<span>
+						{new Date().getTime() - markers[markers.length - 1].getTime()}
+					</span>
+					<ol>
+						{markers.slice(1).map((marker, index) => (
+							<li key={index} className="flex gap-x-2">
+								<span className="text-slate-800">
+									{marker.getTime() - markers[index].getTime()}
+								</span>
+								<span className="text-xs text-slate-500">
+									{marker.toISOString()}
+								</span>
+							</li>
+						))}
+					</ol>
+				</div>
+			)}
+			{/* <div>
 				<ul>
 					{times.map((time, index) => (
 						<li key={index}>{time}</li>
 					))}
 				</ul>
-			</div>
+			</div> */}
 		</div>
 	)
 }

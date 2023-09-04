@@ -15,6 +15,8 @@ const useCountdown = (options: CountdownOptions) => {
 	const [isPaused, setIsPaused] = useState(false)
 	const [expiryDate, setExpiryDate] = useState(new Date())
 
+	const [markers, setMarkers] = useState<Date[]>([])
+
 	const [millisecondsLeft, setMillisecondsLeft] = useState(seconds * 1000)
 
 	useEffect(() => {
@@ -27,6 +29,7 @@ const useCountdown = (options: CountdownOptions) => {
 			if (millisecondsLeft <= 0) {
 				setMillisecondsLeft(0)
 				setIsRunning(false)
+				setIsPaused(false)
 				if (onTimerEnd) onTimerEnd()
 				return
 			}
@@ -40,23 +43,38 @@ const useCountdown = (options: CountdownOptions) => {
 		return () => clearTimeout(timeout)
 	}, [millisecondsLeft, isRunning, isPaused])
 
+	const addMarker = () => {
+		setMarkers([...markers, new Date()])
+	}
+
+	const clearMarkers = () => {
+		setMarkers([])
+	}
+
 	const reset = () => {
+		setMarkers([])
+		// clearMarkers()
+		console.log('hellooo', markers)
 		setMillisecondsLeft(seconds * 1000)
+	}
+
+	const addFirstMarker = () => {
+		setMarkers([new Date()])
 	}
 
 	const start = () => {
 		if (isPaused) return unpause()
 		if (isRunning) return
 
+		reset()
+		setExpiryDate(new Date(new Date().getTime() + seconds * 1000))
+
 		setIsRunning(true)
 		setIsPaused(false)
 
-		reset()
-		// setMillisecondsLeft(seconds * 1000)
+		addFirstMarker()
 
 		console.log('isRunning', isRunning)
-
-		setExpiryDate(new Date(new Date().getTime() + seconds * 1000))
 
 		if (onStart) onStart()
 	}
@@ -101,6 +119,9 @@ const useCountdown = (options: CountdownOptions) => {
 		unpause,
 		isPaused,
 		togglePause,
+		addMarker,
+		markers,
+		clearMarkers,
 	}
 }
 
