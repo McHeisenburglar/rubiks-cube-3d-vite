@@ -2,7 +2,7 @@
 // @ts-nocheck
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
-import { useRotationEffect } from './useSceneEffect'
+// import { useRotationEffect } from './useSceneEffect'
 
 interface IProps {
 	children: ChildElement
@@ -26,10 +26,6 @@ const RotationController: React.FC<IProps> = ({
 
 	const rotationRef = useRef(rotation)
 	const wrapperRef = useRef()
-
-	useRotationEffect((rotationSet) => {
-		setRotation({ ...rotationSet })
-	}, [])
 
 	const setRotationCSS = (dimension, value) => {
 		setCSS(`--rotate-${dimension}`, `${value}deg`)
