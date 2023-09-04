@@ -58,8 +58,25 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 }
 
 interface GuessLogEntry {
+	no: number
 	sticker: string
 	time: number
+}
+
+function SmallTag({
+	color,
+	children,
+}: {
+	color: string
+	children: React.ReactNode
+}) {
+	return (
+		<span
+			className={`inline-block ml-2 px-2 py-1 text-xs rounded text-green-800 bg-green-200`}
+		>
+			{children}
+		</span>
+	)
 }
 
 function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
@@ -70,19 +87,77 @@ function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
 	// 	{ sticker: 'K', time: 578 },
 	// 	{ sticker: 'L', time: 109 },
 	// ]
+
+	const [sortKey, setSortKey] = useState<'time' | 'index'>('time')
+	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+
+	const sortMethod = (a: GuessLogEntry, b: GuessLogEntry) => {
+		switch (sortKey) {
+			case 'index':
+				switch (sortDirection) {
+					case 'asc':
+						return a.no - b.no
+					case 'desc':
+						return b.no - a.no
+				}
+				break
+			case 'time':
+				switch (sortDirection) {
+					case 'asc':
+						return a.time - b.time
+					case 'desc':
+						return b.time - a.time
+				}
+				break
+		}
+	}
+
+	const swapSortDirection = () => {
+		setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+	}
+
+	const handleClick = (method: string) => {
+		if (method === 'index') {
+			if (sortKey === 'index') return swapSortDirection()
+			setSortKey(() => 'index')
+		}
+		if (method === 'time') {
+			if (sortKey === 'time') return swapSortDirection()
+			setSortKey(() => 'time')
+		}
+	}
+
 	return (
-		<table className="table-fixed text-left">
+		<table className="table-fixed text-left max-h-[24rem] overflow-scroll">
 			<thead>
 				<tr className="bg-slate-200 text-sm font text-slate-600">
+					<th
+						className={`w-[2rem] py-2 pl-4 ${
+							sortKey === 'index' ? 'font-bold' : 'font-normal'
+						}`}
+						onClick={() => handleClick('index')}
+					>
+						#
+					</th>
 					<th className="min-w-min w-16 py-2 px-4 font-normal">Sticker</th>
-					<th className="min-w-min w-24 py-2 px-4 font-normal">Time</th>
+					<th
+						className={`min-w-min py-2 px-4 ${
+							sortKey === 'time' ? 'font-bold' : 'font-normal'
+						}`}
+						onClick={() => handleClick('time')}
+					>
+						Time
+					</th>
 				</tr>
 			</thead>
 			<tbody>
-				{log.map((entry, index) => (
+				{log.sort(sortMethod).map((entry, index) => (
 					<tr key={index} className="py-4 border-b-2">
+						<td className="py-2 pl-4 text-sm text-slate-400">{entry.no}</td>
 						<td className="py-2 px-4">{entry.sticker}</td>
-						<td className="py-2 px-4">{entry.time}ms</td>
+						<td className="py-2 px-4">
+							{entry.time}ms <SmallTag color="green">Fastest</SmallTag>
+						</td>
 					</tr>
 				))}
 			</tbody>
@@ -99,30 +174,14 @@ export default function TimerMain() {
 
 	const [markers, setMarkers] = useState<number[]>([])
 
-	useKeypress((key) => {
-		const newEntry = {
-			sticker: key.key,
-			time: timer.newMarker(),
-		}
-		setGuesses([...guesses, newEntry])
-	})
-
-	const addGuessEntry = () => {
-		const newEntry = {
-			sticker: 'A',
-			time: timer.newMarker(),
-		}
-		setGuesses([...guesses, newEntry])
-	}
-
 	const timer = useCountdown({
 		seconds,
 		onStart: () => {
+			setGuesses([])
 			setMarkers([])
 		},
 		onTimerEnd: () => {
 			setTimes((times) => [...times, new Date().toISOString()])
-			setGuesses([])
 		},
 		onPause: () => {
 			console.log('paused')
@@ -133,6 +192,20 @@ export default function TimerMain() {
 
 	const handleAddMarker = () => {
 		setMarkers((markers) => [...markers, newMarker()])
+	}
+
+	useKeypress((key) => {
+		addGuessEntry(key.key)
+	})
+
+	const addGuessEntry = (sticker: string) => {
+		if (!timer.isRunning) return
+		const newEntry = {
+			sticker,
+			time: timer.newMarker(),
+			no: guesses.length + 1,
+		}
+		setGuesses([...guesses, newEntry])
 	}
 
 	const buttonClasses =
@@ -187,8 +260,11 @@ export default function TimerMain() {
 				<button className={buttonClasses} onClick={() => timer.clearMarkers()}>
 					Clear markers
 				</button>
-				<button className={buttonClasses} onClick={addGuessEntry}>
+				<button className={buttonClasses} onClick={() => addGuessEntry('A')}>
 					Add guess entry
+				</button>
+				<button className={buttonClasses} onClick={() => setGuesses([])}>
+					Clear guess entries
 				</button>
 			</div>
 
