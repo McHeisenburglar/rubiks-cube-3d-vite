@@ -67,13 +67,7 @@ const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 		},
 	}
 
-	return (
-		<>
-			<SceneContext.Provider value={value}>{children}</SceneContext.Provider>
-			<button onClick={() => handleRotationButtonClick()}>Rotate</button>
-			<button onClick={() => handleHighlightButtonClick()}>Highlight</button>
-		</>
-	)
+	return <SceneContext.Provider value={value}>{children}</SceneContext.Provider>
 }
 
 export default SceneController

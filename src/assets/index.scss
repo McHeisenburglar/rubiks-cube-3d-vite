@@ -4,6 +4,12 @@
 
 @layer components {
 	.btn-primary {
-		@apply px-6 py-2 rounded bg-slate-300 hover:bg-slate-400 transition duration-150 mr-2;
+		@apply px-6 py-2 rounded bg-slate-300 hover:bg-slate-400 transition duration-150;
+	}
+	.btn-primary.success {
+		@apply bg-green-500 text-white font-medium hover:bg-green-600;
+	}
+	.btn-primary.destructive {
+		@apply bg-red-500 text-white font-medium hover:bg-red-600;
 	}
 }

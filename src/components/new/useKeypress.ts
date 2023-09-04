@@ -17,6 +17,8 @@ const useKeypress = (callback: (key: KeyboardEvent) => void) => {
 	useEffect(() => {
 		if (keypress) callback(keypress)
 	}, [keypress])
+
+	return { latestKeypress: keypress }
 }
 
 export default useKeypress

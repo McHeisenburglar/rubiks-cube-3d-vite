@@ -374,6 +374,11 @@ export class CubeWithPos {
 		return arr
 	}
 
+	getRandomStickerInFilter(filter: (sticker: Sticker) => boolean) {
+		const stickers = this.allStickers.filter(filter) as Sticker[]
+		return randomElement(stickers)
+	}
+
 	performAlgorithm(alg: string) {
 		alg.split(' ').forEach((move) => this.makeMove(move))
 	}

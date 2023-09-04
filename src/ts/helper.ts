@@ -309,6 +309,6 @@ export function randomNumber(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min)) + min
 }
 
-export function randomElement(arr: unknown[]) {
+export function randomElement<T = unknown>(arr: T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)]
 }
