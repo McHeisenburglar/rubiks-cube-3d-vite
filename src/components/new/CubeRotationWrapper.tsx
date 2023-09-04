@@ -1,8 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
-// import { useRotationEffect } from './useSceneEffect'
+// import RotationController from '../RotationController'
+
+const DIMENSIONS = ['x', 'y', 'z'] as const
 
 interface IProps {
 	children: ChildElement
@@ -11,12 +11,13 @@ interface IProps {
 	debug?: boolean
 }
 
-const RotationController: React.FC<IProps> = ({
+const CubeRotationController: React.FC<IProps> = ({
 	children,
 	disabled,
 	debug,
 }) => {
 	if (debug) console.log(':::: RotationController rendered')
+	console.log('hello')
 
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: 15,
@@ -25,13 +26,13 @@ const RotationController: React.FC<IProps> = ({
 	})
 
 	const rotationRef = useRef(rotation)
-	const wrapperRef = useRef()
+	const wrapperRef = useRef<HTMLDivElement | null>(null)
 
-	const setRotationCSS = (dimension, value) => {
+	const setRotationCSS = (dimension: Dimension, value: number) => {
 		setCSS(`--rotate-${dimension}`, `${value}deg`)
 	}
 
-	const applyRotationSetCSS = (rotationSet) => {
+	const applyRotationSetCSS = (rotationSet: RotationSet) => {
 		setRotationCSS('x', rotationSet.x)
 		setRotationCSS('y', rotationSet.y)
 		setRotationCSS('z', rotationSet.z)
@@ -42,30 +43,25 @@ const RotationController: React.FC<IProps> = ({
 		applyRotationSetCSS(rotation)
 	}, [rotation])
 
-	const setCSS = (property, value) => {
+	const setCSS = (property: string, value: string) => {
 		const element = wrapperRef.current
-		element.style.setProperty(property, value)
+		element?.style.setProperty(property, value)
 	}
 
-	const applyRotationSet = (rotationSet) => {
+	const applyRotationSet = (rotationSet: RotationArray) => {
 		const [x, y, z] = rotationSet
 		rotationRef.current = { x, y, z }
-		;['x', 'y', 'z'].forEach((d, i) => setRotationCSS(d, rotationSet[i]))
+		DIMENSIONS.forEach((d, i) => setRotationCSS(d, rotationSet[i]))
 	}
 
-	const DRAG_CONTROLS = {}
 	const dragSpeed = 0.25
 
 	const [isDragging, setIsDragging] = useState(false)
 	const isDraggingRef = useRef(false)
-	const previousX = useRef(null)
-	const previousY = useRef(null)
+	const previousX = useRef<number | null>(null)
+	const previousY = useRef<number | null>(null)
 
-	DRAG_CONTROLS.eventListeners = {}
-
-	DRAG_CONTROLS.eventListeners.onClick = () => {}
-
-	DRAG_CONTROLS.eventListeners.onMouseDown = (e) => {
+	const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
 		if (disabled) return
 		isDraggingRef.current = true
 		previousX.current = e.clientX
@@ -73,17 +69,18 @@ const RotationController: React.FC<IProps> = ({
 
 		setIsDragging(true)
 	}
-	DRAG_CONTROLS.eventListeners.onMouseMove = (e) => {
+
+	const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
 		if (disabled) return
 		if (isDraggingRef.current) {
 			// to toggle 'smooth' class
 
 			// Get difference from previous frame
-			const diffX = e.clientX - previousX.current
-			const diffY = e.clientY - previousY.current
+			const diffX = e.clientX - previousX!.current!
+			const diffY = e.clientY - previousY!.current!
 
 			// Generate rotation
-			const rotationSet = [
+			const rotationSet: RotationArray = [
 				rotationRef.current.x - diffY * dragSpeed,
 				rotationRef.current.y + diffX * dragSpeed,
 				rotationRef.current.z,
@@ -94,33 +91,38 @@ const RotationController: React.FC<IProps> = ({
 
 			// Reset difference to 0
 			// i.e make previous catch up with current
-			previousX.current = e.clientX
+			previousX!.current! = e.clientX
 			previousY.current = e.clientY
 		}
 	}
+	const onMouseUp = () => {
+		if (disabled) return
+		if (isDraggingRef.current) {
+			isDraggingRef.current = false
+			previousX.current = null
+			previousY.current = null
 
-	DRAG_CONTROLS.eventListeners.onMouseUp =
-		DRAG_CONTROLS.eventListeners.onMouseLeave = () => {
-			if (disabled) return
-			if (isDraggingRef.current) {
-				isDraggingRef.current = false
-				previousX.current = null
-				previousY.current = null
+			setRotation({ ...rotationRef.current })
 
-				setRotation({ ...rotationRef.current })
-
-				// to toggle 'smooth' class
-				setIsDragging(false)
-			}
+			// to toggle 'smooth' class
+			setIsDragging(false)
 		}
+	}
 
-	// if (disabled) return children
+	const onMouseLeave = onMouseUp
+
+	const dragEventListeners = {
+		onMouseDown,
+		onMouseMove,
+		onMouseUp,
+		onMouseLeave,
+	}
 
 	const style = {
 		'--rotate-x': `${rotation.x}deg`,
 		'--rotate-y': `${rotation.y}deg`,
 		'--rotate-z': `${rotation.z}deg`,
-	}
+	} as React.CSSProperties
 
 	return (
 		<>
@@ -128,7 +130,7 @@ const RotationController: React.FC<IProps> = ({
 				ref={wrapperRef}
 				style={style}
 				className={`rotation-controller  ${isDragging ? 'dragging' : ''}`}
-				{...DRAG_CONTROLS.eventListeners}
+				{...dragEventListeners}
 			>
 				{children}
 			</div>
@@ -136,12 +138,4 @@ const RotationController: React.FC<IProps> = ({
 	)
 }
 
-// const RotationWithContext: React.FC<IProps> = ({ children }) => {
-// 	return (
-// 		<SceneController debug>
-// 			<RotationController debug>{children}</RotationController>
-// 		</SceneController>
-// 	)
-// }
-
-export default RotationController
+export default CubeRotationController

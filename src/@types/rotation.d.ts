@@ -1,7 +1,11 @@
-const Dimensions = ['x', 'y', 'z'] as const
+const DIMENSIONS = ['x', 'y', 'z'] as const
 
-type RotationDimension = (typeof Dimensions)[number]
+type RotationDimension = (typeof DIMENSIONS)[number]
+
+type Dimension = RotationDimension
 
 type RotationSet = {
 	[dimension in RotationDimension]: number
 }
+
+type RotationArray = [number, number, number]
