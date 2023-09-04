@@ -6,6 +6,7 @@ import CubeComponent from '../new/CubeComponent'
 import { CubeWithPos } from '../../ts/CubeClass3'
 import SceneController from '../new/SceneController'
 import useKeypress from '../new/useKeypress'
+import useGame from './useGame'
 
 interface PlayModeControlsProps {
 	isRunning: boolean
@@ -38,72 +39,8 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
 	}
 }
 
-const useGame = ({ cube }: { cube: CubeWithPos }) => {
-	const getRandomSticker = () => {
-		const sticker = cube.getRandomStickerInFilter((s) => s.type === 'corner')
-		return sticker
-	}
-
-	const [inProgress, setInProgress] = React.useState(false)
-	const [correct, setCorrect] = React.useState(0)
-	const [incorrect, setIncorrect] = React.useState(0)
-
-	const [currentSticker, setCurrentSticker] = React.useState(getRandomSticker)
-
-	const nextRandomSticker = () => {
-		const newSticker = cube.getRandomStickerInFilter(
-			(sticker) => sticker.type === 'corner' && sticker.id !== currentSticker.id
-		)
-		setCurrentSticker(newSticker)
-	}
-
-	const reset = () => {
-		setCorrect(0)
-		setIncorrect(0)
-	}
-
-	const checkGuess = (e: KeyboardEvent) => {
-		if (e.key.toLowerCase() === currentSticker.name.toLowerCase()) {
-			onCorrectGuess()
-		} else {
-			onIncorrectGuess()
-		}
-	}
-
-	const onCorrectGuess = () => {
-		setCorrect(correct + 1)
-		nextRandomSticker()
-	}
-
-	const onIncorrectGuess = () => {
-		setIncorrect(incorrect + 1)
-	}
-
-	const start = () => {
-		// setInProgress(true)
-		// nextRandomSticker()
-	}
-
-	const skip = () => {
-		nextRandomSticker()
-	}
-
-	return {
-		inProgress,
-		start,
-		currentSticker,
-		checkGuess,
-		reset,
-		correct,
-		incorrect,
-		skip,
-	}
-}
-
 const GameComponent: React.FC<{ cube: CubeWithPos }> = ({ cube }) => {
 	const game = useGame({ cube })
-
-	game.start()
 
 	const { latestKeypress } = useKeypress(game.checkGuess)
 
@@ -111,13 +48,21 @@ const GameComponent: React.FC<{ cube: CubeWithPos }> = ({ cube }) => {
 		<>
 			<div className="text-left">
 				<h1 className="text-lg font-bold mb-2">Game component</h1>
-				<ul>
-					<li></li>
-					<li>Current letter to guess: {game.currentSticker.name}</li>
-					<li>Latest key press: {latestKeypress?.key || 'null'}</li>
-					<li>Correct: {game.correct}</li>
-					<li>Incorrect: {game.incorrect}</li>
-				</ul>
+				{!game.inProgress ? (
+					<button className="btn-primary" onClick={game.start}>
+						Start game
+					</button>
+				) : (
+					<ul>
+						<li>Current letter to guess: {game.currentSticker.name}</li>
+						<li>Latest key press: {latestKeypress?.key || 'null'}</li>
+						<li>Correct: {game.correct}</li>
+						<li>Incorrect: {game.incorrect}</li>
+						<button className="btn-primary" onClick={game.stop}>
+							Stop game
+						</button>
+					</ul>
+				)}
 			</div>
 		</>
 	)
