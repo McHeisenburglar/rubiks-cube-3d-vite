@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 
+import './scss/index.scss'
+
 import './scss/_variables.scss'
 import './scss/style.scss'
 import './scss/cube-block.scss'
