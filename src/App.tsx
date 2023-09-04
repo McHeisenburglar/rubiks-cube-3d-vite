@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-import './scss/index.scss'
+import './assets/index.scss'
 
 import './scss/_variables.scss'
 import './scss/style.scss'
@@ -14,6 +14,7 @@ import './scss/play.scss'
 import RubiksCube from './components/RubiksCube'
 import CubeRefactor from './components/RubiksCube2'
 import TimerMain from './components/timer/TimerMain'
+import PlayMode from './components/play-mode/Main'
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 				<Route path="/" element={<RubiksCube />} />
 				<Route path="/new-cube" element={<CubeRefactor />} />
 				<Route path="/timer" element={<TimerMain />} />
+				<Route path="/play-mode" element={<PlayMode />} />
 			</Routes>
 		</div>
 	)

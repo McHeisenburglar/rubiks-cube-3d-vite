@@ -2,60 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import useCountdown from './useCountdown'
 import useKeypress from '../new/useKeypress'
-
-interface ScoreboardProps {
-	correctGuesses: number
-	incorrectGuesses: number
-	secondsTotal: number
-	millisecondsLeft: number
-}
-
-const Scoreboard: React.FC<ScoreboardProps> = ({
-	correctGuesses,
-	incorrectGuesses,
-	secondsTotal,
-	millisecondsLeft,
-}) => {
-	const secondsLeft = millisecondsLeft / 1000
-
-	const accuracy = (correctGuesses / (correctGuesses + incorrectGuesses)) * 100
-
-	return (
-		<>
-			<div className="flex flex-col gap-y-4 p-5 w-full max-w-3xl mx-auto">
-				<div className="flex flex-1 justify-between items-center">
-					<span className="text-4xl">{secondsLeft.toFixed(1)}</span>
-					<div className="flex gap-x-8">
-						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-2xl font-medium text-slate-900">
-								{correctGuesses}
-							</span>
-							<span className="text-sm text-gray-500">Correct</span>
-						</div>
-						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-2xl font-light">{incorrectGuesses}</span>
-							<span className="text-sm text-gray-500">Incorrect</span>
-						</div>
-						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-2xl font-light">
-								{accuracy.toFixed(1) + '%'}
-							</span>
-							<span className="text-sm text-gray-500">Accuracy</span>
-						</div>
-					</div>
-				</div>
-				<progress
-					className="w-full h-1
-                    [&::-webkit-progress-bar]:bg-slate-200
-                    [&::-webkit-progress-value]:bg-green-400
-                    [&::-moz-progress-bar]:bg-green-400"
-					value={secondsLeft}
-					max={secondsTotal}
-				></progress>
-			</div>
-		</>
-	)
-}
+import Scoreboard from './Scoreboard'
 
 interface GuessLogEntry {
 	no: number
@@ -63,13 +10,7 @@ interface GuessLogEntry {
 	time: number
 }
 
-function SmallTag({
-	color,
-	children,
-}: {
-	color: string
-	children: React.ReactNode
-}) {
+function SmallTag({ children }: { children: React.ReactNode }) {
 	return (
 		<span
 			className={`inline-block ml-2 px-2 py-1 text-xs rounded text-green-800 bg-green-200`}
@@ -156,7 +97,7 @@ function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
 						<td className="py-2 pl-4 text-sm text-slate-400">{entry.no}</td>
 						<td className="py-2 px-4">{entry.sticker}</td>
 						<td className="py-2 px-4">
-							{entry.time}ms <SmallTag color="green">Fastest</SmallTag>
+							{entry.time}ms <SmallTag>Fastest</SmallTag>
 						</td>
 					</tr>
 				))}
@@ -235,35 +176,35 @@ export default function TimerMain() {
 
 			{/* <span>{millisecondsLeft}</span> */}
 			<div>
-				<button className={buttonClasses} onClick={() => timer.start()}>
+				<button className="btn-primary" onClick={() => timer.start()}>
 					Start
 				</button>
-				<button className={buttonClasses} onClick={() => timer.stop()}>
+				<button className="btn-primary" onClick={() => timer.stop()}>
 					Stop
 				</button>
-				<button className={buttonClasses} onClick={() => timer.restart()}>
+				<button className="btn-primary" onClick={() => timer.restart()}>
 					Restart
 				</button>
-				<button className={buttonClasses} onClick={() => timer.reset()}>
+				<button className="btn-primary" onClick={() => timer.reset()}>
 					Reset
 				</button>
-				<button className={buttonClasses} onClick={() => timer.togglePause()}>
+				<button className="btn-primary" onClick={() => timer.togglePause()}>
 					{timer.isPaused ? 'Unpause' : 'Pause'}
 				</button>
 				{isRunning && (
 					<>
-						<button className={buttonClasses} onClick={handleAddMarker}>
+						<button className="btn-primary" onClick={handleAddMarker}>
 							Add marker
 						</button>
 					</>
 				)}
-				<button className={buttonClasses} onClick={() => timer.clearMarkers()}>
+				<button className="btn-primary" onClick={() => timer.clearMarkers()}>
 					Clear markers
 				</button>
-				<button className={buttonClasses} onClick={() => addGuessEntry('A')}>
+				<button className="btn-primary" onClick={() => addGuessEntry('A')}>
 					Add guess entry
 				</button>
-				<button className={buttonClasses} onClick={() => setGuesses([])}>
+				<button className="btn-primary" onClick={() => setGuesses([])}>
 					Clear guess entries
 				</button>
 			</div>

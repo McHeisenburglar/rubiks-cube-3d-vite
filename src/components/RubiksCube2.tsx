@@ -86,6 +86,8 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	)
 }
 
+export { CubeComponent }
+
 const ComponentExport = () => {
 	return (
 		<>
