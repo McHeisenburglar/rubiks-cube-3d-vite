@@ -3,32 +3,42 @@ import { useState } from 'react'
 import useCountdown from './useCountdown'
 
 interface ScoreboardProps {
+	correctGuesses: number
+	incorrectGuesses: number
 	secondsTotal: number
 	millisecondsLeft: number
 }
 
 const Scoreboard: React.FC<ScoreboardProps> = ({
+	correctGuesses,
+	incorrectGuesses,
 	secondsTotal,
 	millisecondsLeft,
 }) => {
 	const secondsLeft = millisecondsLeft / 1000
 
+	const accuracy = (correctGuesses / (correctGuesses + incorrectGuesses)) * 100
+
 	return (
 		<>
-			<div className="flex flex-col gap-y-2 p-5">
+			<div className="flex flex-col gap-y-2 p-5 w-full max-w-3xl mx-auto">
 				<div className="flex flex-1 justify-between items-center">
-					<span className="text-5xl">{secondsLeft.toFixed(1)}</span>
-					<div className="flex gap-x-10">
+					<span className="text-3xl">{secondsLeft.toFixed(1)}</span>
+					<div className="flex gap-x-8">
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-3xl text-slate-900">49</span>
+							<span className="text-xl font-medium text-slate-900">
+								{correctGuesses}
+							</span>
 							<span className="text-sm text-gray-500">Correct</span>
 						</div>
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-3xl">3</span>
+							<span className="text-xl font-light">{incorrectGuesses}</span>
 							<span className="text-sm text-gray-500">Incorrect</span>
 						</div>
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-3xl">92%</span>
+							<span className="text-xl font-light">
+								{accuracy.toFixed(1) + '%'}
+							</span>
 							<span className="text-sm text-gray-500">Accuracy</span>
 						</div>
 					</div>
@@ -68,7 +78,7 @@ export default function TimerMain() {
 		'px-6 py-2 rounded bg-slate-300 hover:bg-slate-400 transition duration-150 mr-2'
 
 	return (
-		<div className="w-3/5 mx-auto bg-white">
+		<div className="w-4/5 mx-auto bg-white">
 			<div>Timer</div>
 			<div>
 				<input
@@ -80,12 +90,14 @@ export default function TimerMain() {
 				/>
 			</div>
 
-			{isRunning && (
-				<Scoreboard
-					secondsTotal={seconds}
-					millisecondsLeft={millisecondsLeft}
-				/>
-			)}
+			{/* {isRunning && ( */}
+			<Scoreboard
+				correctGuesses={124}
+				incorrectGuesses={32}
+				secondsTotal={seconds}
+				millisecondsLeft={millisecondsLeft}
+			/>
+			{/* )} */}
 
 			{/* <span>{millisecondsLeft}</span> */}
 			<div>
