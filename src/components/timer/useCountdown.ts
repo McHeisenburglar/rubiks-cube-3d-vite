@@ -19,6 +19,8 @@ const useCountdown = (options: CountdownOptions) => {
 
 	const [millisecondsLeft, setMillisecondsLeft] = useState(seconds * 1000)
 
+	const [lastMarker, setLastMarker] = useState(new Date())
+
 	useEffect(() => {
 		setMillisecondsLeft(seconds * 1000)
 	}, [seconds])
@@ -51,6 +53,18 @@ const useCountdown = (options: CountdownOptions) => {
 		setMarkers([])
 	}
 
+	const millisecondsSincePreviousMarker = () => {
+		if (markers.length === 0) return 0
+		const timeDiff = new Date().getTime() - lastMarker.getTime()
+		return timeDiff
+	}
+
+	const newMarker = () => {
+		const timeDiff = millisecondsSincePreviousMarker()
+		setLastMarker(new Date())
+		return timeDiff
+	}
+
 	const reset = () => {
 		setMarkers([])
 		// clearMarkers()
@@ -60,6 +74,7 @@ const useCountdown = (options: CountdownOptions) => {
 
 	const addFirstMarker = () => {
 		setMarkers([new Date()])
+		setLastMarker(new Date())
 	}
 
 	const start = () => {
@@ -122,6 +137,8 @@ const useCountdown = (options: CountdownOptions) => {
 		addMarker,
 		markers,
 		clearMarkers,
+		newMarker,
+		millisecondsSincePreviousMarker,
 	}
 }
 

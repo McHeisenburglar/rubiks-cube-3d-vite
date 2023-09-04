@@ -59,9 +59,15 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 export default function TimerMain() {
 	// const seconds = 5
 	const [seconds, setSeconds] = useState(5)
+	const [times, setTimes] = useState<string[]>([])
+
+	const [markers, setMarkers] = useState<number[]>([])
 
 	const timer = useCountdown({
 		seconds,
+		onStart: () => {
+			setMarkers([])
+		},
 		onTimerEnd: () => {
 			setTimes((times) => [...times, new Date().toISOString()])
 		},
@@ -70,9 +76,11 @@ export default function TimerMain() {
 		},
 	})
 
-	const { millisecondsLeft, isRunning, markers } = timer
+	const { millisecondsLeft, isRunning, newMarker } = timer
 
-	const [times, setTimes] = useState<string[]>([])
+	const handleAddMarker = () => {
+		setMarkers((markers) => [...markers, newMarker()])
+	}
 
 	const buttonClasses =
 		'px-6 py-2 rounded bg-slate-300 hover:bg-slate-400 transition duration-150 mr-2'
@@ -116,33 +124,38 @@ export default function TimerMain() {
 				<button className={buttonClasses} onClick={() => timer.togglePause()}>
 					{timer.isPaused ? 'Unpause' : 'Pause'}
 				</button>
-				<button className={buttonClasses} onClick={() => timer.addMarker()}>
-					Add marker
-				</button>
+				{isRunning && (
+					<>
+						<button className={buttonClasses} onClick={handleAddMarker}>
+							Add marker
+						</button>
+					</>
+				)}
 				<button className={buttonClasses} onClick={() => timer.clearMarkers()}>
 					Clear markers
 				</button>
 			</div>
 
-			{markers.length > 0 && (
-				<div>
-					<span>
-						{new Date().getTime() - markers[markers.length - 1].getTime()}
-					</span>
-					<ol>
-						{markers.slice(1).map((marker, index) => (
+			<div>
+				<span>{timer.millisecondsSincePreviousMarker()}</span>
+				<ol>
+					{markers.map((marker, index) => (
+						<li key={index} className="text-slate-800">
+							{marker}ms
+						</li>
+					))}
+					{/* {markers.slice(1).map((marker, index) => (
 							<li key={index} className="flex gap-x-2">
 								<span className="text-slate-800">
-									{marker.getTime() - markers[index].getTime()}
+									{`${marker.getTime() - markers[index].getTime()}ms`}
 								</span>
 								<span className="text-xs text-slate-500">
 									{marker.toISOString()}
 								</span>
 							</li>
-						))}
-					</ol>
-				</div>
-			)}
+						))} */}
+				</ol>
+			</div>
 			{/* <div>
 				<ul>
 					{times.map((time, index) => (
