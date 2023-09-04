@@ -39,7 +39,7 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 						</div>
 						<div className="flex flex-col justify-center items-middle text-center">
 							<span className="text-2xl font-light">
-								{accuracy.toFixed(1) + '%'}
+								{incorrectGuesses === 0 ? '0%' : accuracy.toFixed(1) + '%'}
 							</span>
 							<span className="text-sm text-gray-500">Accuracy</span>
 						</div>

@@ -3,6 +3,10 @@ import { CubeWithPos } from '../../ts/CubeClass3'
 
 interface useGameOptions {
 	cube: CubeWithPos
+	onCorrectGuess?: (sticker: ISticker) => void
+	onIncorrectGuess?: (sticker: ISticker) => void
+	onGameStart?: () => void
+	onGameStop?: () => void
 }
 
 export const useGame = (options: useGameOptions) => {
@@ -33,8 +37,10 @@ export const useGame = (options: useGameOptions) => {
 
 	const checkGuess = (e: KeyboardEvent) => {
 		if (e.key.toLowerCase() === currentSticker.name.toLowerCase()) {
+			options.onCorrectGuess?.(currentSticker)
 			onCorrectGuess()
 		} else {
+			options.onCorrectGuess?.(currentSticker)
 			onIncorrectGuess()
 		}
 	}
@@ -52,10 +58,14 @@ export const useGame = (options: useGameOptions) => {
 		setInProgress(true)
 		reset()
 		nextRandomSticker()
+
+		options.onGameStart?.()
 	}
 
 	const stop = () => {
 		setInProgress(false)
+
+		options.onGameStart?.()
 	}
 
 	const skip = () => {

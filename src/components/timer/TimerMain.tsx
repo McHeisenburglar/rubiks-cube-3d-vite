@@ -121,7 +121,7 @@ export default function TimerMain() {
 			setGuesses([])
 			setMarkers([])
 		},
-		onTimerEnd: () => {
+		onCompletion: () => {
 			setTimes((times) => [...times, new Date().toISOString()])
 		},
 		onPause: () => {

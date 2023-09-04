@@ -9,12 +9,12 @@ import useKeypress from '../new/useKeypress'
 import useGame from './useGame'
 
 interface PlayModeControlsProps {
+	debug?: boolean
 	isRunning: boolean
 	isPaused: boolean
 	onStart: () => void
 	onPause: () => void
 	onStop: () => void
-	debug: boolean
 }
 
 const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
@@ -42,7 +42,7 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
 	}
 }
 
-const GameComponent: React.FC<{ game: ReturnType<typeof useGame> }> = ({
+const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 	game,
 }) => {
 	return (
@@ -76,12 +76,12 @@ const PlayModeComponent: React.FC = () => {
 		return cube
 	}, [])
 
-	const game = useGame({ cube })
+	const game = useGame({ cube, onGameStop: () => {} })
 
 	useKeypress(game.checkGuess)
 
 	const gameOptions = {
-		seconds: 60,
+		seconds: 10,
 		type: 'corner',
 	}
 
@@ -90,7 +90,7 @@ const PlayModeComponent: React.FC = () => {
 		onStart: () => {
 			game.start()
 		},
-		onTimerEnd: () => {
+		onStop: () => {
 			game.stop()
 		},
 	})
@@ -98,8 +98,8 @@ const PlayModeComponent: React.FC = () => {
 	return (
 		<div className="mx-auto max-w-[60rem] px-24 bg-white text-center">
 			<Scoreboard
-				correctGuesses={1}
-				incorrectGuesses={0}
+				correctGuesses={game.correct}
+				incorrectGuesses={game.incorrect}
 				secondsTotal={gameOptions.seconds}
 				timer={gameTimer}
 				// millisecondsLeft={gameTimer.millisecondsLeft}
@@ -109,7 +109,7 @@ const PlayModeComponent: React.FC = () => {
 					<CubeComponent cube={cube} />
 				</SceneController>
 			</div>
-			<GameComponent game={game} />
+			<GameComponentDev game={game} />
 			<PlayModeControls
 				isPaused={gameTimer.isPaused}
 				isRunning={gameTimer.isRunning}

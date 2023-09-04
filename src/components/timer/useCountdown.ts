@@ -2,17 +2,18 @@ import { useEffect, useState } from 'react'
 
 interface CountdownOptions {
 	seconds: number
-	onTimerEnd?: () => void
+	refreshRate?: number
+	onCompletion?: () => void
 	onStart?: () => void
+	onStop?: () => void
 	onPause?: () => void
 	onUnpause?: () => void
-	refreshRate?: number
 }
 
 const useCountdown = (options: CountdownOptions) => {
 	const DEFAULT_REFRESH_RATE = 100
-	const { seconds, onTimerEnd, onStart, onPause, onUnpause, refreshRate } =
-		options
+
+	const { seconds, refreshRate } = options
 
 	const [isRunning, setIsRunning] = useState(false)
 	const [isPaused, setIsPaused] = useState(false)
@@ -35,7 +36,9 @@ const useCountdown = (options: CountdownOptions) => {
 				setMillisecondsLeft(0)
 				setIsRunning(false)
 				setIsPaused(false)
-				if (onTimerEnd) onTimerEnd()
+
+				options.onCompletion?.()
+
 				return
 			}
 
@@ -92,7 +95,7 @@ const useCountdown = (options: CountdownOptions) => {
 
 		console.log('isRunning', isRunning)
 
-		if (onStart) onStart()
+		options.onStart?.()
 	}
 
 	const restart = () => {
@@ -106,17 +109,19 @@ const useCountdown = (options: CountdownOptions) => {
 		reset()
 		setIsRunning(false)
 		setIsPaused(false)
+
+		options.onStop?.()
 	}
 
 	const pause = () => {
 		setIsPaused(true)
-		if (onPause) onPause()
+		options.onPause?.()
 	}
 
 	const unpause = () => {
 		setIsPaused(false)
 		setExpiryDate(new Date(new Date().getTime() + millisecondsLeft))
-		if (onUnpause) onUnpause()
+		options.onUnpause?.()
 	}
 
 	const togglePause = () => {
