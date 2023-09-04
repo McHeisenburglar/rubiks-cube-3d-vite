@@ -6,10 +6,13 @@ interface CountdownOptions {
 	onStart?: () => void
 	onPause?: () => void
 	onUnpause?: () => void
+	refreshRate?: number
 }
 
 const useCountdown = (options: CountdownOptions) => {
-	const { seconds, onTimerEnd, onStart, onPause, onUnpause } = options
+	const DEFAULT_REFRESH_RATE = 100
+	const { seconds, onTimerEnd, onStart, onPause, onUnpause, refreshRate } =
+		options
 
 	const [isRunning, setIsRunning] = useState(false)
 	const [isPaused, setIsPaused] = useState(false)
@@ -40,7 +43,7 @@ const useCountdown = (options: CountdownOptions) => {
 
 			if (diff < 0) setMillisecondsLeft(0)
 			else setMillisecondsLeft(diff)
-		}, 10)
+		}, refreshRate || DEFAULT_REFRESH_RATE)
 
 		return () => clearTimeout(timeout)
 	}, [millisecondsLeft, isRunning, isPaused])
@@ -67,8 +70,6 @@ const useCountdown = (options: CountdownOptions) => {
 
 	const reset = () => {
 		setMarkers([])
-		// clearMarkers()
-		console.log('hellooo', markers)
 		setMillisecondsLeft(seconds * 1000)
 	}
 

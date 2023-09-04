@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import { CubeWithPos } from '../../ts/CubeClass3'
 
-export const useGame = ({ cube }: { cube: CubeWithPos }) => {
+interface useGameOptions {
+	cube: CubeWithPos
+}
+
+export const useGame = (options: useGameOptions) => {
+	const { cube } = options
+
 	const getRandomSticker = () => {
 		const sticker = cube.getRandomStickerInFilter((s) => s.type === 'corner')
 		return sticker

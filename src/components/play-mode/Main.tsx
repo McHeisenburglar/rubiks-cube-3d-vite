@@ -14,9 +14,12 @@ interface PlayModeControlsProps {
 	onStart: () => void
 	onPause: () => void
 	onStop: () => void
+	debug: boolean
 }
 
 const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
+	if (props.debug) console.log('::::: Rendered PlayModeControls.')
+
 	const { isRunning, isPaused, onStart, onPause, onStop } = props
 
 	if (!isRunning) {
@@ -39,11 +42,9 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
 	}
 }
 
-const GameComponent: React.FC<{ cube: CubeWithPos }> = ({ cube }) => {
-	const game = useGame({ cube })
-
-	const { latestKeypress } = useKeypress(game.checkGuess)
-
+const GameComponent: React.FC<{ game: ReturnType<typeof useGame> }> = ({
+	game,
+}) => {
 	return (
 		<>
 			<div className="text-left">
@@ -55,7 +56,6 @@ const GameComponent: React.FC<{ cube: CubeWithPos }> = ({ cube }) => {
 				) : (
 					<ul>
 						<li>Current letter to guess: {game.currentSticker.name}</li>
-						<li>Latest key press: {latestKeypress?.key || 'null'}</li>
 						<li>Correct: {game.correct}</li>
 						<li>Incorrect: {game.incorrect}</li>
 						<button className="btn-primary" onClick={game.stop}>
@@ -69,17 +69,30 @@ const GameComponent: React.FC<{ cube: CubeWithPos }> = ({ cube }) => {
 }
 
 const PlayModeComponent: React.FC = () => {
+	console.log('rendered')
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
 		cube.scramble()
 		return cube
 	}, [])
+
+	const game = useGame({ cube })
+
+	useKeypress(game.checkGuess)
+
 	const gameOptions = {
 		seconds: 60,
 		type: 'corner',
 	}
+
 	const gameTimer = useCountdown({
 		seconds: gameOptions.seconds,
+		onStart: () => {
+			game.start()
+		},
+		onTimerEnd: () => {
+			game.stop()
+		},
 	})
 
 	return (
@@ -88,14 +101,15 @@ const PlayModeComponent: React.FC = () => {
 				correctGuesses={1}
 				incorrectGuesses={0}
 				secondsTotal={gameOptions.seconds}
-				millisecondsLeft={gameTimer.millisecondsLeft}
+				timer={gameTimer}
+				// millisecondsLeft={gameTimer.millisecondsLeft}
 			/>
 			<div className="text-left">
 				<SceneController>
 					<CubeComponent cube={cube} />
 				</SceneController>
 			</div>
-			<GameComponent cube={cube} />
+			<GameComponent game={game} />
 			<PlayModeControls
 				isPaused={gameTimer.isPaused}
 				isRunning={gameTimer.isRunning}

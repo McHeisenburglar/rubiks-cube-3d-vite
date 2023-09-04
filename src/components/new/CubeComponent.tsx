@@ -27,12 +27,12 @@ const CubeComponent: React.FC<CubeComponentProps> = ({
 	useKeypress(({ key }) => {
 		console.log(key)
 	})
-	useStickerClickEffect((id: StickerId) => {
-		console.log('Sticker clicked:', id)
-	})
+	// useStickerClickEffect((id: StickerId) => {
+	// 	console.log('Sticker clicked:', id)
+	// })
 
-	const handleStickerClick = (sticker: ISticker) => {
-		console.log('Sticker clicked:', sticker.id)
+	const handleStickerClick = () => {
+		// console.log('Sticker clicked:', sticker.id)
 	}
 
 	const [perspectiveMode, setPerspectiveMode] = useState<
@@ -51,15 +51,15 @@ const CubeComponent: React.FC<CubeComponentProps> = ({
 	return (
 		<main className="cube-v2">
 			<div className="cube-wrapper">
-				<InteractionContext.Provider value={interactionValue}>
-					<CubeRotationController disabled={perspectiveMode === 'flat-fold'}>
-						<CubeStyleProvider config={cube.cubeConfig}>
-							<CubePerspectiveWrapper mode={perspectiveMode}>
-								<Cube cube={cube} onStickerClick={handleStickerClick} />
-							</CubePerspectiveWrapper>
-						</CubeStyleProvider>
-					</CubeRotationController>
-				</InteractionContext.Provider>
+				{/* <InteractionContext.Provider value={interactionValue}> */}
+				<CubeRotationController disabled={perspectiveMode === 'flat-fold'}>
+					<CubeStyleProvider config={cube.cubeConfig}>
+						<CubePerspectiveWrapper mode={perspectiveMode}>
+							<Cube cube={cube} onStickerClick={handleStickerClick} />
+						</CubePerspectiveWrapper>
+					</CubeStyleProvider>
+				</CubeRotationController>
+				{/* </InteractionContext.Provider> */}
 			</div>
 		</main>
 	)
