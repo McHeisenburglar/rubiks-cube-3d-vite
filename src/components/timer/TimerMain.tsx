@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 import useCountdown from './useCountdown'
 
@@ -59,6 +60,11 @@ export default function TimerMain() {
 				/>
 			</div>
 
+<<<<<<< HEAD
+=======
+			<Scoreboard />
+
+>>>>>>> dev/tailwind
 			<span>{millisecondsLeft}</span>
 			<div>
 				<button onClick={() => timer.start()}>Start</button>
