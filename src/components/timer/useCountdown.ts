@@ -94,6 +94,7 @@ const useCountdown = (options: CountdownOptions) => {
 		millisecondsLeft,
 		start,
 		stop,
+		isRunning,
 		restart,
 		reset,
 		pause,
