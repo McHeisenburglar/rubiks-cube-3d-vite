@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import useCountdown from './useCountdown'
+import useKeypress from '../new/useKeypress'
 
 interface ScoreboardProps {
 	correctGuesses: number
@@ -56,12 +57,63 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 	)
 }
 
+interface GuessLogEntry {
+	sticker: string
+	time: number
+}
+
+function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
+	// const log: GuessLogEntry[] = [
+	// 	{ sticker: 'U', time: 421 },
+	// 	{ sticker: 'F', time: 312 },
+	// 	{ sticker: 'J', time: 238 },
+	// 	{ sticker: 'K', time: 578 },
+	// 	{ sticker: 'L', time: 109 },
+	// ]
+	return (
+		<table className="table-fixed text-left">
+			<thead>
+				<tr className="bg-slate-200 text-sm font text-slate-600">
+					<th className="min-w-min w-16 py-2 px-4 font-normal">Sticker</th>
+					<th className="min-w-min w-24 py-2 px-4 font-normal">Time</th>
+				</tr>
+			</thead>
+			<tbody>
+				{log.map((entry, index) => (
+					<tr key={index} className="py-4 border-b-2">
+						<td className="py-2 px-4">{entry.sticker}</td>
+						<td className="py-2 px-4">{entry.time}ms</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	)
+}
+
 export default function TimerMain() {
 	// const seconds = 5
 	const [seconds, setSeconds] = useState(5)
 	const [times, setTimes] = useState<string[]>([])
 
+	const [guesses, setGuesses] = useState<GuessLogEntry[]>([])
+
 	const [markers, setMarkers] = useState<number[]>([])
+
+	useKeypress((key) => {
+		const newEntry = {
+			sticker: key.key,
+			time: timer.newMarker(),
+		}
+		setGuesses([...guesses, newEntry])
+	})
+
+	const addGuessEntry = () => {
+		const newEntry = {
+			sticker: 'A',
+			time: timer.newMarker(),
+		}
+		setGuesses([...guesses, newEntry])
+	}
 
 	const timer = useCountdown({
 		seconds,
@@ -70,6 +122,7 @@ export default function TimerMain() {
 		},
 		onTimerEnd: () => {
 			setTimes((times) => [...times, new Date().toISOString()])
+			setGuesses([])
 		},
 		onPause: () => {
 			console.log('paused')
@@ -134,6 +187,9 @@ export default function TimerMain() {
 				<button className={buttonClasses} onClick={() => timer.clearMarkers()}>
 					Clear markers
 				</button>
+				<button className={buttonClasses} onClick={addGuessEntry}>
+					Add guess entry
+				</button>
 			</div>
 
 			<div>
@@ -163,6 +219,7 @@ export default function TimerMain() {
 					))}
 				</ul>
 			</div> */}
+			<CorrectGuessLog log={guesses} />
 		</div>
 	)
 }

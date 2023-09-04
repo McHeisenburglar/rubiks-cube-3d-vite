@@ -36,7 +36,9 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
 	// Custom hooks
-	useKeypress(() => {})
+	useKeypress(({ key }) => {
+		console.log(key)
+	})
 	useStickerClickEffect((id: StickerId) => {
 		console.log('Sticker clicked:', id)
 	})
