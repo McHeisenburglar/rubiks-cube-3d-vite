@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import useCountdown from '../timer/useCountdown'
 import Scoreboard from '../timer/Scoreboard'
 
@@ -70,7 +70,41 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 
 import { SceneContext } from '../new/SceneController2'
 
-const PlayModeComponent: React.FC = () => {
+const SeparateTimerComponent = () => {
+	const gameTimer = useCountdown({
+		seconds: 10,
+		onStart: () => {},
+		onStop: () => {},
+	})
+	useEffect(() => {
+		gameTimer.start()
+	}, [])
+
+	return (
+		<>
+			<div>{gameTimer.millisecondsLeft}</div>
+		</>
+	)
+}
+
+const PlayModeComponent = () => {
+	const cube = useMemo<CubeWithPos>(() => {
+		const cube = new CubeWithPos()
+		cube.scramble()
+		return cube
+	}, [])
+
+	return (
+		<>
+			<SeparateTimerComponent />
+			<SceneController>
+				<CubeComponent cube={cube} />
+			</SceneController>
+		</>
+	)
+}
+
+const PlayModeComponent2: React.FC = () => {
 	console.log('rendered')
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
@@ -125,4 +159,4 @@ const PlayModeComponent: React.FC = () => {
 	)
 }
 
-export default PlayModeComponent
+export default PlayModeComponent2
