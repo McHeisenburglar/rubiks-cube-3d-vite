@@ -4,7 +4,7 @@ import Scoreboard from '../timer/Scoreboard'
 
 import CubeComponent from '../new/CubeComponent'
 import { CubeWithPos } from '../../ts/CubeClass3'
-import SceneController from '../new/SceneController'
+import SceneController from '../new/SceneController2'
 import useKeypress from '../new/useKeypress'
 import useGame from './useGame'
 
@@ -68,6 +68,8 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 	)
 }
 
+import { SceneContext } from '../new/SceneController2'
+
 const PlayModeComponent: React.FC = () => {
 	console.log('rendered')
 	const cube = useMemo<CubeWithPos>(() => {
@@ -78,7 +80,10 @@ const PlayModeComponent: React.FC = () => {
 
 	const game = useGame({ cube, onGameStop: () => {} })
 
-	useKeypress(game.checkGuess)
+	useKeypress((e) => {
+		if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress)
+			game.checkGuess(e)
+	})
 
 	const gameOptions = {
 		seconds: 10,
@@ -101,11 +106,10 @@ const PlayModeComponent: React.FC = () => {
 				correctGuesses={game.correct}
 				incorrectGuesses={game.incorrect}
 				secondsTotal={gameOptions.seconds}
-				timer={gameTimer}
-				// millisecondsLeft={gameTimer.millisecondsLeft}
+				millisecondsLeft={gameTimer.millisecondsLeft}
 			/>
 			<div className="text-left">
-				<SceneController>
+				<SceneController highlightedProp={game.currentSticker?.id}>
 					<CubeComponent cube={cube} />
 				</SceneController>
 			</div>

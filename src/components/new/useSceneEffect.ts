@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { SceneContext } from './SceneController'
+import { SceneContext } from './SceneController2'
 
 const useSceneEffect = (key: SceneParts) => {
 	// let sceneRotation = null
@@ -25,6 +25,7 @@ const useHighlightedSticker = () => {
 
 const useRotationEffect = (callback: (rotation: RotationSet) => void) => {
 	const rotation = useSceneEffect('rotation')!
+	console.log('rotation effect', rotation)
 
 	useEffect(() => {
 		callback(rotation.value as RotationSet)

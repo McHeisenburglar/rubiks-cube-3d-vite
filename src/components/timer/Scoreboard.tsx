@@ -2,8 +2,7 @@ interface ScoreboardProps {
 	correctGuesses: number
 	incorrectGuesses: number
 	secondsTotal: number
-	// millisecondsLeft: number
-	timer: ReturnType<typeof useCountdown>
+	millisecondsLeft: number
 	debug?: boolean
 }
 const Scoreboard: React.FC<ScoreboardProps> = ({
@@ -11,12 +10,10 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 	correctGuesses,
 	incorrectGuesses,
 	secondsTotal,
-	// millisecondsLeft,
-	timer,
+	millisecondsLeft,
 }) => {
 	if (debug) console.log('::::: Rendered Scoreboard.')
 
-	const { millisecondsLeft } = timer
 	const secondsLeft = millisecondsLeft / 1000
 
 	const accuracy = (correctGuesses / (correctGuesses + incorrectGuesses)) * 100
