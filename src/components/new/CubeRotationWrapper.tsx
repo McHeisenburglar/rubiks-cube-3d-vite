@@ -18,7 +18,7 @@ const CubeRotationController: React.FC<IProps> = ({
 	disabled,
 	debug,
 }) => {
-	if (debug) console.log(':::: RotationController rendered')
+	if (debug) console.log(':::: CubeRotationWrapper rendered')
 
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: 15,

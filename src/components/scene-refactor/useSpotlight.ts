@@ -3,7 +3,7 @@ import { useRotation } from './useRotationEffect'
 
 export const useSpotlight = () => {
 	const { rotateToSticker } = useRotation()
-	const { highlightSticker } = useHighlight()
+	const { highlightSticker, clearHighlight } = useHighlight()
 
 	const setSpotlight = (sticker: ISticker) => {
 		highlightSticker(sticker)
@@ -11,7 +11,7 @@ export const useSpotlight = () => {
 	}
 
 	const clearSpotlight = () => {
-		highlightSticker(null)
+		clearHighlight()
 	}
 
 	return {

@@ -1,5 +1,5 @@
 // react and hooks
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 // ts library
 import { CubeWithPos } from '../../ts/CubeClass3.js'
@@ -14,8 +14,6 @@ import CubeStyleProvider from '../new/CubeStyleConfigWrapper.js'
 import '../../scss/cube-v2.scss'
 import Cube from './components/Cube.js'
 import RotationContextWrapper from './RotationContextWrapper.js'
-// import { useRotation } from './useRotationEffect.js'
-// import { useHighlight } from './useHighlight.js'
 import HighlightContextWrapper from './HighlightContextProvider.js'
 import { useSpotlight } from './useSpotlight.js'
 
@@ -37,13 +35,9 @@ interface CubeComponentProps {
 const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
-	// useStickerClickEffect((id: StickerId) => {
-	// 	console.log('Sticker clicked:', id)
-	// })
-
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
-		cube.scramble()
+		// cube.scramble()
 		return cube
 	}, [])
 
@@ -57,6 +51,7 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 
 	// Custom hooks
 	const { setSpotlight, clearSpotlight } = useSpotlight()
+
 	useKeypress(({ key }) => {
 		const sticker = cube.getStickerByLetter(key, 'edge')
 		if (sticker) setSpotlight(sticker)
