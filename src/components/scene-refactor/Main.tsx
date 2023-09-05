@@ -41,9 +41,9 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	useKeypress(({ key }) => {
 		console.log(key)
 	})
-	useStickerClickEffect((id: StickerId) => {
-		console.log('Sticker clicked:', id)
-	})
+	// useStickerClickEffect((id: StickerId) => {
+	// 	console.log('Sticker clicked:', id)
+	// })
 
 	const { rotate, rotateToSticker } = useRotation()
 

@@ -20,24 +20,20 @@ export const useRotationEffect = (callback?: (set: RotationSet) => void) => {
 export const useRotation = () => {
 	const context = useContext(RotationContext)
 
-	// if (context) {
-	const { update } = context!
-
 	const rotate = (set: RotationSet) => {
-		update(set)
+		context?.update(set)
 	}
 
 	const rotateToSticker = (sticker: ISticker) => {
 		const { side, index } = sticker.currentPosition!
 		const [x, y, z] = rotationsToPos[side][index]
-		update({ x, y, z })
+		rotate({ x, y, z })
 	}
 
 	return {
 		rotate,
 		rotateToSticker,
 	}
-	// }
 }
 
 // Stickers
