@@ -11,29 +11,29 @@ interface PlayModeControlsProps {
 	debug?: boolean
 	isRunning: boolean
 	isPaused: boolean
-	onStart: () => void
-	onPause: () => void
-	onStop: () => void
+	onClickStart: () => void
+	onClickPause: () => void
+	onClickStop: () => void
 }
 
 const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
 	if (props.debug) console.log('::::: Rendered PlayModeControls.')
 
-	const { isRunning, isPaused, onStart, onPause, onStop } = props
+	const { isRunning, isPaused, onClickStart, onClickPause, onClickStop } = props
 
 	if (!isRunning) {
 		return (
-			<button className="btn-primary success" onClick={onStart}>
+			<button className="btn-primary success" onClick={onClickStart}>
 				Start game
 			</button>
 		)
 	} else {
 		return (
 			<>
-				<button className="btn" onClick={onPause}>
+				<button className="btn" onClick={onClickPause}>
 					{isPaused ? 'Unpause' : 'Pause'}
 				</button>
-				<button className="btn" onClick={onStop}>
+				<button className="btn" onClick={onClickStop}>
 					Stop game
 				</button>
 			</>
@@ -48,18 +48,11 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 		<>
 			<div className="text-left">
 				<h1 className="text-lg font-bold mb-2">Game component</h1>
-				{!game.inProgress ? (
-					<button className="btn-primary" onClick={game.start}>
-						Start game
-					</button>
-				) : (
+				{game.inProgress && (
 					<ul>
 						<li>Current letter to guess: {game.currentSticker?.name}</li>
 						<li>Correct: {game.correct}</li>
 						<li>Incorrect: {game.incorrect}</li>
-						<button className="btn-primary" onClick={game.stop}>
-							Stop game
-						</button>
 					</ul>
 				)}
 			</div>
@@ -146,6 +139,9 @@ const PlayModeComponent2: React.FC = () => {
 		onStop: () => {
 			game.stop()
 		},
+		onUnpause: () => {
+			if (game.currentSticker) setSpotlight(game.currentSticker)
+		},
 		onCompletion() {
 			clearSpotlight()
 		},
@@ -164,9 +160,9 @@ const PlayModeComponent2: React.FC = () => {
 			<PlayModeControls
 				isPaused={gameTimer.isPaused}
 				isRunning={gameTimer.isRunning}
-				onStart={gameTimer.start}
-				onPause={gameTimer.togglePause}
-				onStop={gameTimer.stop}
+				onClickStart={gameTimer.start}
+				onClickPause={gameTimer.togglePause}
+				onClickStop={gameTimer.stop}
 			/>
 		</div>
 	)
