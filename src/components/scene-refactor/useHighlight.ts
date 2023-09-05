@@ -8,7 +8,7 @@ type IHighlightContext = {
 
 export const HighlightContext = createContext<IHighlightContext>(null)
 
-export const useHighlight = () => {
+export const useHighlightContext = () => {
 	const context = useContext(HighlightContext)
 
 	const current = context?.value
@@ -40,7 +40,9 @@ export const useHighlight = () => {
 	}
 }
 
-export const useHighlightEffect = (callback?: (sticker: ISticker) => void) => {
+export const useHighlightContextEffect = (
+	callback?: (sticker: ISticker) => void
+) => {
 	const context = useContext(HighlightContext)
 
 	useEffect(() => {

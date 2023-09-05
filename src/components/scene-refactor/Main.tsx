@@ -15,7 +15,7 @@ import '../../scss/cube-v2.scss'
 import Cube from './components/Cube.js'
 import RotationContextWrapper from './RotationContextWrapper.js'
 import HighlightContextWrapper from './HighlightContextProvider.js'
-import { useSpotlight } from './useSpotlight.js'
+import { useSpotlightContext } from './useSpotlight.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
@@ -80,7 +80,7 @@ const CubeComponentDev: React.FC<CubeComponentDevProps> = ({ debug }) => {
 	}
 
 	// Custom hooks
-	const { setSpotlight, clearSpotlight } = useSpotlight()
+	const { setSpotlight, clearSpotlight } = useSpotlightContext()
 
 	useKeypress(({ key }) => {
 		const sticker = cube.getStickerByLetter(key, 'edge')

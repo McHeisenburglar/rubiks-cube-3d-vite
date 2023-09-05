@@ -1,9 +1,9 @@
-import { useHighlight } from './useHighlight'
-import { useRotation } from './useRotationEffect'
+import { useHighlightContext } from './useHighlight'
+import { useRotationContext } from './useRotationEffect'
 
-export const useSpotlight = () => {
-	const { rotateToSticker } = useRotation()
-	const { highlightSticker, clearHighlight } = useHighlight()
+export const useSpotlightContext = () => {
+	const { rotateToSticker } = useRotationContext()
+	const { highlightSticker, clearHighlight } = useHighlightContext()
 
 	const setSpotlight = (sticker: ISticker) => {
 		highlightSticker(sticker)

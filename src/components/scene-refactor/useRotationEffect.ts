@@ -9,7 +9,9 @@ type IRotationContext = {
 
 export const RotationContext = createContext<IRotationContext>(null)
 
-export const useRotationEffect = (callback?: (set: RotationSet) => void) => {
+export const useRotationContextEffect = (
+	callback?: (set: RotationSet) => void
+) => {
 	const context = useContext(RotationContext)
 
 	useEffect(() => {
@@ -17,7 +19,7 @@ export const useRotationEffect = (callback?: (set: RotationSet) => void) => {
 	}, [context])
 }
 
-export const useRotation = () => {
+export const useRotationContext = () => {
 	const context = useContext(RotationContext)
 
 	const rotate = (set: RotationSet) => {

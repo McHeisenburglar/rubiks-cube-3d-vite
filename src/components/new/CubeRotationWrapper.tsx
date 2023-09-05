@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 // import { useRotationEffect } from './useSceneEffect'
 // import RotationController from '../RotationController'
-import { useRotationEffect } from '../scene-refactor/useRotationEffect'
+import { useRotationContextEffect } from '../scene-refactor/useRotationEffect'
 
 const DIMENSIONS = ['x', 'y', 'z'] as const
 
@@ -26,7 +26,7 @@ const CubeRotationController: React.FC<IProps> = ({
 		z: 0,
 	})
 
-	useRotationEffect((rotationSet) => {
+	useRotationContextEffect((rotationSet) => {
 		setRotation({ ...rotationSet })
 	})
 

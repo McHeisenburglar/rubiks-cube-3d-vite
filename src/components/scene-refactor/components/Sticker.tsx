@@ -1,5 +1,5 @@
 import { FaPalette } from 'react-icons/fa'
-import { useHighlight } from '../useHighlight'
+import { useHighlightContext } from '../useHighlight'
 // import { useHighlight } from '../useHighlight'
 // import useSpaceHold from './useSpaceHold'
 // import { useKeyhold } from '../../hooks/useKeyhold'
@@ -33,7 +33,7 @@ const Sticker: React.FC<StickerProps> = ({
 		'data-sticker-position': position,
 	}
 
-	const highlight = useHighlight()
+	const highlight = useHighlightContext()
 
 	const extraClass = highlight.classForSticker(sticker)
 	// const mode = highlight.currentHighlight ? 'none' : 'letter'

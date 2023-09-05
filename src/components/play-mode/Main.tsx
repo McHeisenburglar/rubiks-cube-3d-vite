@@ -60,10 +60,9 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 	)
 }
 
-import { SceneContext } from '../new/SceneController2'
 import RotationContextWrapper from '../scene-refactor/RotationContextWrapper'
 import HighlightContextWrapper from '../scene-refactor/HighlightContextProvider'
-import { useSpotlight } from '../scene-refactor/useSpotlight'
+import { useSpotlightContext } from '../scene-refactor/useSpotlight'
 
 const SeparateTimerComponent = () => {
 	const gameTimer = useCountdown({
@@ -109,7 +108,7 @@ const PlayModeComponent2: React.FC = () => {
 		return cube
 	}, [])
 
-	const { setSpotlight, clearSpotlight } = useSpotlight()
+	const { setSpotlight, clearSpotlight } = useSpotlightContext()
 
 	const game = useGame({
 		cube,
