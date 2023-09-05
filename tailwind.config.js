@@ -8,5 +8,11 @@ export default {
 		},
 		extend: {},
 	},
+	safelist: [
+		'text-slate-800',
+		'text-green-600',
+		'text-yellow-600',
+		'text-red-700',
+	],
 	plugins: [],
 }

@@ -16,7 +16,16 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 
 	const secondsLeft = millisecondsLeft / 1000
 
-	const accuracy = (correctGuesses / (correctGuesses + incorrectGuesses)) * 100
+	const totalGuesses = correctGuesses + incorrectGuesses
+
+	const accuracy = (correctGuesses / totalGuesses) * 100
+
+	const accuracyColor = () => {
+		if (totalGuesses === 0) return 'text-slate-800'
+		if (accuracy >= 80) return 'text-green-600'
+		if (accuracy >= 50) return 'text-yellow-600'
+		return 'text-red-700'
+	}
 
 	return (
 		<>
@@ -35,8 +44,8 @@ const Scoreboard: React.FC<ScoreboardProps> = ({
 							<span className="text-sm text-gray-500">Incorrect</span>
 						</div>
 						<div className="flex flex-col justify-center items-middle text-center">
-							<span className="text-2xl font-light">
-								{incorrectGuesses === 0 ? '0%' : accuracy.toFixed(1) + '%'}
+							<span className={`text-2xl font-light ${accuracyColor()}`}>
+								{totalGuesses === 0 ? '0%' : accuracy.toFixed(1) + '%'}
 							</span>
 							<span className="text-sm text-gray-500">Accuracy</span>
 						</div>
