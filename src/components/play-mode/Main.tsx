@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import useCountdown from '../timer/useCountdown'
 import Scoreboard from '../timer/Scoreboard'
 
@@ -23,20 +23,22 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
 
 	if (!isRunning) {
 		return (
-			<button className="btn-primary success" onClick={onClickStart}>
-				Start game
-			</button>
+			<div className="text-center">
+				<button className="btn-primary success" onClick={onClickStart}>
+					Start game
+				</button>
+			</div>
 		)
 	} else {
 		return (
-			<>
+			<div className="text-center">
 				<button className="btn" onClick={onClickPause}>
 					{isPaused ? 'Unpause' : 'Pause'}
 				</button>
 				<button className="btn" onClick={onClickStop}>
 					Stop game
 				</button>
-			</>
+			</div>
 		)
 	}
 }
@@ -46,16 +48,16 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 }) => {
 	return (
 		<>
-			<div className="text-left">
-				<h1 className="text-lg font-bold mb-2">Game component</h1>
-				{game.inProgress && (
+			{game.inProgress && (
+				<div className="text-left">
+					<h1 className="text-lg font-bold mb-2">Game component</h1>
 					<ul>
 						<li>Current letter to guess: {game.currentSticker?.name}</li>
 						<li>Correct: {game.correct}</li>
 						<li>Incorrect: {game.incorrect}</li>
 					</ul>
-				)}
-			</div>
+				</div>
+			)}
 		</>
 	)
 }
@@ -103,11 +105,12 @@ const PlayModeComponent = () => {
 
 const PlayModeComponent2: React.FC = () => {
 	console.log('rendered')
-	const cube = useMemo<CubeWithPos>(() => {
+	const [scramble, setScramble] = useState<string | null>(null)
+	const cube: CubeWithPos = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
-		cube.scramble()
+		if (scramble) cube.performAlgorithm(scramble)
 		return cube
-	}, [])
+	}, [scramble])
 
 	const { setSpotlight, clearSpotlight } = useSpotlightContext()
 
@@ -124,7 +127,14 @@ const PlayModeComponent2: React.FC = () => {
 		},
 	})
 
+	const handleScramble = () => {
+		const scramble = cube.scramble()
+		console.log('got here')
+		setScramble(scramble)
+	}
+
 	useKeypress((e) => {
+		e.preventDefault()
 		if (!game.inProgress) {
 			const sticker = cube.getStickerByLetter(e.key, 'edge')
 			if (sticker) setSpotlight(sticker)
@@ -152,6 +162,7 @@ const PlayModeComponent2: React.FC = () => {
 			if (game.currentSticker) setSpotlight(game.currentSticker)
 		},
 		onCompletion() {
+			game.stop()
 			clearSpotlight()
 		},
 	})
@@ -171,7 +182,7 @@ const PlayModeComponent2: React.FC = () => {
 	}
 
 	return (
-		<div className="mx-auto max-w-[60rem] px-24 bg-white">
+		<div className="mx-auto max-w-[60rem] px-24 bg-white pb-8">
 			<Scoreboard
 				correctGuesses={game.correct}
 				incorrectGuesses={game.incorrect}
@@ -179,7 +190,23 @@ const PlayModeComponent2: React.FC = () => {
 				millisecondsLeft={gameTimer.millisecondsLeft}
 			/>
 			<CubeComponent cube={cube} onStickerClick={handleStickerClick} />
-			<GameComponentDev game={game} />
+			{!game.inProgress && (
+				<>
+					{scramble && (
+						<div className="text-center relative -top-8">
+							<span className="text-xs">Scramble: {scramble}</span>
+						</div>
+					)}
+					<div className="text-center">
+						<button
+							className="btn-primary relative mb-4"
+							onClick={handleScramble}
+						>
+							Scramble cube
+						</button>
+					</div>
+				</>
+			)}
 			<PlayModeControls
 				isPaused={gameTimer.isPaused}
 				isRunning={gameTimer.isRunning}
@@ -187,7 +214,12 @@ const PlayModeComponent2: React.FC = () => {
 				onClickPause={gameTimer.togglePause}
 				onClickStop={gameTimer.stop}
 			/>
-			{game && <CorrectGuessLog log={game.guessLog} />}
+			<div className="mt-16">
+				<GameComponentDev game={game} />
+			</div>
+			{!game.inProgress && game.guessLog.length > 0 && (
+				<CorrectGuessLog log={game.guessLog} />
+			)}
 		</div>
 	)
 }
