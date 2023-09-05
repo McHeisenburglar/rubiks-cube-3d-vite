@@ -1,5 +1,5 @@
 import { FaPalette } from 'react-icons/fa'
-import { useHighlightedSticker } from '../../new/useSceneEffect'
+import { useHighlight } from '../useHighlight'
 // import { useHighlight } from '../useHighlight'
 // import useSpaceHold from './useSpaceHold'
 // import { useKeyhold } from '../../hooks/useKeyhold'
@@ -35,11 +35,17 @@ const Sticker: React.FC<StickerProps> = ({
 		'data-sticker-position': position,
 	}
 
-	// const highlight = useSceneEffect('highlight')
-	// if (highlight && id === highlight.value) classList.push('highlight')
-	if (id === useHighlightedSticker()) classList.push('highlight')
+	const highlight = useHighlight()
 
-	const handleClick = () => onClick && onClick(sticker)
+	// const highlight = useSceneEffect('highlight')
+	if (sticker.id === highlight.current?.id) {
+		console.log('Adding highlight to', sticker.id)
+		classList.push('highlight')
+	}
+
+	const handleClick = () => {
+		highlight.update(sticker)
+	}
 
 	return (
 		<div

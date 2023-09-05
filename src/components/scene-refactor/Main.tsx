@@ -16,6 +16,7 @@ import Cube from './components/Cube.js'
 import RotationContextWrapper from './RotationContextWrapper.js'
 import { useRotation } from './useRotationEffect.js'
 import { useHighlight } from './useHighlight.js'
+import HighlightContextWrapper from './HighlightContextProvider.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
@@ -55,7 +56,7 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 
 	const [perspectiveMode, setPerspectiveMode] = useState<
 		'3d-fold' | 'flat-fold'
-	>('3d-fold')
+	>('flat-fold')
 
 	const togglePerspectiveMode = () => {
 		setPerspectiveMode((prev) => (prev === '3d-fold' ? 'flat-fold' : '3d-fold'))
@@ -64,7 +65,7 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	const handleStickerClick = (sticker: ISticker) => {
 		console.log('sticker clicked', sticker)
 		if (perspectiveMode === '3d-fold') rotateToSticker(sticker)
-		highlightSticker(sticker)
+		// highlightSticker(sticker)
 
 		// applyStyle(sticker, 'active')
 	}
@@ -114,18 +115,16 @@ export { CubeComponent }
 const ComponentExport = () => {
 	return (
 		<>
-			<RotationContextWrapper>
+			<HighlightContextWrapper>
+				<RotationContextWrapper>
+					<CubeComponent />
+				</RotationContextWrapper>
+			</HighlightContextWrapper>
+			{/* <RotationContextWrapper>
 				<CubeComponent />
-			</RotationContextWrapper>
-			<RotationContextWrapper>
-				<CubeComponent />
-			</RotationContextWrapper>
+			</RotationContextWrapper> */}
 		</>
 	)
 }
-
-/* CUBE */
-
-/* ------- */
 
 export default ComponentExport
