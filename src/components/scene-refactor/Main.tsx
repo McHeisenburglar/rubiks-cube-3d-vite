@@ -28,11 +28,38 @@ export const InteractionContext = React.createContext<InteractionContextValue>({
 })
 
 /* MAIN COMPONENT */
+
 interface CubeComponentProps {
+	cube: CubeWithPos
 	debug?: boolean
 }
 
-const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
+export const CubeComponent: React.FC<CubeComponentProps> = ({
+	debug,
+	cube,
+}) => {
+	if (debug) console.log('::::: Rendered CubeComponent.')
+
+	return (
+		<div className="cube-v2">
+			<div className="cube-wrapper">
+				<CubeRotationController debug>
+					<CubeStyleProvider config={cube.cubeConfig}>
+						<CubePerspectiveWrapper mode={'3d-fold'}>
+							<Cube cube={cube} onStickerClick={() => {}} />
+						</CubePerspectiveWrapper>
+					</CubeStyleProvider>
+				</CubeRotationController>
+			</div>
+		</div>
+	)
+}
+
+interface CubeComponentDevProps {
+	debug?: boolean
+}
+
+const CubeComponentDev: React.FC<CubeComponentDevProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
 	const cube = useMemo<CubeWithPos>(() => {
@@ -97,14 +124,14 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	)
 }
 
-export { CubeComponent }
+export { CubeComponentDev }
 
 const ComponentExport = () => {
 	return (
 		<>
 			<HighlightContextWrapper>
 				<RotationContextWrapper>
-					<CubeComponent />
+					<CubeComponentDev />
 				</RotationContextWrapper>
 			</HighlightContextWrapper>
 			{/* <RotationContextWrapper>

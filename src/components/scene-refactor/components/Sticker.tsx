@@ -24,7 +24,6 @@ const Sticker: React.FC<StickerProps> = ({
 
 	const { side, name, type, id } = sticker
 	// const mode = useSpaceHold() ? 'letter' : 'none'
-	const mode = 'letter'
 
 	const dataAttributes = {
 		'data-sticker-color': side,
@@ -37,6 +36,8 @@ const Sticker: React.FC<StickerProps> = ({
 	const highlight = useHighlight()
 
 	const extraClass = highlight.classForSticker(sticker)
+	// const mode = highlight.currentHighlight ? 'none' : 'letter'
+	const mode = 'letter'
 
 	// const handleClick = () => highlight.highlightSticker(sticker)
 

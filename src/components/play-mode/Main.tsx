@@ -2,9 +2,8 @@ import React, { useEffect, useMemo } from 'react'
 import useCountdown from '../timer/useCountdown'
 import Scoreboard from '../timer/Scoreboard'
 
-import CubeComponent from '../new/CubeComponent'
+import { CubeComponent } from '../scene-refactor/Main'
 import { CubeWithPos } from '../../ts/CubeClass3'
-import SceneController from '../new/SceneController2'
 import useKeypress from '../new/useKeypress'
 import useGame from './useGame'
 
@@ -55,7 +54,7 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 					</button>
 				) : (
 					<ul>
-						<li>Current letter to guess: {game.currentSticker.name}</li>
+						<li>Current letter to guess: {game.currentSticker?.name}</li>
 						<li>Correct: {game.correct}</li>
 						<li>Incorrect: {game.incorrect}</li>
 						<button className="btn-primary" onClick={game.stop}>
@@ -69,6 +68,9 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 }
 
 import { SceneContext } from '../new/SceneController2'
+import RotationContextWrapper from '../scene-refactor/RotationContextWrapper'
+import HighlightContextWrapper from '../scene-refactor/HighlightContextProvider'
+import { useSpotlight } from '../scene-refactor/useSpotlight'
 
 const SeparateTimerComponent = () => {
 	const gameTimer = useCountdown({
@@ -97,9 +99,11 @@ const PlayModeComponent = () => {
 	return (
 		<>
 			<SeparateTimerComponent />
-			<SceneController>
-				<CubeComponent cube={cube} />
-			</SceneController>
+			<HighlightContextWrapper>
+				<RotationContextWrapper>
+					<CubeComponent cube={cube} />
+				</RotationContextWrapper>
+			</HighlightContextWrapper>
 		</>
 	)
 }
@@ -112,7 +116,17 @@ const PlayModeComponent2: React.FC = () => {
 		return cube
 	}, [])
 
-	const game = useGame({ cube, onGameStop: () => {} })
+	const { setSpotlight, clearSpotlight } = useSpotlight()
+
+	const game = useGame({
+		cube,
+		onStickerChange: (sticker) => {
+			setSpotlight(sticker)
+		},
+		onGameStop: () => {
+			clearSpotlight()
+		},
+	})
 
 	useKeypress((e) => {
 		if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress)
@@ -132,21 +146,20 @@ const PlayModeComponent2: React.FC = () => {
 		onStop: () => {
 			game.stop()
 		},
+		onCompletion() {
+			clearSpotlight()
+		},
 	})
 
 	return (
-		<div className="mx-auto max-w-[60rem] px-24 bg-white text-center">
+		<div className="mx-auto max-w-[60rem] px-24 bg-white">
 			<Scoreboard
 				correctGuesses={game.correct}
 				incorrectGuesses={game.incorrect}
 				secondsTotal={gameOptions.seconds}
 				millisecondsLeft={gameTimer.millisecondsLeft}
 			/>
-			<div className="text-left">
-				<SceneController highlightedProp={game.currentSticker?.id}>
-					<CubeComponent cube={cube} />
-				</SceneController>
-			</div>
+			<CubeComponent cube={cube} />
 			<GameComponentDev game={game} />
 			<PlayModeControls
 				isPaused={gameTimer.isPaused}
@@ -159,4 +172,14 @@ const PlayModeComponent2: React.FC = () => {
 	)
 }
 
-export default PlayModeComponent2
+const PlayModeExport = () => {
+	return (
+		<HighlightContextWrapper>
+			<RotationContextWrapper>
+				<PlayModeComponent2 />
+			</RotationContextWrapper>
+		</HighlightContextWrapper>
+	)
+}
+
+export default PlayModeExport

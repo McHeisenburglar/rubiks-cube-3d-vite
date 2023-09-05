@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CubeWithPos } from '../../ts/CubeClass3'
 
 interface useGameOptions {
 	cube: CubeWithPos
+	onStickerChange?: (sticker: ISticker) => void
 	onCorrectGuess?: (sticker: ISticker) => void
 	onIncorrectGuess?: (sticker: ISticker) => void
 	onGameStart?: () => void
@@ -12,30 +13,34 @@ interface useGameOptions {
 export const useGame = (options: useGameOptions) => {
 	const { cube } = options
 
-	const getRandomSticker = () => {
-		const sticker = cube.getRandomStickerInFilter((s) => s.type === 'corner')
-		return sticker
-	}
-
 	const [inProgress, setInProgress] = useState(false)
 	const [correct, setCorrect] = useState(0)
 	const [incorrect, setIncorrect] = useState(0)
 
-	const [currentSticker, setCurrentSticker] = useState(getRandomSticker)
+	const [currentSticker, setCurrentSticker] = useState<ISticker | null>(null)
 
 	const nextRandomSticker = () => {
 		const newSticker = cube.getRandomStickerInFilter(
-			(sticker) => sticker.type === 'corner' && sticker.id !== currentSticker.id
+			(sticker) =>
+				sticker.type === 'corner' && sticker.id !== currentSticker?.id
 		)
 		setCurrentSticker(newSticker)
 	}
 
 	const reset = () => {
+		setCurrentSticker(null)
 		setCorrect(0)
 		setIncorrect(0)
 	}
 
+	useEffect(() => {
+		if (currentSticker) {
+			options.onStickerChange?.(currentSticker)
+		}
+	}, [currentSticker])
+
 	const checkGuess = (e: KeyboardEvent) => {
+		if (!currentSticker) return
 		if (e.key.toLowerCase() === currentSticker.name.toLowerCase()) {
 			options.onCorrectGuess?.(currentSticker)
 			onCorrectGuess()
