@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
+// import { useRotationEffect } from './useSceneEffect'
 // import RotationController from '../RotationController'
+import { useRotationEffect } from '../scene-refactor/useRotationEffect'
 
 const DIMENSIONS = ['x', 'y', 'z'] as const
 
@@ -17,12 +19,15 @@ const CubeRotationController: React.FC<IProps> = ({
 	debug,
 }) => {
 	if (debug) console.log(':::: RotationController rendered')
-	console.log('hello')
 
 	const [rotation, setRotation] = useState<RotationSet>({
 		x: 15,
 		y: -30,
 		z: 0,
+	})
+
+	useRotationEffect((rotationSet) => {
+		setRotation({ ...rotationSet })
 	})
 
 	const rotationRef = useRef(rotation)

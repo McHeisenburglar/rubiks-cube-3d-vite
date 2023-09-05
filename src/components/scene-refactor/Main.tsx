@@ -1,5 +1,5 @@
 // react and hooks
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 
 // ts library
 import { CubeWithPos } from '../../ts/CubeClass3.js'
@@ -16,6 +16,8 @@ import '../../scss/cube-v2.scss'
 import Cube from '../new/Cube.js'
 // import { useStickerClickEffect } from './new/Sticker.js'
 import { useStickerClickEffect } from '../new/useStickerClickEffect.js'
+import RotationContextWrapper from './RotationContextWrapper.js'
+import { useRotationEffect } from './useRotationEffect.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
@@ -66,22 +68,41 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		stickerClick: null,
 	}
 
+	const updateRotation = useRotationEffect()
+
 	return (
 		<main className="cube-v2">
 			<div className="cube-wrapper">
 				<InteractionContext.Provider value={interactionValue}>
-					<SceneController>
-						<CubeRotationController disabled={perspectiveMode === 'flat-fold'}>
-							<CubeStyleProvider config={cube.cubeConfig}>
-								<CubePerspectiveWrapper mode={perspectiveMode}>
-									<Cube cube={cube} onStickerClick={handleStickerClick} />
-								</CubePerspectiveWrapper>
-							</CubeStyleProvider>
-						</CubeRotationController>
-					</SceneController>
+					{/* <SceneController> */}
+					<CubeRotationController
+						debug
+						disabled={perspectiveMode === 'flat-fold'}
+					>
+						<CubeStyleProvider config={cube.cubeConfig}>
+							<CubePerspectiveWrapper mode={perspectiveMode}>
+								<Cube cube={cube} onStickerClick={handleStickerClick} />
+							</CubePerspectiveWrapper>
+						</CubeStyleProvider>
+					</CubeRotationController>
+					{/* </SceneController> */}
 				</InteractionContext.Provider>
 			</div>
-			<button onClick={togglePerspectiveMode}>Switch</button>
+			<button className="btn-primary" onClick={togglePerspectiveMode}>
+				Switch
+			</button>
+			<button
+				className="btn-primary"
+				onClick={() =>
+					updateRotation?.({
+						x: 0,
+						y: 0,
+						z: 0,
+					})
+				}
+			>
+				Reset rotation
+			</button>
 		</main>
 	)
 }
@@ -91,7 +112,10 @@ export { CubeComponent }
 const ComponentExport = () => {
 	return (
 		<>
-			<CubeComponent />
+			<RotationContextWrapper>
+				<CubeComponent />
+				<CubeComponent />
+			</RotationContextWrapper>
 		</>
 	)
 }

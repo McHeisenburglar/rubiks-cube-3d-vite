@@ -30,11 +30,13 @@ const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 	// 	z: 0,
 	// }
 
-	const [rotationValue, setRotationValue] = useState({
+	const defaultRotation = {
 		x: 0,
 		y: 45,
 		z: 0,
-	})
+	}
+
+	const [rotationValue, setRotationValue] = useState(defaultRotation)
 
 	const [highlightValue, setHighlightValue] = useState('top-3')
 
@@ -67,7 +69,18 @@ const SceneController: React.FC<SceneProps> = ({ children, debug }) => {
 		},
 	}
 
-	return <SceneContext.Provider value={value}>{children}</SceneContext.Provider>
+	const handleResetRotation = () => {
+		setRotationValue(defaultRotation)
+	}
+
+	return (
+		<>
+			<SceneContext.Provider value={value}>{children}</SceneContext.Provider>
+			<button className="btn-primary" onClick={handleResetRotation}>
+				Reset rotation
+			</button>
+		</>
+	)
 }
 
 export default SceneController

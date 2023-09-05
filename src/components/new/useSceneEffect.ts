@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { SceneContext } from './SceneController2'
+import { SceneContext } from './SceneController'
 
 const useSceneEffect = (key: SceneParts) => {
 	// let sceneRotation = null
