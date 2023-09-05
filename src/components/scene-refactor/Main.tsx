@@ -9,15 +9,13 @@ import useKeypress from '../new/useKeypress.js'
 import CubeRotationController from '../new/CubeRotationWrapper.js'
 import CubePerspectiveWrapper from '../new/CubePerspectiveWrapper.js'
 import CubeStyleProvider from '../new/CubeStyleConfigWrapper.js'
-import SceneController from '../new/SceneController.js'
 
 // styles
 import '../../scss/cube-v2.scss'
-import Cube from '../new/Cube.js'
-// import { useStickerClickEffect } from './new/Sticker.js'
-import { useStickerClickEffect } from '../new/useStickerClickEffect.js'
+import Cube from './components/Cube.js'
 import RotationContextWrapper from './RotationContextWrapper.js'
-import { useRotation, useRotationEffect } from './useRotationEffect.js'
+import { useRotation } from './useRotationEffect.js'
+import { useHighlight } from './useHighlight.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
@@ -47,16 +45,13 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 
 	const { rotate, rotateToSticker } = useRotation()
 
+	const { highlightSticker } = useHighlight()
+
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
 		cube.scramble()
 		return cube
 	}, [])
-
-	const handleStickerClick = (sticker: ISticker) => {
-		console.log('sticker clicked', sticker)
-		rotateToSticker(sticker)
-	}
 
 	const [perspectiveMode, setPerspectiveMode] = useState<
 		'3d-fold' | 'flat-fold'
@@ -64,6 +59,14 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 
 	const togglePerspectiveMode = () => {
 		setPerspectiveMode((prev) => (prev === '3d-fold' ? 'flat-fold' : '3d-fold'))
+	}
+
+	const handleStickerClick = (sticker: ISticker) => {
+		console.log('sticker clicked', sticker)
+		if (perspectiveMode === '3d-fold') rotateToSticker(sticker)
+		highlightSticker(sticker)
+
+		// applyStyle(sticker, 'active')
 	}
 
 	const interactionValue = {
@@ -75,7 +78,6 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		<main className="cube-v2">
 			<div className="cube-wrapper">
 				<InteractionContext.Provider value={interactionValue}>
-					{/* <SceneController> */}
 					<CubeRotationController
 						debug
 						disabled={perspectiveMode === 'flat-fold'}
@@ -86,7 +88,6 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 							</CubePerspectiveWrapper>
 						</CubeStyleProvider>
 					</CubeRotationController>
-					{/* </SceneController> */}
 				</InteractionContext.Provider>
 			</div>
 			<button className="btn-primary" onClick={togglePerspectiveMode}>

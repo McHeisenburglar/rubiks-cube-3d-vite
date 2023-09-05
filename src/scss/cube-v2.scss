@@ -57,9 +57,11 @@
 		}
 		.side-back {
 			transform: rotateY(180deg) translateZ(var(--side-size));
+			// transition: 1s linear;
 		}
 
 		.side-top {
+			// transform-origin: top;
 			transform: rotateX(90deg) translateZ(var(--side-size));
 		}
 

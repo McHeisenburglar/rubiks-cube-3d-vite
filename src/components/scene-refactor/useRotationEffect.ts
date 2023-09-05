@@ -35,24 +35,3 @@ export const useRotation = () => {
 		rotateToSticker,
 	}
 }
-
-// Stickers
-type IHighlightStickerContext = {
-	value: ISticker
-	update: (set: ISticker) => void
-} | null
-
-export const HighlightStickerContext =
-	createContext<IHighlightStickerContext>(null)
-
-export const useHighlightedSticker = (
-	callback?: (sticker: ISticker) => void
-) => {
-	const context = useContext(HighlightStickerContext)
-
-	useEffect(() => {
-		if (context && callback) callback(context.value)
-	}, [context])
-
-	if (context) return context.update
-}
