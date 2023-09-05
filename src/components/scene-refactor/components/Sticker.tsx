@@ -38,12 +38,12 @@ const Sticker: React.FC<StickerProps> = ({
 
 	const extraClass = highlight.classForSticker(sticker)
 
-	const handleClick = () => highlight.update(sticker)
+	// const handleClick = () => highlight.highlightSticker(sticker)
 
 	return (
 		<div
 			className={`sticker ${extraClass}`}
-			onClick={handleClick}
+			onClick={() => onClick?.(sticker)}
 			{...dataAttributes}
 		>
 			<StickerContent mode={mode} sticker={sticker} index={index} />

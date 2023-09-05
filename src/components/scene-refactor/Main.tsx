@@ -14,9 +14,10 @@ import CubeStyleProvider from '../new/CubeStyleConfigWrapper.js'
 import '../../scss/cube-v2.scss'
 import Cube from './components/Cube.js'
 import RotationContextWrapper from './RotationContextWrapper.js'
-import { useRotation } from './useRotationEffect.js'
-import { useHighlight } from './useHighlight.js'
+// import { useRotation } from './useRotationEffect.js'
+// import { useHighlight } from './useHighlight.js'
 import HighlightContextWrapper from './HighlightContextProvider.js'
+import { useSpotlight } from './useSpotlight.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
@@ -36,17 +37,9 @@ interface CubeComponentProps {
 const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
-	// Custom hooks
-	useKeypress(({ key }) => {
-		console.log(key)
-	})
 	// useStickerClickEffect((id: StickerId) => {
 	// 	console.log('Sticker clicked:', id)
 	// })
-
-	const { rotate, rotateToSticker } = useRotation()
-
-	const { highlightSticker } = useHighlight()
 
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
@@ -56,18 +49,26 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 
 	const [perspectiveMode, setPerspectiveMode] = useState<
 		'3d-fold' | 'flat-fold'
-	>('flat-fold')
+	>('3d-fold')
 
 	const togglePerspectiveMode = () => {
 		setPerspectiveMode((prev) => (prev === '3d-fold' ? 'flat-fold' : '3d-fold'))
 	}
 
-	const handleStickerClick = (sticker: ISticker) => {
-		console.log('sticker clicked', sticker)
-		if (perspectiveMode === '3d-fold') rotateToSticker(sticker)
-		// highlightSticker(sticker)
+	// Custom hooks
+	const { setSpotlight, clearSpotlight } = useSpotlight()
+	useKeypress(({ key }) => {
+		const sticker = cube.getStickerByLetter(key, 'edge')
+		if (sticker) setSpotlight(sticker)
+	})
 
-		// applyStyle(sticker, 'active')
+	const handleStickerClick = (sticker: ISticker) => {
+		console.log('spotlighting!!!', sticker)
+		setSpotlight(sticker)
+	}
+
+	const handleReset = () => {
+		clearSpotlight()
 	}
 
 	const interactionValue = {
@@ -94,16 +95,7 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 			<button className="btn-primary" onClick={togglePerspectiveMode}>
 				Switch
 			</button>
-			<button
-				className="btn-primary"
-				onClick={() =>
-					rotate({
-						x: 0,
-						y: 50,
-						z: 0,
-					})
-				}
-			>
+			<button className="btn-primary" onClick={handleReset}>
 				Reset rotation
 			</button>
 		</main>

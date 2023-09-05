@@ -1,8 +1,21 @@
-type SpotlightContextType = {}
-const SpotlightContext = createContext<SpotlightContextType | null>(null)
+import { useHighlight } from './useHighlight'
+import { useRotation } from './useRotationEffect'
 
-type SpotlightClass = 'highlight' | 'adjacent' | 'dim' | null
+export const useSpotlight = () => {
+	const { rotateToSticker } = useRotation()
+	const { highlightSticker } = useHighlight()
 
-const useSpotlight = () => {
-	const spotlightClass = (Sticker: ISticker) => {}
+	const setSpotlight = (sticker: ISticker) => {
+		highlightSticker(sticker)
+		rotateToSticker(sticker)
+	}
+
+	const clearSpotlight = () => {
+		highlightSticker(null)
+	}
+
+	return {
+		setSpotlight,
+		clearSpotlight,
+	}
 }

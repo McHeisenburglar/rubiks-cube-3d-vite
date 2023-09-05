@@ -22,16 +22,22 @@ export const useHighlight = () => {
 	}
 
 	const classForSticker = (sticker: ISticker) => {
-		console.log('got here')
 		if (!context || !context.value) return ''
 
 		if (sticker.id === context.value.id) return 'highlight'
+
 		const neighbors = context.value.neighbors?.map((n) => n.id)
 		if (neighbors?.includes(sticker.id)) return 'adjacent'
+
 		return 'dim'
 	}
 
-	return { current, update, clear, classForSticker }
+	return {
+		currentHighlight: current,
+		highlightSticker: update,
+		clearHighlight: clear,
+		classForSticker,
+	}
 }
 
 export const useHighlightEffect = (callback?: (sticker: ISticker) => void) => {
