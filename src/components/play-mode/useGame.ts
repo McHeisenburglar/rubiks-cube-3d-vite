@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CubeWithPos } from '../../ts/CubeClass3'
+import { GuessLogEntry } from '../timer/TimerMain'
 
 interface useGameOptions {
 	cube: CubeWithPos
@@ -17,6 +18,8 @@ export const useGame = (options: useGameOptions) => {
 	const [correct, setCorrect] = useState(0)
 	const [incorrect, setIncorrect] = useState(0)
 
+	const [guessLog, setGuessLog] = useState<GuessLogEntry[]>([])
+
 	const [currentSticker, setCurrentSticker] = useState<ISticker | null>(null)
 
 	const nextRandomSticker = () => {
@@ -31,6 +34,7 @@ export const useGame = (options: useGameOptions) => {
 		setCurrentSticker(null)
 		setCorrect(0)
 		setIncorrect(0)
+		setGuessLog([])
 	}
 
 	useEffect(() => {
@@ -45,7 +49,7 @@ export const useGame = (options: useGameOptions) => {
 			options.onCorrectGuess?.(currentSticker)
 			onCorrectGuess()
 		} else {
-			options.onCorrectGuess?.(currentSticker)
+			options.onIncorrectGuess?.(currentSticker)
 			onIncorrectGuess()
 		}
 	}
@@ -77,6 +81,10 @@ export const useGame = (options: useGameOptions) => {
 		nextRandomSticker()
 	}
 
+	const addGuessLogEntry = (entry: GuessLogEntry) => {
+		setGuessLog((prev) => [...prev, entry])
+	}
+
 	return {
 		inProgress,
 		start,
@@ -87,6 +95,8 @@ export const useGame = (options: useGameOptions) => {
 		correct,
 		incorrect,
 		skip,
+		guessLog,
+		addGuessLogEntry,
 	}
 }
 

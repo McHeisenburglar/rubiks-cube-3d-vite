@@ -4,32 +4,34 @@ import useCountdown from './useCountdown'
 import useKeypress from '../new/useKeypress'
 import Scoreboard from './Scoreboard'
 
-interface GuessLogEntry {
+export interface GuessLogEntry {
 	no: number
 	sticker: string
 	time: number
 }
 
-function SmallTag({ children }: { children: React.ReactNode }) {
+const FastestTag = () => {
 	return (
 		<span
 			className={`inline-block ml-2 px-2 py-1 text-xs rounded text-green-800 bg-green-200`}
 		>
-			{children}
+			Fastest
 		</span>
 	)
 }
 
-function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
-	// const log: GuessLogEntry[] = [
-	// 	{ sticker: 'U', time: 421 },
-	// 	{ sticker: 'F', time: 312 },
-	// 	{ sticker: 'J', time: 238 },
-	// 	{ sticker: 'K', time: 578 },
-	// 	{ sticker: 'L', time: 109 },
-	// ]
+const SlowestTag = () => {
+	return (
+		<span
+			className={`inline-block ml-2 px-2 py-1 text-xs rounded text-red-700 bg-red-200`}
+		>
+			Fastest
+		</span>
+	)
+}
 
-	const [sortKey, setSortKey] = useState<'time' | 'index'>('time')
+export function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
+	const [sortKey, setSortKey] = useState<'time' | 'index'>('no')
 	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
 	const sortMethod = (a: GuessLogEntry, b: GuessLogEntry) => {
@@ -68,10 +70,13 @@ function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
 		}
 	}
 
+	const fastest = log.length > 3 ? log.sort((a, b) => a.time - b.time)[0].no : 0
+	const slowest = log.length > 3 ? log.sort((a, b) => b.time - a.time)[0].no : 0
+
 	return (
-		<table className="table-fixed text-left max-h-[24rem] overflow-scroll">
+		<table className="right-0 top-0 h-screen bg-white absolute table-fixed table-row-group text-left overflow-scroll">
 			<thead>
-				<tr className="bg-slate-200 text-sm font text-slate-600">
+				<tr className=" h-8 bg-slate-200 text-sm font text-slate-600">
 					<th
 						className={`w-[2rem] py-2 pl-4 ${
 							sortKey === 'index' ? 'font-bold' : 'font-normal'
@@ -82,7 +87,7 @@ function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
 					</th>
 					<th className="min-w-min w-16 py-2 px-4 font-normal">Sticker</th>
 					<th
-						className={`min-w-min py-2 px-4 ${
+						className={`min-w-min py-2 px-4 w-64 ${
 							sortKey === 'time' ? 'font-bold' : 'font-normal'
 						}`}
 						onClick={() => handleClick('time')}
@@ -93,11 +98,13 @@ function CorrectGuessLog({ log }: { log: GuessLogEntry[] }) {
 			</thead>
 			<tbody>
 				{log.sort(sortMethod).map((entry, index) => (
-					<tr key={index} className="py-4 border-b-2">
+					<tr key={index} className="h-4 py-4 border-b-2">
 						<td className="py-2 pl-4 text-sm text-slate-400">{entry.no}</td>
 						<td className="py-2 px-4">{entry.sticker}</td>
 						<td className="py-2 px-4">
-							{entry.time}ms <SmallTag>Fastest</SmallTag>
+							{entry.time}ms
+							{entry.no === fastest ? <FastestTag /> : ''}
+							{entry.no === slowest ? <SlowestTag /> : ''}
 						</td>
 					</tr>
 				))}

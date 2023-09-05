@@ -63,6 +63,7 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 import RotationContextWrapper from '../scene-refactor/RotationContextWrapper'
 import HighlightContextWrapper from '../scene-refactor/HighlightContextProvider'
 import { useSpotlightContext } from '../scene-refactor/useSpotlight'
+import { CorrectGuessLog, GuessLogEntry } from '../timer/TimerMain'
 
 const SeparateTimerComponent = () => {
 	const gameTimer = useCountdown({
@@ -115,6 +116,9 @@ const PlayModeComponent2: React.FC = () => {
 		onStickerChange: (sticker) => {
 			setSpotlight(sticker)
 		},
+		onCorrectGuess: (sticker) => {
+			logCorrectGuess(sticker)
+		},
 		onGameStop: () => {
 			clearSpotlight()
 		},
@@ -126,8 +130,9 @@ const PlayModeComponent2: React.FC = () => {
 			if (sticker) setSpotlight(sticker)
 			return
 		}
-		if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress)
+		if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress) {
 			game.checkGuess(e)
+		}
 	})
 
 	const gameOptions = {
@@ -151,6 +156,16 @@ const PlayModeComponent2: React.FC = () => {
 		},
 	})
 
+	const logCorrectGuess = (sticker: ISticker) => {
+		const ms = gameTimer.newMarker()
+		const logEntry: GuessLogEntry = {
+			no: game.guessLog.length + 1,
+			sticker: sticker.name,
+			time: ms,
+		}
+		game.addGuessLogEntry(logEntry)
+	}
+
 	const handleStickerClick = (sticker: ISticker) => {
 		if (!game.inProgress) setSpotlight(sticker)
 	}
@@ -172,6 +187,7 @@ const PlayModeComponent2: React.FC = () => {
 				onClickPause={gameTimer.togglePause}
 				onClickStop={gameTimer.stop}
 			/>
+			{game && <CorrectGuessLog log={game.guessLog} />}
 		</div>
 	)
 }
