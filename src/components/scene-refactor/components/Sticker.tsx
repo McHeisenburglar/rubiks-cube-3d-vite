@@ -26,7 +26,6 @@ const Sticker: React.FC<StickerProps> = ({
 	// const mode = useSpaceHold() ? 'letter' : 'none'
 	const mode = 'letter'
 
-	const classList = ['sticker', 'dim']
 	const dataAttributes = {
 		'data-sticker-color': side,
 		'data-sticker-name': name,
@@ -37,19 +36,13 @@ const Sticker: React.FC<StickerProps> = ({
 
 	const highlight = useHighlight()
 
-	// const highlight = useSceneEffect('highlight')
-	if (sticker.id === highlight.current?.id) {
-		console.log('Adding highlight to', sticker.id)
-		classList.push('highlight')
-	}
+	const extraClass = highlight.classForSticker(sticker)
 
-	const handleClick = () => {
-		highlight.update(sticker)
-	}
+	const handleClick = () => highlight.update(sticker)
 
 	return (
 		<div
-			className={classList.join(' ')}
+			className={`sticker ${extraClass}`}
 			onClick={handleClick}
 			{...dataAttributes}
 		>
