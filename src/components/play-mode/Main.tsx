@@ -122,6 +122,11 @@ const PlayModeComponent2: React.FC = () => {
 	})
 
 	useKeypress((e) => {
+		if (!game.inProgress) {
+			const sticker = cube.getStickerByLetter(e.key, 'edge')
+			if (sticker) setSpotlight(sticker)
+			return
+		}
 		if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress)
 			game.checkGuess(e)
 	})
@@ -147,6 +152,10 @@ const PlayModeComponent2: React.FC = () => {
 		},
 	})
 
+	const handleStickerClick = (sticker: ISticker) => {
+		if (!game.inProgress) setSpotlight(sticker)
+	}
+
 	return (
 		<div className="mx-auto max-w-[60rem] px-24 bg-white">
 			<Scoreboard
@@ -155,7 +164,7 @@ const PlayModeComponent2: React.FC = () => {
 				secondsTotal={gameOptions.seconds}
 				millisecondsLeft={gameTimer.millisecondsLeft}
 			/>
-			<CubeComponent cube={cube} />
+			<CubeComponent cube={cube} onStickerClick={handleStickerClick} />
 			<GameComponentDev game={game} />
 			<PlayModeControls
 				isPaused={gameTimer.isPaused}

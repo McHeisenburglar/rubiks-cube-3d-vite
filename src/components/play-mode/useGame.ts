@@ -70,7 +70,7 @@ export const useGame = (options: useGameOptions) => {
 	const stop = () => {
 		setInProgress(false)
 
-		options.onGameStart?.()
+		options.onGameStop?.()
 	}
 
 	const skip = () => {

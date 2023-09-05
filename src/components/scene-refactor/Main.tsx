@@ -32,11 +32,14 @@ export const InteractionContext = React.createContext<InteractionContextValue>({
 interface CubeComponentProps {
 	cube: CubeWithPos
 	debug?: boolean
+	onStickerClick?: (sticker: ISticker) => void
 }
 
 export const CubeComponent: React.FC<CubeComponentProps> = ({
 	debug,
 	cube,
+
+	onStickerClick,
 }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
@@ -46,7 +49,7 @@ export const CubeComponent: React.FC<CubeComponentProps> = ({
 				<CubeRotationController debug>
 					<CubeStyleProvider config={cube.cubeConfig}>
 						<CubePerspectiveWrapper mode={'3d-fold'}>
-							<Cube cube={cube} onStickerClick={() => {}} />
+							<Cube cube={cube} onStickerClick={(s) => onStickerClick?.(s)} />
 						</CubePerspectiveWrapper>
 					</CubeStyleProvider>
 				</CubeRotationController>

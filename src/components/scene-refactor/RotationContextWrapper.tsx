@@ -7,9 +7,9 @@ interface IProps {
 
 export const RotationContextWrapper: React.FC<IProps> = ({ children }) => {
 	const defaultRotation = {
-		x: 0,
-		y: 90,
-		z: 0,
+		x: 45,
+		y: 0,
+		z: 45,
 	}
 	const [rotation, setRotation] = useState<RotationSet>(defaultRotation)
 
