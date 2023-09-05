@@ -83,11 +83,6 @@ function generateScramble() {
 	return moves.join(' ')
 }
 
-type Position = {
-	side: Side
-	index: number
-}
-
 export class Sticker implements ISticker {
 	public side: Side
 	public index: number

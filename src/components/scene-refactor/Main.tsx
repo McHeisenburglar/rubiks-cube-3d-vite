@@ -17,7 +17,7 @@ import Cube from '../new/Cube.js'
 // import { useStickerClickEffect } from './new/Sticker.js'
 import { useStickerClickEffect } from '../new/useStickerClickEffect.js'
 import RotationContextWrapper from './RotationContextWrapper.js'
-import { useRotationEffect } from './useRotationEffect.js'
+import { useRotation, useRotationEffect } from './useRotationEffect.js'
 
 type InteractionContextValue = {
 	keypress: KeyboardEvent | null
@@ -45,6 +45,8 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		console.log('Sticker clicked:', id)
 	})
 
+	const { rotate, rotateToSticker } = useRotation()
+
 	const cube = useMemo<CubeWithPos>(() => {
 		const cube = new CubeWithPos()
 		cube.scramble()
@@ -53,6 +55,7 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 
 	const handleStickerClick = (sticker: ISticker) => {
 		console.log('sticker clicked', sticker)
+		rotateToSticker(sticker)
 	}
 
 	const [perspectiveMode, setPerspectiveMode] = useState<
@@ -67,8 +70,6 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 		keypress: null,
 		stickerClick: null,
 	}
-
-	const updateRotation = useRotationEffect()
 
 	return (
 		<main className="cube-v2">
@@ -94,9 +95,9 @@ const CubeComponent: React.FC<CubeComponentProps> = ({ debug }) => {
 			<button
 				className="btn-primary"
 				onClick={() =>
-					updateRotation?.({
+					rotate({
 						x: 0,
-						y: 0,
+						y: 50,
 						z: 0,
 					})
 				}
@@ -114,6 +115,8 @@ const ComponentExport = () => {
 		<>
 			<RotationContextWrapper>
 				<CubeComponent />
+			</RotationContextWrapper>
+			<RotationContextWrapper>
 				<CubeComponent />
 			</RotationContextWrapper>
 		</>

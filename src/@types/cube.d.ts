@@ -43,3 +43,8 @@ interface ISticker {
 	type: PieceType
 	id: StickerId
 }
+
+type Position = {
+	side: Side
+	index: number
+}
