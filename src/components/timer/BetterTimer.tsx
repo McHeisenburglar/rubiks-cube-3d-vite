@@ -1,9 +1,44 @@
-import React, { useState } from 'react'
-import useCountdown from '../timer/useCountdown2'
+import React, { useEffect, useState } from 'react'
+import useCountdown from '../timer/useCountdown3'
 
 interface TimerControlsProps {
 	timer: ReturnType<typeof useCountdown>
 	show: boolean
+}
+
+const useCountdownMilliseconds = ({
+	timer,
+	refreshRate,
+}: {
+	timer: ReturnType<typeof useCountdown>
+	refreshRate: number
+}) => {
+	const [msRemaining, setMsRemaining] = useState(0)
+
+	useEffect(() => {
+		if (timer.isRunning && !timer.isPaused) {
+			const timeout = setInterval(() => {
+				if (timer.getDiff() <= 0) clearTimeout(timeout)
+				setMsRemaining(timer.getDiff())
+			}, refreshRate)
+			return () => clearTimeout(timeout)
+		}
+	}, [timer.millisecondsLeft])
+
+	return msRemaining
+}
+
+const TimerContent = ({
+	timer,
+	refreshRate,
+}: {
+	timer: ReturnType<typeof useCountdown>
+	refreshRate: number
+}) => {
+	console.log('::::: Rendered TimerContent')
+	const msRemaining = useCountdownMilliseconds({ timer, refreshRate })
+
+	return <>{(msRemaining / 1000).toFixed(1)}</>
 }
 
 const TimerControls: React.FC<TimerControlsProps> = ({ timer, show }) => {
@@ -11,8 +46,10 @@ const TimerControls: React.FC<TimerControlsProps> = ({ timer, show }) => {
 
 	return (
 		<div className="p-32">
-			<h1>{(timer.millisecondsLeft / 1000).toFixed(1)}</h1>
-			{show && <h2 style={{ color: 'green' }}>Done</h2>}
+			<h1 className="text-2xl mb-4">
+				<TimerContent refreshRate={75} timer={timer} />
+			</h1>
+			{show && <h2 className="text-green">Done</h2>}
 			<div>
 				<button className="btn-primary" onClick={() => timer.start()}>
 					Start
@@ -35,9 +72,10 @@ const TimerControls: React.FC<TimerControlsProps> = ({ timer, show }) => {
 }
 
 const BetterTimer = () => {
+	console.log(':::: Rendered BetterTimer')
 	const [showMessage, setShowMessage] = useState(false)
 	const timer = useCountdown({
-		seconds: 1,
+		seconds: 20,
 		onCompletion: () => {
 			setShowMessage(true)
 		},

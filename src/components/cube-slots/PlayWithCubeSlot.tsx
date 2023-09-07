@@ -15,7 +15,7 @@ interface PlayPanelProps {
 interface IProps {}
 
 const PlayPanel: React.FC<PlayPanelProps> = ({ slot }) => {
-	const seconds = 30
+	const seconds = 2
 	const timer = useCountdown({
 		seconds,
 	})
@@ -29,7 +29,7 @@ const PlayPanel: React.FC<PlayPanelProps> = ({ slot }) => {
 				secondsTotal={seconds}
 				debug
 			/>
-			{slot}
+			{/* {slot} */}
 			<TimerControls timer={timer} />
 		</>
 	)
