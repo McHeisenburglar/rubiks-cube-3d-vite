@@ -69,7 +69,7 @@ const useCountdown = (options: CountdownOptions) => {
 	}
 
 	const reset = () => {
-		setMarkers([])
+		// setMarkers([])
 		setMillisecondsLeft(seconds * 1000)
 	}
 

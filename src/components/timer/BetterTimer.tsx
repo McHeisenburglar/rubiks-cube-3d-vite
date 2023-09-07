@@ -16,6 +16,8 @@ const useCountdownMilliseconds = ({
 	const [msRemaining, setMsRemaining] = useState(0)
 
 	useEffect(() => {
+		// console.log('triggered useEffect')
+		if (!timer.isRunning) return setMsRemaining(timer.millisecondsLeft)
 		if (timer.isRunning && !timer.isPaused) {
 			const timeout = setInterval(() => {
 				if (timer.getDiff() <= 0) clearTimeout(timeout)
