@@ -16,6 +16,7 @@ import CubeRefactor from './components/RubiksCube2'
 import CubeRefactor2 from './components/scene-refactor/Main'
 import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
+import CustomizePanel from './components/ui/customize'
 
 function App() {
 	return (
@@ -26,6 +27,7 @@ function App() {
 				<Route path="/timer" element={<TimerMain />} />
 				<Route path="/play-mode" element={<PlayMode />} />
 				<Route path="/scene-refactor" element={<CubeRefactor2 />} />
+				<Route path="/customize-panel" element={<CustomizePanel />} />
 			</Routes>
 		</div>
 	)
