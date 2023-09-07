@@ -18,6 +18,7 @@ import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 
 import PlayWithCubeSlot from './components/cube-slots/PlayWithCubeSlot'
+import BetterTimer from './components/timer/BetterTimer'
 
 function App() {
 	return (
@@ -29,6 +30,7 @@ function App() {
 				<Route path="/play-mode" element={<PlayMode />} />
 				<Route path="/scene-refactor" element={<CubeRefactor2 />} />
 				<Route path="/cube-slot" element={<PlayWithCubeSlot />} />
+				<Route path="/better-timer" element={<BetterTimer />} />
 			</Routes>
 		</div>
 	)
