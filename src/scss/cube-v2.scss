@@ -2,7 +2,7 @@
 .side,
 .cube {
 	// transition: 0.7s cubic-bezier(0.02, 0.44, 0.52, 0.98);
-	transition: 0.3s ease;
+	transition: transform var(--rotation-duration) ease;
 }
 .cube-v2 {
 	.cube-wrapper {
