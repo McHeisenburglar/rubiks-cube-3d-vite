@@ -13,8 +13,10 @@ const Component: React.FC<IProps> = () => {
 	const { cube } = useCube()
 
 	const style = {
+		'--side-radius': '12px',
 		'--sticker-radius': '12px',
 		'--sticker-corner-radius': '12px',
+		'--sticker-padding': '8px',
 	} as React.CSSProperties
 
 	return (
