@@ -156,9 +156,6 @@ export default function TimerMain() {
 		setGuesses([...guesses, newEntry])
 	}
 
-	const buttonClasses =
-		'px-6 py-2 rounded bg-slate-300 hover:bg-slate-400 transition duration-150 mr-2'
-
 	return (
 		<div className="w-4/5 mx-auto bg-white">
 			<div>Timer</div>

@@ -66,6 +66,7 @@ import RotationContextWrapper from '../scene-refactor/RotationContextWrapper'
 import HighlightContextWrapper from '../scene-refactor/HighlightContextProvider'
 import { useSpotlightContext } from '../scene-refactor/useSpotlight'
 import { CorrectGuessLog, GuessLogEntry } from '../timer/TimerMain'
+import { useDocumentTitle } from '../ui/customize/useDocumentTitle'
 
 const SeparateTimerComponent = () => {
 	const gameTimer = useCountdown({
@@ -225,6 +226,7 @@ const PlayModeComponent2: React.FC = () => {
 }
 
 const PlayModeExport = () => {
+	useDocumentTitle('Play Mode')
 	return (
 		<HighlightContextWrapper>
 			<RotationContextWrapper>

@@ -2,7 +2,7 @@
 .side,
 .cube {
 	// transition: 0.7s cubic-bezier(0.02, 0.44, 0.52, 0.98);
-	transition: 0.3s ease;
+	transition: transform var(--rotation-duration) ease;
 }
 .cube-v2 {
 	.cube-wrapper {
@@ -31,13 +31,27 @@
 		height: calc(2 * var(--side-size));
 		overflow: hidden;
 		background: var(--cube-color);
-		border-radius: calc(var(--sticker-radius) * 2);
+		border-radius: calc(var(--side-radius) * 2);
 		padding: var(--sticker-padding);
 		display: inline-grid;
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: repeat(3, 1fr);
 		gap: var(--sticker-padding);
 		opacity: 1;
+	}
+
+	.backside {
+		display: none;
+	}
+
+	.side.inner.x {
+		transform: rotateX(90deg);
+	}
+	.side.inner.y {
+		transform: rotateY(90deg);
+	}
+	.side.inner.z {
+		transform: rotateZ(90deg);
 	}
 
 	.cube-wrapper-3d-fold {
@@ -56,13 +70,16 @@
 		.side {
 			position: absolute;
 		}
+
+		.backside {
+			display: grid;
+		}
+
 		.side-back {
 			transform: rotateY(180deg) translateZ(var(--side-size));
-			// transition: 1s linear;
 		}
 
 		.side-top {
-			// transform-origin: top;
 			transform: rotateX(90deg) translateZ(var(--side-size));
 		}
 
@@ -80,6 +97,30 @@
 
 		.side-front {
 			transform: rotateX(0deg) translateZ(var(--side-size));
+		}
+
+		.side-back.backside {
+			transform: rotateY(180deg) translateZ(var(--side-size)) translateZ(-1px);
+		}
+
+		.side-top.backside {
+			transform: rotateX(90deg) translateZ(var(--side-size)) translateZ(-1px);
+		}
+
+		.side-left.backside {
+			transform: rotateY(-90deg) translateZ(var(--side-size)) translateZ(-1px);
+		}
+
+		.side-right.backside {
+			transform: rotateY(90deg) translateZ(var(--side-size)) translateZ(-1px);
+		}
+
+		.side-bottom.backside {
+			transform: rotateX(-90deg) translateZ(var(--side-size)) translateZ(-1px);
+		}
+
+		.side-front.backside {
+			transform: rotateX(0deg) translateZ(var(--side-size)) translateZ(-1px);
 		}
 	}
 
@@ -102,6 +143,7 @@
 		.side {
 			position: absolute;
 		}
+
 		.side-back {
 			transform: translateX(calc(2 * 2 * var(--side-size)));
 		}

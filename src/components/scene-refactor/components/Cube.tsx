@@ -16,14 +16,22 @@ const Cube: React.FC<CubeProps> = ({ cube, onStickerClick, debug }) => {
 
 	return (
 		<div className={`cube`}>
-			{SIDES.map((side, index) => (
-				<CubeSide
-					side={side}
-					stickers={cube.state[side]}
-					key={index}
-					onStickerClick={handleStickerClick}
-				/>
-			))}
+			{SIDES.map((side, index) => {
+				return (
+					<>
+						<CubeSide
+							side={side}
+							stickers={cube.state[side]}
+							key={index}
+							onStickerClick={handleStickerClick}
+						/>
+						<div className={`side backside side-${side}`}></div>
+					</>
+				)
+			})}
+			<div className="side inner x"></div>
+			<div className="side inner y"></div>
+			<div className="side inner z"></div>
 		</div>
 	)
 }

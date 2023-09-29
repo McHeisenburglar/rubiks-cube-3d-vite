@@ -29,6 +29,7 @@ const Sticker: React.FC<StickerProps> = ({
 		'data-sticker-color': side,
 		'data-sticker-name': name,
 		'data-sticker-id': id,
+		'data-sticker-index': index,
 		'data-piece-type': type,
 		'data-sticker-position': position,
 	}
