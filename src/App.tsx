@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link, NavLink } from 'react-router-dom'
 
 import './assets/index.scss'
 
@@ -22,32 +22,56 @@ const routes = [
 	{
 		path: '/',
 		element: <RubiksCube />,
+		name: 'Home',
 	},
 	{
 		path: '/new-cube',
 		element: <CubeRefactor />,
+		name: 'New Cube',
 	},
 	{
 		path: '/timer',
 		element: <TimerMain />,
+		name: 'Timer',
 	},
 	{
 		path: '/play-mode',
 		element: <PlayMode />,
+		name: 'Play Mode',
 	},
 	{
 		path: '/scene-refactor',
 		element: <CubeRefactor2 />,
+		name: 'Scene Refactor',
 	},
 	{
 		path: '/customize-panel',
 		element: <CustomizePanel />,
+		name: 'Customize',
 	},
 ]
 
 function App() {
 	return (
 		<div className="App">
+			<nav className="px-8 py-4 bg-gray-300 border-b border-gray-400 ">
+				<ul className="flex gap-4">
+					{routes.map((route) => {
+						return (
+							<li>
+								<NavLink
+									to={route.path}
+									className={({ isActive }) => {
+										return isActive ? 'text-slate-800' : 'text-slate-500'
+									}}
+								>
+									{route.name}
+								</NavLink>
+							</li>
+						)
+					})}
+				</ul>
+			</nav>
 			<Routes>
 				{routes.map((route) => (
 					<Route path={route.path} element={route.element} key={route.path} />
