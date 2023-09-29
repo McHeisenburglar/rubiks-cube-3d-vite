@@ -18,16 +18,40 @@ import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 import CustomizePanel from './components/ui/customize'
 
+const routes = [
+	{
+		path: '/',
+		element: <RubiksCube />,
+	},
+	{
+		path: '/new-cube',
+		element: <CubeRefactor />,
+	},
+	{
+		path: '/timer',
+		element: <TimerMain />,
+	},
+	{
+		path: '/play-mode',
+		element: <PlayMode />,
+	},
+	{
+		path: '/scene-refactor',
+		element: <CubeRefactor2 />,
+	},
+	{
+		path: '/customize-panel',
+		element: <CustomizePanel />,
+	},
+]
+
 function App() {
 	return (
 		<div className="App">
 			<Routes>
-				<Route path="/" element={<RubiksCube />} />
-				<Route path="/new-cube" element={<CubeRefactor />} />
-				<Route path="/timer" element={<TimerMain />} />
-				<Route path="/play-mode" element={<PlayMode />} />
-				<Route path="/scene-refactor" element={<CubeRefactor2 />} />
-				<Route path="/customize-panel" element={<CustomizePanel />} />
+				{routes.map((route) => (
+					<Route path={route.path} element={route.element} key={route.path} />
+				))}
 			</Routes>
 		</div>
 	)
