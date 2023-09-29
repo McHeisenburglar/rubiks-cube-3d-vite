@@ -27,7 +27,7 @@ const PlayPanel: React.FC<PlayPanelProps> = ({ slot }) => {
 				incorrectGuesses={1}
 				millisecondsLeft={timer.millisecondsLeft}
 				secondsTotal={seconds}
-				debug
+				// debug
 			/>
 			{slot}
 			<TimerControls timer={timer} />

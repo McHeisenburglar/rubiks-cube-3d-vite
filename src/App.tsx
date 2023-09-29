@@ -18,6 +18,7 @@ import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 import CustomizePanel from './components/ui/customize'
 import PlayWithCubeSlot from './components/cube-slots/PlayWithCubeSlot'
+import PlayModeStructure from './components/new-structure/MainStructure'
 
 const routes = [
 	{
@@ -54,6 +55,11 @@ const routes = [
 		path: '/play-with-cube-slot',
 		element: <PlayWithCubeSlot />,
 		name: 'Cube Slot',
+	},
+	{
+		path: '/new-structure',
+		element: <PlayModeStructure />,
+		name: 'New Structure',
 	},
 ]
 

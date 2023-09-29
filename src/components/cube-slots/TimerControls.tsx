@@ -3,10 +3,11 @@ import useCountdown from '../timer/useCountdown'
 
 interface TimerControlsProps {
 	timer: ReturnType<typeof useCountdown>
+	debug?: boolean
 }
 
-const TimerControls: React.FC<TimerControlsProps> = ({ timer }) => {
-	console.log('::::: Rendered TimerControls')
+const TimerControls: React.FC<TimerControlsProps> = ({ timer, debug }) => {
+	if (debug) console.log('::::: Rendered TimerControls')
 
 	return (
 		<div>
