@@ -10,6 +10,7 @@ import './scss/dev.scss'
 import './scss/buttons.scss'
 import './scss/customize.scss'
 import './scss/play.scss'
+import './scss/sticker-card.scss'
 
 import RubiksCube from './components/RubiksCube'
 import CubeRefactor from './components/RubiksCube2'

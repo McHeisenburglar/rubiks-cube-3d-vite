@@ -1,0 +1,22 @@
+.sticker-card-face {
+	width: 100px;
+	height: 100px;
+	&[data-sticker-color='front'] {
+		background: var(--cube-color-front);
+	}
+	&[data-sticker-color='left'] {
+		background: var(--cube-color-left);
+	}
+	&[data-sticker-color='right'] {
+		background: var(--cube-color-right);
+	}
+	&[data-sticker-color='top'] {
+		background: var(--cube-color-top);
+	}
+	&[data-sticker-color='bottom'] {
+		background: var(--cube-color-bottom);
+	}
+	&[data-sticker-color='back'] {
+		background: var(--cube-color-back);
+	}
+}

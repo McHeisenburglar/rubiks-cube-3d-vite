@@ -1,21 +1,29 @@
 import React, { useMemo } from 'react'
 import { CubeWithPos } from '../../ts/CubeClass3'
-import Cube from '../scene-refactor/components/Cube'
+import { CubeView } from '../cube-slots/CubeView'
 
 interface IProps {}
 
 const StickerCard: React.FC<IProps> = () => {
 	const cube = useMemo(() => new CubeWithPos(), [])
 
-	const sticker = cube.getRandomStickerInFilter(() => true)
+	const sticker = cube.getRandomStickerInFilter((s) => s.type === 'corner')
 
 	return (
 		<>
-			<Cube cube={cube} />
+			<CubeView cube={cube} debug />
 			<div className={` sticker-card ${sticker.type} `}>
-				<div className={`main-face ${sticker.side}`}></div>
+				<div
+					className={`sticker-card-face main-face`}
+					data-sticker-color={sticker.side}
+				></div>
 				{sticker.neighbors.map((s) => {
-					return <div className={`neighbor-face ${s.side}`}></div>
+					return (
+						<div
+							className={`sticker-card-face neighbor-face`}
+							data-sticker-color={s.side}
+						></div>
+					)
 				})}
 			</div>
 		</>
