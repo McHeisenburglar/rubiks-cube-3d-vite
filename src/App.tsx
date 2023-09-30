@@ -17,6 +17,7 @@ import CubeRefactor2 from './components/scene-refactor/Main'
 import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 import CustomizePanel from './components/ui/customize'
+import StickerCard from './components/sticker-cards/Main'
 
 const routes = [
 	{
@@ -48,6 +49,11 @@ const routes = [
 		path: '/customize-panel',
 		element: <CustomizePanel />,
 		name: 'Customize',
+	},
+	{
+		path: '/sticker-cards',
+		element: <StickerCard />,
+		name: 'Sticker Card',
 	},
 ]
 
