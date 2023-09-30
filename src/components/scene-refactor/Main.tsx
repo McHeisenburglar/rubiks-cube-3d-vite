@@ -44,7 +44,7 @@ export const CubeComponent: React.FC<CubeComponentProps> = ({
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
 	return (
-		<div className="cube-v2">
+		<div className="cube-v2 inline-block">
 			<div className="cube-wrapper">
 				<CubeRotationController debug>
 					<CubeStyleProvider config={cube.cubeConfig}>

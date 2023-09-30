@@ -190,7 +190,9 @@ const PlayModeComponent2: React.FC = () => {
 				secondsTotal={gameOptions.seconds}
 				millisecondsLeft={gameTimer.millisecondsLeft}
 			/>
-			<CubeComponent cube={cube} onStickerClick={handleStickerClick} />
+			<div className="text-center">
+				<CubeComponent cube={cube} onStickerClick={handleStickerClick} />
+			</div>
 			{!game.inProgress && (
 				<>
 					{scramble && (
