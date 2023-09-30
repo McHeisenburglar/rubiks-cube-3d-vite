@@ -26,7 +26,7 @@ const StickerCard: React.FC<StickerCardProps> = ({
 		<div
 			className={`text-center sticker-card py-4 px-8 bg-white inline-block rounded-xl shadow ${
 				className || ''
-			}`}
+			} hover:scale-125 hover:z-10 duration-[800ms] ease-[cubic-bezier(.07,.87,.27,1.03)]`}
 		>
 			<CubePiece sticker={sticker} size={60} />
 			<h4 className={`font-bold text-2xl mt-2 ${textColor}`}>
