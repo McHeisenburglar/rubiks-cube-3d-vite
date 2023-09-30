@@ -58,7 +58,7 @@ function App() {
 				<ul className="flex gap-4">
 					{routes.map((route) => {
 						return (
-							<li>
+							<li key={route.path}>
 								<NavLink
 									to={route.path}
 									className={({ isActive }) => {
