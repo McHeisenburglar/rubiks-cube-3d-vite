@@ -1,44 +1,3 @@
-.sticker-card {
-	transform: rotateX(45deg) rotateY(45deg) rotateZ(0deg);
-	transform-style: preserve-3d;
-	position: relative;
-
-	.side-top {
-		transform: rotateX(90deg) translateZ(50px);
-	}
-
-	.side-right {
-		transform: rotateY(90deg) translateZ(50px);
-	}
-
-	.side-front {
-		transform: rotateX(0deg) translateZ(50px);
-	}
-}
-.sticker-card-face {
-	position: absolute;
-	width: 100px;
-	height: 100px;
-	&[data-sticker-color='front'] {
-		background: var(--cube-color-front);
-	}
-	&[data-sticker-color='left'] {
-		background: var(--cube-color-left);
-	}
-	&[data-sticker-color='right'] {
-		background: var(--cube-color-right);
-	}
-	&[data-sticker-color='top'] {
-		background: var(--cube-color-top);
-	}
-	&[data-sticker-color='bottom'] {
-		background: var(--cube-color-bottom);
-	}
-	&[data-sticker-color='back'] {
-		background: var(--cube-color-back);
-	}
-}
-
 .cube-piece-wrapper {
 	width: calc(var(--side-size) * 4);
 	height: calc(var(--side-size) * 4);
@@ -62,7 +21,7 @@
 	// transition: 0.3s;
 }
 .cube-piece-corner {
-	transform: rotateX(-45deg) rotateY(-45deg) rotateZ(0);
+	transform: rotateX(-55deg) rotateY(-45deg) rotateZ(0);
 }
 .cube-piece-edge {
 	transform: rotateX(-60deg) rotateY(-90deg) rotateZ(0);
@@ -78,6 +37,7 @@
 }
 
 .piece-side.sticker {
+	outline-width: 2px !important;
 	opacity: 1 !important;
 	cursor: default !important;
 }

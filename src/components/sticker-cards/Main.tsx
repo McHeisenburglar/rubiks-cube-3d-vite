@@ -3,23 +3,43 @@ import { CubeWithPos } from '../../ts/CubeClass3'
 
 interface IProps {}
 
-const StickerCard: React.FC<IProps> = () => {
-	const cube = useMemo(() => new CubeWithPos(), [])
+interface StickerCardProps {
+	sticker: ISticker
+}
 
-	const sticker = cube.getRandomStickerInFilter((s) => s.type === 'edge')
-
-	console.log('Showing sticker', sticker.name)
-
+const StickerCard: React.FC<StickerCardProps> = ({ sticker }) => {
 	return (
-		<div className="cube-v2-piece">
-			{cube.getStickersByType(['corner', 'edge']).map((s) => (
-				<CubePieceView sticker={s} size={80} debug />
-			))}
+		<div className="text-center mt-20 block">
+			<div className="sticker-card py-4 px-8 bg-white inline-block rounded-xl shadow">
+				<CubePiece sticker={sticker} size={60} />
+				<h4 className="font-bold text-2xl mt-2">
+					{sticker.name.toUpperCase()}
+				</h4>
+			</div>
 		</div>
 	)
 }
 
-export default StickerCard
+const Main: React.FC<IProps> = () => {
+	const cube = useMemo(() => new CubeWithPos(), [])
+
+	const sticker = cube.getRandomStickerInFilter((s) => s.type === 'corner')
+
+	console.log('Showing sticker', sticker.name)
+
+	return (
+		<>
+			<StickerCard sticker={sticker} />
+			<>
+				{cube.getStickersByType(['corner', 'edge']).map((s) => (
+					<CubePiece sticker={s} size={80} debug />
+				))}
+			</>
+		</>
+	)
+}
+
+export default Main
 
 interface CubeView {
 	sticker: ISticker
@@ -28,7 +48,7 @@ interface CubeView {
 	onStickerClick?: (sticker: ISticker) => void
 }
 
-export const CubePieceView: React.FC<CubeView> = ({ sticker, debug, size }) => {
+export const CubePiece: React.FC<CubeView> = ({ sticker, debug, size }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
 	const style = {
@@ -36,26 +56,13 @@ export const CubePieceView: React.FC<CubeView> = ({ sticker, debug, size }) => {
 	} as React.CSSProperties
 
 	return (
-		<div className="cube-piece-wrapper m-auto" style={style}>
-			<CubePiece sticker={sticker} />
-		</div>
-	)
-}
-
-interface CubePieceProps {
-	sticker: ISticker
-	debug?: boolean
-}
-
-const CubePiece: React.FC<CubePieceProps> = ({ sticker, debug }) => {
-	if (debug) console.log('::::: Rendered Cube.')
-
-	return (
-		<div className={`cube-piece cube-piece-${sticker.type}`}>
-			<PieceSticker sticker={sticker} side="top" />
-			{sticker.neighbors?.map((n, i) => {
-				return <PieceSticker sticker={n} side={i === 0 ? 'right' : 'front'} />
-			})}
+		<div className="cube-v2-piece cube-piece-wrapper m-auto" style={style}>
+			<div className={`cube-piece cube-piece-${sticker.type}`}>
+				<PieceSticker sticker={sticker} side="top" />
+				{sticker.neighbors?.map((n, i) => {
+					return <PieceSticker sticker={n} side={i === 0 ? 'right' : 'front'} />
+				})}
+			</div>
 		</div>
 	)
 }

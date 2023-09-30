@@ -18,7 +18,7 @@ import CubeRefactor2 from './components/scene-refactor/Main'
 import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 import CustomizePanel from './components/ui/customize'
-import StickerCard from './components/sticker-cards/Main'
+import Main from './components/sticker-cards/Main'
 import PlayWithCubeSlot from './components/cube-slots/PlayWithCubeSlot'
 import PlayModeStructure from './components/new-structure/MainStructure'
 
@@ -55,7 +55,7 @@ const routes = [
 	},
 	{
 		path: '/sticker-cards',
-		element: <StickerCard />,
+		element: <Main />,
 		name: 'Sticker Card',
 	},
 	{
