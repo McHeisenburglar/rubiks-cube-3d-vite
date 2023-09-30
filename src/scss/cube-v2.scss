@@ -40,6 +40,11 @@
 		opacity: 1;
 	}
 
+	.side.piece-side {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+	}
+
 	.backside {
 		display: none;
 	}

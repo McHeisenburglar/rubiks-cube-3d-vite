@@ -1,4 +1,22 @@
+.sticker-card {
+	transform: rotateX(45deg) rotateY(45deg) rotateZ(0deg);
+	transform-style: preserve-3d;
+	position: relative;
+
+	.side-top {
+		transform: rotateX(90deg) translateZ(50px);
+	}
+
+	.side-right {
+		transform: rotateY(90deg) translateZ(50px);
+	}
+
+	.side-front {
+		transform: rotateX(0deg) translateZ(50px);
+	}
+}
 .sticker-card-face {
+	position: absolute;
 	width: 100px;
 	height: 100px;
 	&[data-sticker-color='front'] {
