@@ -72,6 +72,7 @@ function App() {
 						return (
 							<li>
 								<NavLink
+									key={route.path}
 									to={route.path}
 									className={({ isActive }) => {
 										return isActive ? 'text-slate-800' : 'text-slate-500'
