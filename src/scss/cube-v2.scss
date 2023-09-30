@@ -4,7 +4,8 @@
 	// transition: 0.7s cubic-bezier(0.02, 0.44, 0.52, 0.98);
 	transition: transform var(--rotation-duration) ease;
 }
-.cube-v2 {
+.cube-v2,
+.cube-v2-piece {
 	.cube-wrapper {
 		// background: rgb(238, 235, 210);
 		width: calc(var(--side-size) * 4);
@@ -32,6 +33,7 @@
 		}
 	}
 
+	.piece-side,
 	.side {
 		width: calc(2 * var(--side-size));
 		height: calc(2 * var(--side-size));
@@ -44,11 +46,6 @@
 		grid-template-rows: repeat(3, 1fr);
 		gap: var(--sticker-padding);
 		opacity: 1;
-	}
-
-	.side.piece-side {
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr;
 	}
 
 	.backside {

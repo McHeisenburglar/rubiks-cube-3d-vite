@@ -11,20 +11,17 @@ const StickerCard: React.FC<IProps> = () => {
 	console.log('Showing sticker', sticker.name)
 
 	return (
-		<CubeStyleProvider config={cube.cubeConfig}>
+		<div className="cube-v2-piece">
 			{cube.allStickers.map((s) => (
 				<CubePieceView sticker={s} size={80} debug />
 			))}
-		</CubeStyleProvider>
+		</div>
 	)
 }
 
 export default StickerCard
 
-import CubePerspectiveWrapper from '../new/CubePerspectiveWrapper'
-import CubeRotationController from '../new/CubeRotationWrapper'
 import CubeStyleProvider from '../new/CubeStyleConfigWrapper'
-import { RotationContext } from '../scene-refactor/useRotationEffect'
 interface CubeView {
 	sticker: ISticker
 	debug?: boolean
@@ -34,10 +31,6 @@ interface CubeView {
 
 export const CubePieceView: React.FC<CubeView> = ({ sticker, debug, size }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
-
-	const style = {
-		'--side-size': `${size ? size / 4 : 20}px`,
-	} as React.CSSProperties
 
 	const cornerRotation: RotationSet = {
 		x: -45,
@@ -51,26 +44,25 @@ export const CubePieceView: React.FC<CubeView> = ({ sticker, debug, size }) => {
 		z: 0,
 	}
 
-	const contextValue = {
-		value: sticker.type === 'corner' ? cornerRotation : edgeRotation,
-		update: () => {},
-	}
+	const rotation = sticker.type === 'corner' ? cornerRotation : edgeRotation
+
+	const style = {
+		'--side-size': `${size ? size / 4 : 20}px`,
+		'--rotate-x': `${rotation.x}deg`,
+		'--rotate-y': `${rotation.y}deg`,
+		'--rotate-z': `${rotation.z}deg`,
+	} as React.CSSProperties
 
 	if (sticker.type === 'center') return <></>
 
 	// if (sticker.type === 'corner') rotate({ x: 0, y: 0, z: 0 })
 
 	return (
-		<div className="cube-v2">
-			<div className="cube-wrapper m-auto" style={style}>
-				<RotationContext.Provider value={contextValue}>
-					<CubeRotationController disabled>
-						<CubePerspectiveWrapper mode={'3d-fold'}>
-							<CubePiece sticker={sticker} />
-						</CubePerspectiveWrapper>
-					</CubeRotationController>
-				</RotationContext.Provider>
-			</div>
+		<div
+			className="cube-piece-wrapper m-auto cube-perspective-wrapper cube-wrapper-3d-fold"
+			style={style}
+		>
+			<CubePiece sticker={sticker} />
 		</div>
 	)
 }
@@ -84,7 +76,7 @@ const CubePiece: React.FC<CubePieceProps> = ({ sticker, debug }) => {
 	if (debug) console.log('::::: Rendered Cube.')
 
 	return (
-		<div className={`cube cube-piece`}>
+		<div className={`cube-piece cube-piece-${sticker.type}`}>
 			<CubeSide sticker={sticker} side="top" />
 			{sticker.neighbors?.map((n, i) => {
 				return <CubeSide sticker={n} side={i === 0 ? 'right' : 'front'} />
@@ -104,31 +96,31 @@ export const CubeSide: React.FC<CubeSideProps> = ({ sticker, debug, side }) => {
 	if (debug) console.log('::::: Rendered CubeSide.')
 
 	return (
-		<div className={`side piece-side side-${side}`} data-side={side}>
-			<Sticker sticker={sticker} position={sticker.side + 0} />
-		</div>
+		<>
+			{/* <div className={`piece-side piece-side-${side}`} data-side={side}> */}
+			<PieceSticker sticker={sticker} side={side} position={sticker.side + 0} />
+			{/* </div> */}
+			{/* <PieceSticker sticker={sticker} position={sticker.side + 0} /> */}
+		</>
 	)
 }
 
 interface StickerProps {
 	sticker: ISticker
 	position: string
+	side: Side
 	debug?: boolean
 	classes?: string[]
 }
 
-const Sticker: React.FC<StickerProps> = ({ sticker, position, debug }) => {
+const PieceSticker: React.FC<StickerProps> = ({ sticker, debug, side }) => {
 	if (debug) console.log('::::: Rendered Sticker.')
 
-	const { side, name, type, id } = sticker
+	// const { side } = sticker
 
-	const classList = ['sticker']
+	const classList = ['sticker', 'piece-side', `piece-side-${side}`]
 	const dataAttributes = {
-		'data-sticker-color': side,
-		'data-sticker-name': name,
-		'data-sticker-id': id,
-		'data-piece-type': type,
-		'data-sticker-position': position,
+		'data-sticker-color': sticker.side,
 	}
 
 	return <div className={classList.join(' ')} {...dataAttributes}></div>
