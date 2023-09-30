@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { CubeComponent } from '../../scene-refactor/Main'
 import { CubeWithPos } from '../../../ts/CubeClass3'
 import { useDocumentTitle } from './useDocumentTitle'
@@ -22,6 +22,28 @@ const Component: React.FC<IProps> = () => {
 		'--sticker-padding': '8px',
 	} as React.CSSProperties
 
+	interface StyleConfig {
+		[key: string]: number
+	}
+
+	const [styleState, setStyleState] = useState<StyleConfig>({
+		'rotation-duration': 0.1,
+		'side-radius': 4,
+		'sticker-radius': 4,
+		'sticker-corner-radius': 8,
+		'sticker-padding': 8,
+	})
+	const setCSS = (property: string, value: string) => {
+		if (!styleRef.current) return null
+		styleRef.current.style.setProperty(property, value)
+	}
+
+	useEffect(() => {
+		styleOptions.forEach((style) => {
+			setCSS(style.styleProperty, styleState[style.id].toString() + style.unit)
+		})
+	}, [styleState])
+
 	const styleRef = useRef<HTMLDivElement>(null)
 
 	type CSSOption = {
@@ -30,21 +52,8 @@ const Component: React.FC<IProps> = () => {
 		styleProperty: string
 		minValue: number
 		maxValue: number
-		// value: number | string
-		defaultValue: number
+		steps?: number
 		unit: string
-	}
-
-	const setCSS = (property: string, value: string) => {
-		if (!styleRef.current) return null
-		styleRef.current.style.setProperty(property, value)
-	}
-
-	const getCSSValue = (property: string) => {
-		if (!styleRef.current) return null
-		return parseFloat(
-			getComputedStyle(styleRef.current).getPropertyValue(property)
-		)
 	}
 
 	const styleOptions: CSSOption[] = [
@@ -54,7 +63,7 @@ const Component: React.FC<IProps> = () => {
 			styleProperty: '--rotation-duration',
 			minValue: 0.1,
 			maxValue: 1,
-			defaultValue: 0.1,
+			steps: 0.1,
 			unit: 's',
 		},
 		{
@@ -63,7 +72,6 @@ const Component: React.FC<IProps> = () => {
 			styleProperty: '--side-radius',
 			minValue: 0,
 			maxValue: 20,
-			defaultValue: 18,
 			unit: 'px',
 		},
 		{
@@ -72,7 +80,6 @@ const Component: React.FC<IProps> = () => {
 			styleProperty: '--sticker-radius',
 			minValue: 0,
 			maxValue: 20,
-			defaultValue: 4,
 			unit: 'px',
 		},
 		{
@@ -81,7 +88,6 @@ const Component: React.FC<IProps> = () => {
 			styleProperty: '--sticker-corner-radius',
 			minValue: 0,
 			maxValue: 20,
-			defaultValue: 8,
 			unit: 'px',
 		},
 		{
@@ -90,7 +96,6 @@ const Component: React.FC<IProps> = () => {
 			styleProperty: '--sticker-padding',
 			minValue: 0,
 			maxValue: 20,
-			defaultValue: 8,
 			unit: 'px',
 		},
 	]
@@ -99,13 +104,8 @@ const Component: React.FC<IProps> = () => {
 		e: React.ChangeEvent<HTMLInputElement>,
 		option: CSSOption
 	) {
-		const value = e.target.value
-		console.log(
-			'setting option',
-			option.styleProperty,
-			`${value}${option.unit}`
-		)
-		setCSS(option.styleProperty, `${value}${option.unit}`)
+		const newValue = parseFloat(e.target.value)
+		setStyleState({ ...styleState, [option.id]: newValue })
 	}
 
 	return (
@@ -118,10 +118,11 @@ const Component: React.FC<IProps> = () => {
 							<input
 								type="range"
 								name={option.id}
-								value={getCSSValue(option.styleProperty) || option.defaultValue}
+								value={styleState[option.id]}
 								id={option.id}
 								min={option.minValue}
 								max={option.maxValue}
+								step={option.steps || 1}
 								onChange={(e) => handleInputChange(e, option)}
 							/>
 						</li>
