@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { CubeComponent } from '../../scene-refactor/Main'
 import { CubeWithPos } from '../../../ts/CubeClass3'
 import { useDocumentTitle } from './useDocumentTitle'
+import { useLocalStorage } from '../../../hooks/useLocalStorage'
 
 interface IProps {}
 
@@ -11,7 +12,6 @@ function useCube() {
 }
 
 const Component: React.FC<IProps> = () => {
-	console.log('rendered CustomizePage')
 	useDocumentTitle('Customize Panel')
 	const { cube } = useCube()
 	const style = {
@@ -26,13 +26,14 @@ const Component: React.FC<IProps> = () => {
 		[key: string]: number
 	}
 
-	const [styleState, setStyleState] = useState<StyleConfig>({
-		'rotation-duration': 0.1,
-		'side-radius': 4,
-		'sticker-radius': 4,
-		'sticker-corner-radius': 8,
-		'sticker-padding': 8,
-	})
+	const [styleState, setStyleState, clearLocalStorage] =
+		useLocalStorage<StyleConfig>('styleStorage', {
+			'rotation-duration': 0.1,
+			'side-radius': 4,
+			'sticker-radius': 4,
+			'sticker-corner-radius': 8,
+			'sticker-padding': 8,
+		})
 	const setCSS = (property: string, value: string) => {
 		if (!styleRef.current) return null
 		styleRef.current.style.setProperty(property, value)
@@ -40,7 +41,11 @@ const Component: React.FC<IProps> = () => {
 
 	useEffect(() => {
 		styleOptions.forEach((style) => {
-			setCSS(style.styleProperty, styleState[style.id].toString() + style.unit)
+			if (styleState[style.id])
+				setCSS(
+					style.styleProperty,
+					styleState[style.id].toString() + style.unit
+				)
 		})
 	}, [styleState])
 
@@ -129,7 +134,7 @@ const Component: React.FC<IProps> = () => {
 					)
 				})}
 			</ul>
-			<CubeComponent cube={cube} debug />
+			<CubeComponent cube={cube} />
 		</div>
 	)
 }
