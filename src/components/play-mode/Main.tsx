@@ -123,6 +123,12 @@ const PlayModeComponent2: React.FC = () => {
 		onCorrectGuess: (sticker) => {
 			logCorrectGuess(sticker)
 		},
+		onIncorrectGuess: (sticker) => {
+			const domElement = document.querySelector(
+				`[data-sticker-id=${sticker.id}]`
+			)
+			if (domElement) pulseAnimation(domElement)
+		},
 		onGameStop: () => {
 			clearSpotlight()
 		},
@@ -132,6 +138,13 @@ const PlayModeComponent2: React.FC = () => {
 		const scramble = cube.scramble()
 		console.log('got here')
 		setScramble(scramble)
+	}
+
+	const pulseAnimation = (domElement: Element) => {
+		domElement.classList.add('error')
+		setTimeout(() => {
+			domElement.classList.remove('error')
+		}, 300)
 	}
 
 	useKeypress((e) => {

@@ -44,12 +44,17 @@ export const useGame = (options: useGameOptions) => {
 	}, [currentSticker])
 
 	const checkGuess = (e: KeyboardEvent) => {
-		if (!currentSticker) return
-		if (e.key.toLowerCase() === currentSticker.name.toLowerCase()) {
+		const guessedSticker = cube.getStickerByLetter(
+			e.key.toLowerCase(),
+			'corner'
+		)
+		if (!guessedSticker || !currentSticker) return
+
+		if (guessedSticker.id === currentSticker.id) {
 			options.onCorrectGuess?.(currentSticker)
 			onCorrectGuess()
 		} else {
-			options.onIncorrectGuess?.(currentSticker)
+			options.onIncorrectGuess?.(guessedSticker)
 			onIncorrectGuess()
 		}
 	}

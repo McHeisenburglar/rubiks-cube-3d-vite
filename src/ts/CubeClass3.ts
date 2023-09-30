@@ -266,7 +266,7 @@ export class CubeWithPos {
 		return arr
 	}
 
-	getStickerByLetter(letter: string, type: PieceType) {
+	getStickerByLetter(letter: string, type: PieceType): Sticker | null {
 		// console.log('getting sticker by letter', letter)
 		let result = null
 		SIDES.forEach((side) => {

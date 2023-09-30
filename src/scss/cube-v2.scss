@@ -270,7 +270,7 @@
 	}
 	.sticker.error {
 		opacity: 1;
-		background-color: red;
+		background-color: red !important;
 	}
 
 	@keyframes sticker-pulse {
