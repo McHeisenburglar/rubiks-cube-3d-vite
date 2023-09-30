@@ -5,6 +5,7 @@ export default {
 		fontFamily: {
 			sans: ['Inter', 'Helvetica', 'sans-serif'],
 			serif: ['Merriweather', 'serif'],
+			wide: ['Syne']
 		},
 		extend: {},
 	},

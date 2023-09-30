@@ -9,4 +9,8 @@ interface LooseObject {
 	[key: string]: unknown
 }
 
+type ChildrenProps = {
+	children: ChildElement
+}
+
 type SceneParts = 'rotation' | 'highlight'
