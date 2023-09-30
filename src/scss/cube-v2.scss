@@ -7,9 +7,8 @@
 .cube-v2 {
 	.cube-wrapper {
 		// background: rgb(238, 235, 210);
-		margin: 0 auto;
-		width: 400px;
-		height: 400px;
+		width: calc(var(--side-size) * 4);
+		height: calc(var(--side-size) * 4);
 		position: relative;
 		perspective: 2000px;
 
@@ -24,6 +23,13 @@
 		position: absolute;
 		top: var(--side-size);
 		left: var(--side-size);
+	}
+
+	.cube-piece {
+		transition: none !important;
+		* {
+			transition: none !important;
+		}
 	}
 
 	.side {

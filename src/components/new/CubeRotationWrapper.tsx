@@ -27,6 +27,7 @@ const CubeRotationController: React.FC<IProps> = ({
 	})
 
 	useRotationContextEffect((rotationSet) => {
+		console.log('hello')
 		setRotation({ ...rotationSet })
 	})
 
