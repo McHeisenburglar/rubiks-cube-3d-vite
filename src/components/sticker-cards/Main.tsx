@@ -5,17 +5,33 @@ interface IProps {}
 
 interface StickerCardProps {
 	sticker: ISticker
+	color?: 'red' | 'green' | 'default'
+	className?: React.ComponentProps<'div'>['className']
 }
 
-const StickerCard: React.FC<StickerCardProps> = ({ sticker }) => {
+const StickerCard: React.FC<StickerCardProps> = ({
+	sticker,
+	color,
+	className,
+}) => {
+	const colors = {
+		default: 'text-slate-700',
+		green: 'text-green-600',
+		red: 'text-red-600',
+	}
+
+	const textColor = !color ? colors.default : colors[color]
+
 	return (
-		<div className="text-center mt-20 block">
-			<div className="sticker-card py-4 px-8 bg-white inline-block rounded-xl shadow">
-				<CubePiece sticker={sticker} size={60} />
-				<h4 className="font-bold text-2xl mt-2">
-					{sticker.name.toUpperCase()}
-				</h4>
-			</div>
+		<div
+			className={`text-center sticker-card py-4 px-8 bg-white inline-block rounded-xl shadow ${
+				className || ''
+			}`}
+		>
+			<CubePiece sticker={sticker} size={60} />
+			<h4 className={`font-bold text-2xl mt-2 ${textColor}`}>
+				{sticker.name.toUpperCase()}
+			</h4>
 		</div>
 	)
 }
@@ -29,12 +45,11 @@ const Main: React.FC<IProps> = () => {
 
 	return (
 		<>
-			<StickerCard sticker={sticker} />
-			<>
+			<div className="flex p-4 gap-4 flex-wrap">
 				{cube.getStickersByType(['corner', 'edge']).map((s) => (
-					<CubePiece sticker={s} size={80} debug />
+					<StickerCard sticker={s} />
 				))}
-			</>
+			</div>
 		</>
 	)
 }
