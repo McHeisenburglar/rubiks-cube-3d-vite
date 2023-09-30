@@ -21,6 +21,7 @@ import CustomizePanel from './components/ui/customize'
 import Main from './components/sticker-cards/Main'
 import PlayWithCubeSlot from './components/cube-slots/PlayWithCubeSlot'
 import PlayModeStructure from './components/new-structure/MainStructure'
+import InputPage from './components/input/InputPage'
 
 const routes = [
 	{
@@ -67,6 +68,11 @@ const routes = [
 		path: '/new-structure',
 		element: <PlayModeStructure />,
 		name: 'New Structure',
+	},
+	{
+		path: '/input-elements',
+		element: <InputPage />,
+		name: 'Input',
 	},
 ]
 
