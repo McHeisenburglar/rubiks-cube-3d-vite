@@ -1,4 +1,4 @@
-import { Routes, Route, Link, NavLink } from 'react-router-dom'
+import { Routes, Route, NavLink } from 'react-router-dom'
 
 import './assets/index.scss'
 
@@ -18,6 +18,8 @@ import TimerMain from './components/timer/TimerMain'
 import PlayMode from './components/play-mode/Main'
 import CustomizePanel from './components/ui/customize'
 import StickerCard from './components/sticker-cards/Main'
+import PlayWithCubeSlot from './components/cube-slots/PlayWithCubeSlot'
+import PlayModeStructure from './components/new-structure/MainStructure'
 
 const routes = [
 	{
@@ -55,6 +57,16 @@ const routes = [
 		element: <StickerCard />,
 		name: 'Sticker Card',
 	},
+	{
+		path: '/play-with-cube-slot',
+		element: <PlayWithCubeSlot />,
+		name: 'Cube Slot',
+	},
+	{
+		path: '/new-structure',
+		element: <PlayModeStructure />,
+		name: 'New Structure',
+	},
 ]
 
 function App() {
@@ -66,6 +78,7 @@ function App() {
 						return (
 							<li key={route.path}>
 								<NavLink
+									key={route.path}
 									to={route.path}
 									className={({ isActive }) => {
 										return isActive ? 'text-slate-800' : 'text-slate-500'
