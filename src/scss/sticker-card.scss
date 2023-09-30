@@ -78,7 +78,8 @@
 }
 
 .piece-side.sticker {
-	opacity: 1;
+	opacity: 1 !important;
+	cursor: default !important;
 }
 
 .piece-side-back {
