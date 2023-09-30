@@ -13,7 +13,7 @@ const StickerCard: React.FC<IProps> = () => {
 	return (
 		<CubeStyleProvider config={cube.cubeConfig}>
 			{cube.allStickers.map((s) => (
-				<CubePieceView sticker={s} debug />
+				<CubePieceView sticker={s} size={80} debug />
 			))}
 		</CubeStyleProvider>
 	)
@@ -28,14 +28,15 @@ import { RotationContext } from '../scene-refactor/useRotationEffect'
 interface CubeView {
 	sticker: ISticker
 	debug?: boolean
+	size?: number
 	onStickerClick?: (sticker: ISticker) => void
 }
 
-const CubePieceView: React.FC<CubeView> = ({ debug, sticker }) => {
+export const CubePieceView: React.FC<CubeView> = ({ sticker, debug, size }) => {
 	if (debug) console.log('::::: Rendered CubeComponent.')
 
 	const style = {
-		'--side-size': '25px',
+		'--side-size': `${size ? size / 4 : 20}px`,
 	} as React.CSSProperties
 
 	const cornerRotation: RotationSet = {
