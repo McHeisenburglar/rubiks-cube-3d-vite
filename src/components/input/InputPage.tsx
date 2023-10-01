@@ -22,9 +22,9 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
   showCheckmark,
 }) => {
   const activeClass: CSSClass =
-    "px-4 py-2 text-sm font-medium rounded-lg border-blue-700 shadow-lg shadow-blue-700/20 border bg-blue-700 text-white font-semi-bold  active:scale-90 transition duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)]";
+    "px-4 py-2 text-sm font-medium rounded-lg border-blue-700 shadow-lg shadow-blue-700/20 border bg-blue-700 text-white font-semi-bold  active:scale-90 transition duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)] mr-2";
   const defaultClass: CSSClass =
-    "px-4 py-2 text-sm rounded-lg border-slate-200 border text-slate-700 font-semi-bold active:scale-90 hover:shadow-sm transition hover:scale-110 duration-300 ease-out";
+    "px-4 py-2 text-sm rounded-lg border-slate-200 bg-white border text-slate-700 mr-2 font-semi-bold active:scale-90 hover:shadow-sm transition hover:scale-110 duration-300 ease-out";
 
   return (
     <button
@@ -54,11 +54,38 @@ interface IProps {
   options: Array<string | number>;
 }
 
-// interface SwitchListProps {
-//     options:
-// }
+interface RadioOption {
+  value: string;
+  label: string;
+  selected: boolean;
+}
 
-// export const SwitchList: React.FC<SwitchListProps>;
+interface SwitchListProps {
+  options: RadioOption[];
+  handleClick: (option: RadioOption) => void;
+}
+
+export const SwitchList: React.FC<SwitchListProps> = ({
+  options,
+  handleClick,
+}) => {
+  return (
+    <>
+      {options.map((option, index) => {
+        return (
+          <SwitchButton
+            key={index}
+            active={option.selected}
+            handleClick={() => handleClick(option)}
+            showCheckmark
+          >
+            {option.label}
+          </SwitchButton>
+        );
+      })}
+    </>
+  );
+};
 
 export const SwitchRow: React.FC<IProps> = ({ label, options }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -88,35 +115,51 @@ export const SwitchRow: React.FC<IProps> = ({ label, options }) => {
 };
 
 const Main = () => {
-  const optionSets = [
+  const multiselect = true;
+  const [options, setOptions] = useState<RadioOption[]>([
     {
-      label: "Piece type",
-      options: ["Corners", "Edges"],
+      value: "corners",
+      label: "Corners",
+      selected: false,
     },
     {
-      label: "Timer",
-      options: [15, 30, 60, "∞"],
+      label: "Edges",
+      value: "edges",
+      selected: false,
     },
-  ];
+  ]);
+
+  const handleRadioClick = (option: RadioOption) => {
+    if (multiselect) toggleSelected(option);
+    else setSelected(option);
+  };
+
+  const setSelected = (option: RadioOption) => {
+    setOptions((cur) =>
+      cur.map((o) => ({
+        ...o,
+        selected: o.value === option.value,
+      }))
+    );
+  };
+
+  const toggleSelected = (option: RadioOption) => {
+    setOptions((cur) =>
+      cur.map((o) => {
+        if (o.value === option.value)
+          return {
+            ...o,
+            selected: !o.selected,
+          };
+        return o;
+      })
+    );
+  };
 
   return (
-    <>
-      {/* {optionSets.map((set, index) => (
-        <SwitchRow label={set.label} key={index} options={set.options} />
-      ))} */}
-      <SwitchRow
-        label={"Options"}
-        options={[
-          "Option 1",
-          "Option 2",
-          "Option 3",
-          "Option 4",
-          "Option 5",
-          "Option 6",
-          "Option 7",
-        ]}
-      />
-    </>
+    <div className="bg-white max-w-xl px-4 py-8 m-auto flex justify-center items-center">
+      <SwitchList options={options} handleClick={handleRadioClick} />
+    </div>
   );
 };
 
