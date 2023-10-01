@@ -13,4 +13,6 @@ type ChildrenProps = {
 	children: ChildElement
 }
 
+type CSSClass = React.ComponentProps<'div'>['className']
+
 type SceneParts = 'rotation' | 'highlight'
