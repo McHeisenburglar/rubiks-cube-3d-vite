@@ -57,16 +57,17 @@ interface IProps {
 interface RadioOption {
   value: string;
   label: string;
-  selected: boolean;
 }
 
 interface SwitchListProps {
   options: RadioOption[];
+  selectedValue: string | null;
   handleClick: (option: RadioOption) => void;
 }
 
 export const SwitchList: React.FC<SwitchListProps> = ({
   options,
+  selectedValue,
   handleClick,
 }) => {
   return (
@@ -75,7 +76,7 @@ export const SwitchList: React.FC<SwitchListProps> = ({
         return (
           <SwitchButton
             key={index}
-            active={option.selected}
+            active={option.value === selectedValue}
             handleClick={() => handleClick(option)}
             showCheckmark
           >
@@ -114,52 +115,115 @@ export const SwitchRow: React.FC<IProps> = ({ label, options }) => {
   );
 };
 
+interface ButtonProps {
+  children: ChildElement;
+  disabled: boolean;
+  handleClick: () => void;
+}
+
+const PlayButton: React.FC<ButtonProps> = ({
+  children,
+  handleClick,
+  disabled,
+}) => {
+  const buttonClass =
+    "px-4 py-2 text-sm font-semibold rounded-lg border-green-600 shadow-lg shadow-green-700/20 border bg-green-600 text-white font-semi-bold disabled:opacity-60  enabled:hover:scale-105 enabled: hover:translate enabled:hover:shadow-green-700/30 enabled:active:scale-90 transition duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)] mr-2";
+
+  return (
+    <button
+      type="button"
+      className={buttonClass}
+      disabled={disabled}
+      onClick={() => {
+        handleClick();
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
 const Main = () => {
-  const multiselect = true;
-  const [options, setOptions] = useState<RadioOption[]>([
-    {
-      value: "corners",
-      label: "Corners",
-      selected: false,
-    },
-    {
-      label: "Edges",
-      value: "edges",
-      selected: false,
-    },
-  ]);
+  interface GameOptions {
+    pieceType: "corners" | "edges" | null;
+    seconds: "60s" | "30s" | "infinite" | null;
+  }
 
-  const handleRadioClick = (option: RadioOption) => {
-    if (multiselect) toggleSelected(option);
-    else setSelected(option);
-  };
+  const [gameOptions, setGameOptions] = useState<GameOptions>({
+    pieceType: null,
+    seconds: null,
+  });
 
-  const setSelected = (option: RadioOption) => {
-    setOptions((cur) =>
-      cur.map((o) => ({
-        ...o,
-        selected: o.value === option.value,
-      }))
-    );
-  };
-
-  const toggleSelected = (option: RadioOption) => {
-    setOptions((cur) =>
-      cur.map((o) => {
-        if (o.value === option.value)
-          return {
-            ...o,
-            selected: !o.selected,
-          };
-        return o;
-      })
-    );
+  const handleRadioClick = (key: "pieceType" | "seconds") => {
+    return (option: RadioOption) => {
+      setGameOptions((cur) => {
+        return {
+          ...cur,
+          [key]: option.value,
+        };
+      });
+    };
   };
 
   return (
-    <div className="bg-white max-w-xl px-4 py-8 m-auto flex justify-center items-center">
-      <SwitchList options={options} handleClick={handleRadioClick} />
-    </div>
+    <>
+      <div className="bg-white max-w-xl m-auto p-4">
+        <div className="p-4 flex justify-between items-center">
+          <h3 className="wide text-xl">Piece types</h3>
+          <div className="flex justify-center items-center">
+            <SwitchList
+              options={[
+                {
+                  label: "Corners",
+                  value: "corners",
+                },
+                {
+                  label: "Edges",
+                  value: "edges",
+                },
+              ]}
+              selectedValue={gameOptions.pieceType}
+              handleClick={handleRadioClick("pieceType")}
+            />
+          </div>
+        </div>
+        <div className="p-4 flex justify-between items-center">
+          <h3 className="wide text-xl">Seconds in game</h3>
+          <div className="flex justify-center items-center">
+            <SwitchList
+              options={[
+                {
+                  label: "30s",
+                  value: "30",
+                },
+                {
+                  label: "60s",
+                  value: "60",
+                },
+                {
+                  label: "120s",
+                  value: "120",
+                },
+                {
+                  label: "∞",
+                  value: "none",
+                },
+              ]}
+              selectedValue={gameOptions.seconds}
+              handleClick={handleRadioClick("seconds")}
+            />
+          </div>
+        </div>
+        <div className="p-4 flex justify-end">
+          <PlayButton
+            disabled={!gameOptions.pieceType || !gameOptions.seconds}
+            handleClick={() => {}}
+          >
+            Start game
+          </PlayButton>
+        </div>
+      </div>
+    </>
   );
 };
 
