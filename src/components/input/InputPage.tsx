@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
+import { NewButton } from "../play-mode/NewButton";
 
 interface IProps {}
 
@@ -40,8 +41,8 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
                 <CheckmarkIcon
                     className={
                         active
-                            ? "text-white w-auto ml-2 scale-100  opacity-100 duration-200 ease-out"
-                            : "text-white w-0 opacity-0 duration-200 ease-out"
+                            ? "ml-2 w-auto scale-100 text-white  opacity-100 duration-200 ease-out"
+                            : "w-0 text-white opacity-0 duration-200 ease-out"
                     }
                 />
             )}
@@ -95,9 +96,9 @@ export const SwitchRow: React.FC<IProps> = ({ label, options }) => {
         setSelectedOption(index);
     };
     return (
-        <div className="bg-white max-w-xl px-4 py-8 m-auto flex justify-center items-center">
+        <div className="m-auto flex max-w-xl items-center justify-center bg-white px-4 py-8">
             {/* <h3 className="wide text-xl">{label}</h3> */}
-            <div className="options flex gap-2 justify-center flex-wrap">
+            <div className="options flex flex-wrap justify-center gap-2">
                 {options.map((option, index) => {
                     return (
                         <SwitchButton
@@ -167,10 +168,10 @@ const Main = () => {
 
     return (
         <>
-            <div className="bg-white max-w-xl m-auto p-4">
-                <div className="p-4 flex justify-between items-center">
+            <div className="m-auto max-w-xl bg-white p-4">
+                <div className="flex items-center justify-between p-4">
                     <h3 className="wide text-xl">Piece types</h3>
-                    <div className="flex justify-center items-center">
+                    <div className="flex items-center justify-center">
                         <SwitchList
                             options={[
                                 {
@@ -187,9 +188,9 @@ const Main = () => {
                         />
                     </div>
                 </div>
-                <div className="p-4 flex justify-between items-center">
+                <div className="flex items-center justify-between p-4">
                     <h3 className="wide text-xl">Seconds in game</h3>
-                    <div className="flex justify-center items-center">
+                    <div className="flex items-center justify-center">
                         <SwitchList
                             options={[
                                 {
@@ -214,7 +215,7 @@ const Main = () => {
                         />
                     </div>
                 </div>
-                <div className="p-4 flex justify-end">
+                <div className="flex justify-end p-4">
                     <PlayButton
                         disabled={
                             !gameOptions.pieceType || !gameOptions.seconds
@@ -223,6 +224,27 @@ const Main = () => {
                     >
                         Start game
                     </PlayButton>
+                </div>
+                <div>
+                    {["filled", "outline"].map((style) => {
+                        return (
+                            <div>
+                                {["red", "green", "blue", "slate"].map(
+                                    (color) => {
+                                        return (
+                                            <NewButton
+                                                onClick={() => {}}
+                                                color={color}
+                                                style={style}
+                                            >
+                                                {color} {style}
+                                            </NewButton>
+                                        );
+                                    },
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </>

@@ -56,7 +56,7 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
         <>
             {game.inProgress && (
                 <div className="text-left">
-                    <h1 className="text-lg font-bold mb-2">Game component</h1>
+                    <h1 className="mb-2 text-lg font-bold">Game component</h1>
                     <ul>
                         <li>
                             Current letter to guess: {game.currentSticker?.name}
@@ -158,7 +158,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         },
         onIncorrectGuess: (sticker) => {
             const domElement = document.querySelector(
-                `[data-sticker-id=${sticker.id}]`
+                `[data-sticker-id=${sticker.id}]`,
             );
             if (domElement) pulseAnimation(domElement);
         },
@@ -232,19 +232,19 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
     // };
 
     return (
-        <div className="mx-auto max-w-[60rem] px-24 bg-white pb-8">
+        <div className="mx-auto max-w-[60rem] bg-white px-24 pb-8">
             <Scoreboard
                 correctGuesses={game.correct}
                 incorrectGuesses={game.incorrect}
                 secondsTotal={gameOptions.seconds}
                 millisecondsLeft={gameTimer.millisecondsLeft}
             />
-            <div className="text-center relative">
+            <div className="relative text-center">
                 <div
-                    className={`absolute l-0 t-0 w-full h-full ${
+                    className={`l-0 t-0 absolute h-full w-full ${
                         gameTimer.isPaused
-                            ? "bg-white/50 backdrop-blur-xl z-10"
-                            : "opacity-0 -z-10"
+                            ? "z-10 bg-white/50 backdrop-blur-xl"
+                            : "-z-10 opacity-0"
                     } flex items-center justify-center transition-all duration-200 ease-out`}
                 >
                     <FontAwesomeIcon icon={faPause} size="5x" color={"white"} />
@@ -254,7 +254,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             {!game.inProgress && (
                 <>
                     {scramble && (
-                        <div className="text-center relative -top-8">
+                        <div className="relative -top-8 text-center">
                             <span className="text-xs">
                                 Scramble: {scramble}
                             </span>
@@ -277,10 +277,10 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             )}
             {!game.inProgress && (
                 <>
-                    <div className="p-4 flex flex-row">
-                        <div className="p-4 flex flex-col justify-between items-start gap-3">
+                    <div className="flex flex-row p-4">
+                        <div className="flex flex-col items-start justify-between gap-3 p-4">
                             <h3 className="text-lg">Piece types</h3>
-                            <div className="flex justify-center items-center">
+                            <div className="flex items-center justify-center">
                                 <SwitchList
                                     options={[
                                         {
@@ -297,9 +297,9 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                                 />
                             </div>
                         </div>
-                        <div className="p-4 flex flex-col justify-between items-start gap-3">
+                        <div className="flex flex-col items-start justify-between gap-3 p-4">
                             <h3 className="text-lg">Seconds in game</h3>
-                            <div className="flex justify-center items-center">
+                            <div className="flex items-center justify-center">
                                 <SwitchList
                                     options={[
                                         {
@@ -322,7 +322,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         </div>
                     </div>
 
-                    <div className="p-4 flex justify-end">
+                    <div className="flex justify-end p-4">
                         <PlayButton
                             disabled={
                                 !gameOptions.pieceType || !gameOptions.seconds

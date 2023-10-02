@@ -6,21 +6,21 @@
 
 @layer components {
     .btn-primary {
-        @apply px-6 py-2 rounded bg-slate-300 hover:bg-slate-400 transition duration-150;
+        @apply rounded bg-slate-300 px-6 py-2 transition duration-150 hover:bg-slate-400;
     }
     .btn-primary.success {
-        @apply bg-green-500 text-white font-medium hover:bg-green-600;
+        @apply bg-green-500 font-medium text-white hover:bg-green-600;
     }
     .btn-primary.destructive {
-        @apply bg-red-500 text-white font-medium hover:bg-red-600;
-    }
-    .squeeze-click {
-        @apply active:scale-90 duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)];
+        @apply bg-red-500 font-medium text-white hover:bg-red-600;
     }
 }
 
-@layer utilties {
+@layer utilities {
     .wide {
-        @apply font-wide font-bold tracking-wide;
+        @apply font-wide font-semibold tracking-wide;
+    }
+    .squeeze-click {
+        @apply duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)] active:scale-90;
     }
 }
