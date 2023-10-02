@@ -168,10 +168,12 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 
     const handleScramble = () => {
         const scramble = cube.scramble();
+        clearSpotlight();
         setScramble(scramble);
     };
 
     const handleResetScramble = () => {
+        clearSpotlight();
         setScramble(null);
     };
 
