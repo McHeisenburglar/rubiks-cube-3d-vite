@@ -1,8 +1,8 @@
 // import { CubeWithPos } from '../../ts/CubeClass3'
-import Cube from "../new/Cube";
 import CubePerspectiveWrapper from "../new/CubePerspectiveWrapper";
 import CubeRotationController from "../new/CubeRotationWrapper";
 import CubeStyleProvider from "../new/CubeStyleConfigWrapper";
+import Cube from "../scene-refactor/components/Cube";
 import { useCubeContext } from "./useCubeContext";
 
 interface CubeView {

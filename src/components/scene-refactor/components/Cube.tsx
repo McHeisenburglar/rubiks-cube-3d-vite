@@ -1,76 +1,76 @@
-import { SIDES } from '../../../ts/helper'
-import Sticker from './Sticker'
-import { CubeWithPos } from '../../../ts/CubeClass3'
+import { SIDES } from "../../../ts/helper";
+import Sticker from "./Sticker";
+import { CubeWithPos } from "../../../ts/CubeClass3";
 
 interface CubeProps {
-	cube: CubeWithPos
-	onStickerClick?: (sticker: ISticker) => void
-	debug?: boolean
+    cube: CubeWithPos;
+    onStickerClick?: (sticker: ISticker) => void;
+    debug?: boolean;
 }
 
-const Cube: React.FC<CubeProps> = ({ cube, onStickerClick, debug }) => {
-	if (debug) console.log('::::: Rendered Cube.')
+export const Cube: React.FC<CubeProps> = ({ cube, onStickerClick, debug }) => {
+    if (debug) console.log("::::: Rendered Cube.");
 
-	const handleStickerClick = (sticker: ISticker) =>
-		onStickerClick && onStickerClick(sticker)
+    const handleStickerClick = (sticker: ISticker) =>
+        onStickerClick && onStickerClick(sticker);
 
-	return (
-		<div className={`cube`}>
-			{SIDES.map((side, index) => {
-				return (
-					<>
-						<CubeSide
-							side={side}
-							stickers={cube.state[side]}
-							key={index}
-							onStickerClick={handleStickerClick}
-						/>
-						<div className={`side backside side-${side}`}></div>
-					</>
-				)
-			})}
-			<div className="side inner x"></div>
-			<div className="side inner y"></div>
-			<div className="side inner z"></div>
-		</div>
-	)
-}
+    return (
+        <div className={`cube`}>
+            {SIDES.map((side, index) => {
+                return (
+                    <>
+                        <CubeSide
+                            side={side}
+                            stickers={cube.state[side]}
+                            key={index}
+                            onStickerClick={handleStickerClick}
+                        />
+                        <div className={`side backside side-${side}`}></div>
+                    </>
+                );
+            })}
+            <div className="side inner x"></div>
+            <div className="side inner y"></div>
+            <div className="side inner z"></div>
+        </div>
+    );
+};
 
 /* CUBE SIDE */
 interface CubeSideProps {
-	side: Side
-	stickers: ISticker[]
-	debug?: boolean
-	onStickerClick?: (sticker: ISticker) => void
+    side: Side;
+    stickers: ISticker[];
+    debug?: boolean;
+    onStickerClick?: (sticker: ISticker) => void;
 }
 
 export const CubeSide: React.FC<CubeSideProps> = ({
-	side,
-	stickers,
-	debug,
-	onStickerClick,
+    side,
+    stickers,
+    debug,
+    onStickerClick,
 }) => {
-	if (debug) console.log('::::: Rendered CubeSide.')
+    if (debug) console.log("::::: Rendered CubeSide.");
 
-	const handleStickerClick = (sticker: ISticker) =>
-		onStickerClick && onStickerClick(sticker)
+    const handleStickerClick = (sticker: ISticker) =>
+        onStickerClick && onStickerClick(sticker);
 
-	return (
-		<div className={`side side-${side}`} data-side={side}>
-			{stickers.map((sticker: ISticker, index: number) => {
-				const position = `${side}-${index}`
-				return (
-					<Sticker
-						key={index}
-						sticker={sticker}
-						index={index}
-						position={position}
-						onClick={() => handleStickerClick(sticker)}
-					/>
-				)
-			})}
-		</div>
-	)
-}
+    return (
+        <div className={`side side-${side}`} data-side={side}>
+            {stickers.map((sticker: ISticker, index: number) => {
+                const position = `${side}-${index}`;
+                return (
+                    <Sticker
+                        key={index}
+                        sticker={sticker}
+                        index={index}
+                        position={position}
+                        onClick={() => handleStickerClick(sticker)}
+                    />
+                );
+            })}
+        </div>
+    );
+};
 
-export default Cube
+export default Cube;
