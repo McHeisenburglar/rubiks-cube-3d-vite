@@ -184,6 +184,9 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 
     useKeypress((e) => {
         e.preventDefault();
+        if (e.key === " " && !game.inProgress) {
+            return gameTimer.start();
+        }
         if (!game.inProgress) {
             const sticker = cube.getStickerByLetter(e.key, "edge");
             if (sticker) setSpotlight(sticker);
@@ -221,9 +224,9 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         game.addGuessLogEntry(logEntry);
     };
 
-    const handleStickerClick = (sticker: ISticker) => {
-        if (!game.inProgress) setSpotlight(sticker);
-    };
+    // const handleStickerClick = (sticker: ISticker) => {
+    //     if (!game.inProgress) setSpotlight(sticker);
+    // };
 
     return (
         <div className="mx-auto max-w-[60rem] px-24 bg-white pb-8">
