@@ -70,6 +70,7 @@ import HighlightContextWrapper from "../scene-refactor/HighlightContextProvider"
 import { useSpotlightContext } from "../scene-refactor/useSpotlight";
 import { CorrectGuessLog, GuessLogEntry } from "../timer/TimerMain";
 import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
+import { PlayButton, RadioOption, SwitchList } from "../input/InputPage";
 
 const SeparateTimerComponent = () => {
     const gameTimer = useCountdown({
@@ -88,25 +89,6 @@ const SeparateTimerComponent = () => {
     );
 };
 
-const PlayModeComponent = () => {
-    const cube = useMemo<CubeWithPos>(() => {
-        const cube = new CubeWithPos();
-        cube.scramble();
-        return cube;
-    }, []);
-
-    return (
-        <>
-            <SeparateTimerComponent />
-            <HighlightContextWrapper>
-                <RotationContextWrapper>
-                    <CubeComponent cube={cube} />
-                </RotationContextWrapper>
-            </HighlightContextWrapper>
-        </>
-    );
-};
-
 const PlayModeComponent2: React.FC = () => {
     console.log("rendered");
     const [scramble, setScramble] = useState<string | null>(null);
@@ -115,6 +97,27 @@ const PlayModeComponent2: React.FC = () => {
         if (scramble) cube.performAlgorithm(scramble);
         return cube;
     }, [scramble]);
+
+    interface GameOptions {
+        pieceType: "corner" | "edge";
+        seconds: number;
+    }
+
+    const [gameOptions, setGameOptions] = useState<GameOptions>({
+        pieceType: "corner",
+        seconds: 60,
+    });
+
+    const handleRadioClick = (key: "pieceType" | "seconds") => {
+        return (option: RadioOption) => {
+            setGameOptions((cur) => {
+                return {
+                    ...cur,
+                    [key]: option.value,
+                };
+            });
+        };
+    };
 
     const { setSpotlight, clearSpotlight } = useSpotlightContext();
 
@@ -162,11 +165,6 @@ const PlayModeComponent2: React.FC = () => {
             game.checkGuess(e);
         }
     });
-
-    const gameOptions = {
-        seconds: 10,
-        type: "corner",
-    };
 
     const gameTimer = useCountdown({
         seconds: gameOptions.seconds,
@@ -229,6 +227,63 @@ const PlayModeComponent2: React.FC = () => {
                         >
                             Scramble cube
                         </button>
+                    </div>
+                </>
+            )}
+            {!game.inProgress && (
+                <>
+                    <div className="p-4 flex justify-between items-center">
+                        <h3 className="wide text-xl">Piece types</h3>
+                        <div className="flex justify-center items-center">
+                            <SwitchList
+                                options={[
+                                    {
+                                        label: "Corners",
+                                        value: "corner",
+                                    },
+                                    {
+                                        label: "Edges",
+                                        value: "edge",
+                                    },
+                                ]}
+                                selectedValue={gameOptions.pieceType}
+                                handleClick={handleRadioClick("pieceType")}
+                            />
+                        </div>
+                    </div>
+                    <div className="p-4 flex justify-between items-center">
+                        <h3 className="wide text-xl">Seconds in game</h3>
+                        <div className="flex justify-center items-center">
+                            <SwitchList
+                                options={[
+                                    {
+                                        label: "30s",
+                                        value: 30,
+                                    },
+                                    {
+                                        label: "60s",
+                                        value: 60,
+                                    },
+                                    {
+                                        label: "120s",
+                                        value: 120,
+                                    },
+                                ]}
+                                selectedValue={gameOptions.seconds}
+                                handleClick={handleRadioClick("seconds")}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="p-4 flex justify-end">
+                        <PlayButton
+                            disabled={
+                                !gameOptions.pieceType || !gameOptions.seconds
+                            }
+                            handleClick={() => {}}
+                        >
+                            Start game
+                        </PlayButton>
                     </div>
                 </>
             )}
