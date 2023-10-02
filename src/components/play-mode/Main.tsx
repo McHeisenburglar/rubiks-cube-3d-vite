@@ -4,6 +4,7 @@ import Scoreboard from "../timer/Scoreboard";
 import {
     faShuffle,
     faArrowRotateLeft,
+    faPause,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -238,7 +239,18 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                 secondsTotal={gameOptions.seconds}
                 millisecondsLeft={gameTimer.millisecondsLeft}
             />
-            <div className="text-center">{cubeSlot}</div>
+            <div className="text-center relative">
+                <div
+                    className={`absolute l-0 t-0 w-full h-full ${
+                        gameTimer.isPaused
+                            ? "bg-white/50 backdrop-blur-xl z-10"
+                            : "opacity-0 -z-10"
+                    } flex items-center justify-center transition-all duration-200 ease-out`}
+                >
+                    <FontAwesomeIcon icon={faPause} size="5x" color={"white"} />
+                </div>
+                {cubeSlot}
+            </div>
             {!game.inProgress && (
                 <>
                     {scramble && (
