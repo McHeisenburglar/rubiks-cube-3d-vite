@@ -21,6 +21,6 @@
         @apply font-wide font-semibold tracking-wide;
     }
     .squeeze-click {
-        @apply duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)] active:scale-90;
+        @apply duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)] active:scale-90 hover:active:scale-90;
     }
 }

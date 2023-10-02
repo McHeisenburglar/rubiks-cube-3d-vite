@@ -168,7 +168,7 @@ const Main = () => {
 
     return (
         <>
-            <div className="m-auto max-w-xl bg-white p-4">
+            <div className="m-auto max-w-3xl bg-white p-4">
                 <div className="flex items-center justify-between p-4">
                     <h3 className="wide text-xl">Piece types</h3>
                     <div className="flex items-center justify-center">
@@ -225,28 +225,33 @@ const Main = () => {
                         Start game
                     </PlayButton>
                 </div>
-                <div>
-                    {["filled", "outline"].map((style) => {
-                        return (
-                            <div>
-                                {["red", "green", "blue", "slate"].map(
-                                    (color) => {
-                                        return (
-                                            <NewButton
-                                                onClick={() => {}}
-                                                color={color}
-                                                icon={faShuffle}
-                                                style={style}
-                                            >
-                                                {color} {style}
-                                            </NewButton>
-                                        );
-                                    },
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+                {["sm", "md", "lg"].map((size) => {
+                    return (
+                        <div className="mb-6">
+                            {["filled", "outline"].map((style) => {
+                                return (
+                                    <div>
+                                        {["red", "green", "blue", "slate"].map(
+                                            (color) => {
+                                                return (
+                                                    <NewButton
+                                                        onClick={() => {}}
+                                                        color={color}
+                                                        size={size}
+                                                        icon={faShuffle}
+                                                        style={style}
+                                                    >
+                                                        {color} {style}
+                                                    </NewButton>
+                                                );
+                                            },
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
             </div>
         </>
     );
