@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import useCountdown from "../timer/useCountdown";
 import Scoreboard from "../timer/Scoreboard";
+import {
+    faShuffle,
+    faArrowRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { CubeComponent } from "../scene-refactor/Main";
 import { CubeWithPos } from "../../ts/CubeClass3";
@@ -147,6 +152,11 @@ const PlayModeComponent2: React.FC = () => {
         setScramble(scramble);
     };
 
+    const handleResetScramble = () => {
+        cube.reset();
+        setScramble(null);
+    };
+
     const pulseAnimation = (domElement: Element) => {
         domElement.classList.add("error");
         setTimeout(() => {
@@ -222,17 +232,33 @@ const PlayModeComponent2: React.FC = () => {
                     )}
                     <div className="text-center">
                         <button
-                            className="btn-primary relative mb-4"
+                            className="text-sm relative mb-4 text-slate-700 rounded-lg border border-slate-300 px-3 py-2 squeeze-click mr-2"
                             onClick={handleScramble}
                         >
-                            Scramble cube
+                            <FontAwesomeIcon
+                                icon={faShuffle}
+                                className="mr-2"
+                            />
+                            {scramble ? "Scramble again" : "Scramble cube"}
                         </button>
+                        {scramble && (
+                            <button
+                                className="text-sm relative mb-4 text-slate-700 rounded-lg border border-slate-300 px-3 py-2 squeeze-click"
+                                onClick={handleResetScramble}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faArrowRotateLeft}
+                                    className="mr-2"
+                                />
+                                Reset
+                            </button>
+                        )}
                     </div>
                 </>
             )}
             {!game.inProgress && (
                 <>
-                    <div className="p-4 flex flex-row ">
+                    <div className="p-4 flex flex-row">
                         <div className="p-4 flex flex-col justify-between items-start gap-3">
                             <h3 className="text-lg">Piece types</h3>
                             <div className="flex justify-center items-center">
