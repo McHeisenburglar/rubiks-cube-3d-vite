@@ -5,6 +5,7 @@ import {
     faShuffle,
     faArrowRotateLeft,
     faPause,
+    faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -39,12 +40,10 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
     } else {
         return (
             <div className="text-center">
-                <button className="btn" onClick={onClickPause}>
+                <NewButton onClick={onClickPause}>
                     {isPaused ? "Unpause" : "Pause"}
-                </button>
-                <button className="btn" onClick={onClickStop}>
-                    Stop game
-                </button>
+                </NewButton>
+                <NewButton onClick={onClickStop}>End game</NewButton>
             </div>
         );
     }
@@ -83,6 +82,7 @@ import {
     useCubeContext,
 } from "../new-structure/useCubeContext";
 import { CubeView } from "../new-structure/CubeView";
+import { NewButton } from "./NewButton";
 
 const SeparateTimerComponent = () => {
     const gameTimer = useCountdown({
@@ -261,27 +261,16 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         </div>
                     )}
                     <div className="text-center">
-                        <button
-                            className="text-sm relative mb-4 text-slate-700 rounded-lg border border-slate-300 px-3 py-2 squeeze-click mr-2"
-                            onClick={handleScramble}
-                        >
-                            <FontAwesomeIcon
-                                icon={faShuffle}
-                                className="mr-2"
-                            />
+                        <NewButton icon={faShuffle} onClick={handleScramble}>
                             {scramble ? "Scramble again" : "Scramble cube"}
-                        </button>
+                        </NewButton>
                         {scramble && (
-                            <button
-                                className="text-sm relative mb-4 text-slate-700 rounded-lg border border-slate-300 px-3 py-2 squeeze-click"
+                            <NewButton
+                                icon={faArrowRotateLeft}
                                 onClick={handleResetScramble}
                             >
-                                <FontAwesomeIcon
-                                    icon={faArrowRotateLeft}
-                                    className="mr-2"
-                                />
                                 Reset
-                            </button>
+                            </NewButton>
                         )}
                     </div>
                 </>
