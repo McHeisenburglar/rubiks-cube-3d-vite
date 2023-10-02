@@ -76,6 +76,12 @@ import { useSpotlightContext } from "../scene-refactor/useSpotlight";
 import { CorrectGuessLog, GuessLogEntry } from "../timer/TimerMain";
 import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
 import { PlayButton, RadioOption, SwitchList } from "../input/InputPage";
+import {
+    CubeContext,
+    useCube,
+    useCubeContext,
+} from "../new-structure/useCubeContext";
+import { CubeView } from "../new-structure/CubeView";
 
 const SeparateTimerComponent = () => {
     const gameTimer = useCountdown({
@@ -94,13 +100,27 @@ const SeparateTimerComponent = () => {
     );
 };
 
-const PlayModeComponent2: React.FC = () => {
-    console.log("rendered");
+interface PlayModeProps {
+    cubeSlot: React.ReactNode;
+    onScramble: (scramble: string | null) => void;
+}
+
+const PlayModeComponent2: React.FC<PlayModeProps> = ({
+    cubeSlot,
+    onScramble,
+}) => {
+    // console.log("rendered");
     const [scramble, setScramble] = useState<string | null>(null);
-    const cube: CubeWithPos = useMemo<CubeWithPos>(() => {
-        const cube = new CubeWithPos();
-        if (scramble) cube.performAlgorithm(scramble);
-        return cube;
+    // const cube: CubeWithPos = useMemo<CubeWithPos>(() => {
+    //     const cube = new CubeWithPos();
+    //     if (scramble) cube.performAlgorithm(scramble);
+    //     return cube;
+    // }, [scramble]);
+
+    const cube = useCubeContext();
+
+    useEffect(() => {
+        onScramble(scramble);
     }, [scramble]);
 
     interface GameOptions {
@@ -148,12 +168,10 @@ const PlayModeComponent2: React.FC = () => {
 
     const handleScramble = () => {
         const scramble = cube.scramble();
-        console.log("got here");
         setScramble(scramble);
     };
 
     const handleResetScramble = () => {
-        cube.reset();
         setScramble(null);
     };
 
@@ -215,12 +233,7 @@ const PlayModeComponent2: React.FC = () => {
                 secondsTotal={gameOptions.seconds}
                 millisecondsLeft={gameTimer.millisecondsLeft}
             />
-            <div className="text-center">
-                <CubeComponent
-                    cube={cube}
-                    onStickerClick={handleStickerClick}
-                />
-            </div>
+            <div className="text-center">{cubeSlot}</div>
             {!game.inProgress && (
                 <>
                     {scramble && (
@@ -333,13 +346,27 @@ const PlayModeComponent2: React.FC = () => {
 };
 
 const PlayModeExport = () => {
+    // const cube: CubeWithPos = useMemo<CubeWithPos>(() => {
+    //     const cube = new CubeWithPos();
+    //     // if (scramble) cube.performAlgorithm(scramble);
+    //     return cube;
+    // }, []);
+
+    const [scramble, setScramble] = useState<string | null>(null);
+    const cube = useCube(scramble);
+
     useDocumentTitle("Play Mode");
     return (
-        <HighlightContextWrapper>
-            <RotationContextWrapper>
-                <PlayModeComponent2 />
-            </RotationContextWrapper>
-        </HighlightContextWrapper>
+        <CubeContext.Provider value={cube}>
+            <HighlightContextWrapper>
+                <RotationContextWrapper>
+                    <PlayModeComponent2
+                        onScramble={setScramble}
+                        cubeSlot={<CubeView debug />}
+                    />
+                </RotationContextWrapper>
+            </HighlightContextWrapper>
+        </CubeContext.Provider>
     );
 };
 
