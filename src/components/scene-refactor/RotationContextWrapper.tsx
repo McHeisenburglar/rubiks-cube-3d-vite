@@ -1,23 +1,25 @@
-import { useState } from 'react'
-import { RotationContext } from './useRotationEffect'
+import { useState } from "react";
+import { RotationContext } from "./useRotationEffect";
 
 interface IProps {
-	children: ChildElement
+    children: ChildElement;
 }
 
 export const RotationContextWrapper: React.FC<IProps> = ({ children }) => {
-	const defaultRotation = {
-		x: 45,
-		y: 0,
-		z: 45,
-	}
-	const [rotation, setRotation] = useState<RotationSet>(defaultRotation)
+    const defaultRotation = {
+        x: -15,
+        y: -30,
+        z: 0,
+    };
+    const [rotation, setRotation] = useState<RotationSet>(defaultRotation);
 
-	return (
-		<RotationContext.Provider value={{ value: rotation, update: setRotation }}>
-			{children}
-		</RotationContext.Provider>
-	)
-}
+    return (
+        <RotationContext.Provider
+            value={{ value: rotation, update: setRotation }}
+        >
+            {children}
+        </RotationContext.Provider>
+    );
+};
 
-export default RotationContextWrapper
+export default RotationContextWrapper;
