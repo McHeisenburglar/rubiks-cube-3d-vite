@@ -232,46 +232,48 @@ const PlayModeComponent2: React.FC = () => {
             )}
             {!game.inProgress && (
                 <>
-                    <div className="p-4 flex justify-between items-center">
-                        <h3 className="wide text-xl">Piece types</h3>
-                        <div className="flex justify-center items-center">
-                            <SwitchList
-                                options={[
-                                    {
-                                        label: "Corners",
-                                        value: "corner",
-                                    },
-                                    {
-                                        label: "Edges",
-                                        value: "edge",
-                                    },
-                                ]}
-                                selectedValue={gameOptions.pieceType}
-                                handleClick={handleRadioClick("pieceType")}
-                            />
+                    <div className="p-4 flex flex-row ">
+                        <div className="p-4 flex flex-col justify-between items-start gap-3">
+                            <h3 className="text-lg">Piece types</h3>
+                            <div className="flex justify-center items-center">
+                                <SwitchList
+                                    options={[
+                                        {
+                                            label: "Corners",
+                                            value: "corner",
+                                        },
+                                        {
+                                            label: "Edges",
+                                            value: "edge",
+                                        },
+                                    ]}
+                                    selectedValue={gameOptions.pieceType}
+                                    handleClick={handleRadioClick("pieceType")}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className="p-4 flex justify-between items-center">
-                        <h3 className="wide text-xl">Seconds in game</h3>
-                        <div className="flex justify-center items-center">
-                            <SwitchList
-                                options={[
-                                    {
-                                        label: "30s",
-                                        value: 30,
-                                    },
-                                    {
-                                        label: "60s",
-                                        value: 60,
-                                    },
-                                    {
-                                        label: "120s",
-                                        value: 120,
-                                    },
-                                ]}
-                                selectedValue={gameOptions.seconds}
-                                handleClick={handleRadioClick("seconds")}
-                            />
+                        <div className="p-4 flex flex-col justify-between items-start gap-3">
+                            <h3 className="text-lg">Seconds in game</h3>
+                            <div className="flex justify-center items-center">
+                                <SwitchList
+                                    options={[
+                                        {
+                                            label: "30s",
+                                            value: 30,
+                                        },
+                                        {
+                                            label: "60s",
+                                            value: 60,
+                                        },
+                                        {
+                                            label: "120s",
+                                            value: 120,
+                                        },
+                                    ]}
+                                    selectedValue={gameOptions.seconds}
+                                    handleClick={handleRadioClick("seconds")}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -297,9 +299,9 @@ const PlayModeComponent2: React.FC = () => {
             <div className="mt-16">
                 <GameComponentDev game={game} />
             </div>
-            {!game.inProgress && game.guessLog.length > 0 && (
+            {/* {!game.inProgress && game.guessLog.length > 0 && (
                 <CorrectGuessLog log={game.guessLog} />
-            )}
+            )} */}
         </div>
     );
 };
