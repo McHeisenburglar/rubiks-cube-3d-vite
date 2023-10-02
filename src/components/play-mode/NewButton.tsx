@@ -5,40 +5,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface NewButtonProps {
     children: ChildElement;
     icon?: IconDefinition;
+    iconPlacement?: "left" | "right";
     color?: "slate" | "blue" | "green" | "red";
     style?: "filled" | "outline";
     onClick: () => void;
 }
 
-type CSSMap<A extends string, B extends string> = {
-    [keyA in A]: {
-        [keyB in B]: string;
-    };
-};
-
 export const NewButton: React.FC<NewButtonProps> = ({
     children,
     icon,
+    iconPlacement = "left",
     color = "grey",
     style = "outline",
     onClick,
 }) => {
-    // const style = "filled";
-    // const color = "grey";
-
     const handleClick = (e: React.MouseEvent) => {
         (e.currentTarget as HTMLButtonElement).blur();
         onClick();
     };
 
-    type MyType = Record<typeof style, string>;
-
-    const defaultStyles: MyType = {
-        filled: "shadow-md text-white font-semibold",
+    const styleClasses: Record<typeof style, string> = {
+        filled: "shadow-md text-white font-medium",
         outline: "border",
     };
 
-    const colors: CSSMap<typeof style, typeof color> = {
+    const colorClasses: Record<typeof style, Record<typeof color, string>> = {
         filled: {
             slate: "border-slate-600  shadow-green-700/15 border bg-slate-700",
             blue: "border-blue-600  shadow-blue-700/20 border bg-blue-600",
@@ -59,11 +50,16 @@ export const NewButton: React.FC<NewButtonProps> = ({
 
     return (
         <button
-            className={`${spacing}  ${typography} ${transition} ${defaultStyles[style]} ${colors[style][color]}`}
+            className={`${spacing}  ${typography} ${transition} ${styleClasses[style]} ${colorClasses[style][color]}`}
             onClick={handleClick}
         >
-            {icon && <FontAwesomeIcon icon={icon} className="mr-2" />}
+            {icon && iconPlacement === "left" && (
+                <FontAwesomeIcon icon={icon} className="mr-2" />
+            )}
             {children}
+            {icon && iconPlacement === "right" && (
+                <FontAwesomeIcon icon={icon} className="ml-2" />
+            )}
         </button>
     );
 };

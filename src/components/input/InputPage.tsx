@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import { NewButton } from "../play-mode/NewButton";
 
@@ -235,6 +235,7 @@ const Main = () => {
                                             <NewButton
                                                 onClick={() => {}}
                                                 color={color}
+                                                icon={faShuffle}
                                                 style={style}
                                             >
                                                 {color} {style}
