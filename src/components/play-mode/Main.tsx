@@ -64,52 +64,14 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
     }
 };
 
-const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
-    game,
-}) => {
-    return (
-        <>
-            {game.inProgress && (
-                <div className="text-left">
-                    <h1 className="mb-2 text-lg font-bold">Game component</h1>
-                    <ul>
-                        <li>
-                            Current letter to guess: {game.currentSticker?.name}
-                        </li>
-                        <li>Correct: {game.correct}</li>
-                        <li>Incorrect: {game.incorrect}</li>
-                    </ul>
-                </div>
-            )}
-        </>
-    );
-};
-
-const SeparateTimerComponent = () => {
-    const gameTimer = useCountdown({
-        seconds: 10,
-        onStart: () => {},
-        onStop: () => {},
-    });
-    useEffect(() => {
-        gameTimer.start();
-    }, []);
-
-    return (
-        <>
-            <div>{gameTimer.millisecondsLeft}</div>
-        </>
-    );
-};
+export interface GameOptions {
+    pieceTypes: PieceType[];
+    seconds: number | null;
+}
 
 interface PlayModeProps {
     cubeSlot: React.ReactNode;
     onScramble: (scramble: string | null) => void;
-}
-
-export interface GameOptions {
-    pieceTypes: PieceType[];
-    seconds: number | null;
 }
 
 const PlayModeComponent2: React.FC<PlayModeProps> = ({
