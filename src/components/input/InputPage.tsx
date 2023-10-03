@@ -54,8 +54,8 @@ const Main = () => {
             value: "120",
         },
         {
-            label: "∞",
-            value: "none",
+            label: <FontAwesomeIcon icon={faStopwatch} />,
+            value: "infinite",
         },
     ];
 

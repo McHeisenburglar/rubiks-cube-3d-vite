@@ -3,7 +3,7 @@ import { SwitchButton } from "./SwitchButton";
 
 export interface RadioOption<T = unknown> {
     value: T;
-    label: string;
+    label: ChildElement;
 }
 interface SwitchListProps {
     options: RadioOption[];
