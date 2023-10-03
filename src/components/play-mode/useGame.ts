@@ -26,7 +26,7 @@ export const useGame = (options: useGameOptions) => {
 
     const availableStickers = useMemo(() => {
         return cube.getAllStickersInFilter((s) => pieceTypes.includes(s.type));
-    }, [pieceTypes]);
+    }, [cube, pieceTypes]);
 
     const nextRandomSticker = () => {
         const newSticker = generateNextSticker(currentSticker);
