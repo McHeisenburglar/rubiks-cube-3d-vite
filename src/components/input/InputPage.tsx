@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfinity, faStopwatch } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCube,
+    faInfinity,
+    faStopwatch,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { NewButton } from "../play-mode/NewButton";
 import { ButtonGrid } from "./ButtonGrid";
@@ -94,21 +98,39 @@ const Main = () => {
                     </NewButton>
                 </div>
                 <ButtonGrid />
-                <div className="flex items-center gap-3 py-8">
-                    <TooltipWrapper content="Seconds">
-                        <FontAwesomeIcon
-                            icon={faStopwatch}
-                            size="lg"
-                            className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                        />
-                    </TooltipWrapper>
-                    <ul className="flex gap-1">
-                        <SmallSwitchList
-                            options={timeOptions}
-                            selectedValue={gameOptions.seconds}
-                            handleClick={handleRadioClick("seconds")}
-                        />
-                    </ul>
+                <div className="flex gap-6">
+                    <div className="inline-flex items-center gap-2 py-8">
+                        <TooltipWrapper content="Piece type">
+                            <FontAwesomeIcon
+                                icon={faCube}
+                                size="lg"
+                                className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
+                            />
+                        </TooltipWrapper>
+                        <ul className="flex gap-1">
+                            <SmallSwitchList
+                                options={pieceOptions}
+                                selectedValue={gameOptions.pieceType}
+                                handleClick={handleRadioClick("pieceType")}
+                            />
+                        </ul>
+                    </div>
+                    <div className="inline-flex items-center gap-2 py-8">
+                        <TooltipWrapper content="Game timer">
+                            <FontAwesomeIcon
+                                icon={faStopwatch}
+                                size="lg"
+                                className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
+                            />
+                        </TooltipWrapper>
+                        <ul className="flex gap-1">
+                            <SmallSwitchList
+                                options={timeOptions}
+                                selectedValue={gameOptions.seconds}
+                                handleClick={handleRadioClick("seconds")}
+                            />
+                        </ul>
+                    </div>
                 </div>
             </div>
         </>
