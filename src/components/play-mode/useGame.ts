@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CubeWithPos } from "../../ts/CubeClass3";
 import { GuessLogEntry } from "../timer/TimerMain";
+import { randomElement } from "../../ts/helper";
 
 interface useGameOptions {
     cube: CubeWithPos;
@@ -23,12 +24,21 @@ export const useGame = (options: useGameOptions) => {
 
     const [currentSticker, setCurrentSticker] = useState<ISticker | null>(null);
 
+    const availableStickers = useMemo(() => {
+        return cube.getAllStickersInFilter((s) => s.type === pieceType);
+    }, [pieceType]);
+
     const nextRandomSticker = () => {
-        const newSticker = cube.getRandomStickerInFilter(
-            (sticker) =>
-                sticker.type === pieceType && sticker.id !== currentSticker?.id,
-        );
+        const newSticker = generateNextSticker(currentSticker);
         setCurrentSticker(newSticker);
+    };
+
+    const generateNextSticker = (prevSticker: ISticker | null): Sticker => {
+        console.log("Got here");
+        const newSticker = randomElement(availableStickers);
+        if (prevSticker?.id === newSticker.id)
+            return generateNextSticker(prevSticker);
+        return newSticker;
     };
 
     const reset = () => {

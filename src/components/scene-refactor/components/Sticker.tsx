@@ -39,10 +39,6 @@ const Sticker: React.FC<StickerProps> = ({
     const highlight = useHighlightContext();
 
     const extraClass = highlight.classForSticker(sticker);
-    // const mode = highlight.currentHighlight ? 'none' : 'letter'
-    // const mode = "letter";
-
-    // const handleClick = () => highlight.highlightSticker(sticker)
 
     return (
         <div

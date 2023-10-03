@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useCountdown from "../timer/useCountdown";
 import Scoreboard from "../timer/Scoreboard";
 import {
@@ -84,8 +84,6 @@ import HighlightContextWrapper from "../scene-refactor/HighlightContextProvider"
 import { useSpotlightContext } from "../scene-refactor/useSpotlight";
 import { GuessLogEntry } from "../timer/TimerMain";
 import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
-// import { PlayButton } from "../input/InputPage";
-import { RadioOption } from "../input/SwitchList";
 import {
     CubeContext,
     useCube,
@@ -182,11 +180,15 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         setScramble(null);
     };
 
-    const pulseAnimation = (domElement: Element) => {
-        domElement.classList.add("error");
+    const pulseAnimation = (
+        domElement: Element,
+        className: CSSClass = "error",
+        delay: number = 300,
+    ) => {
+        domElement.classList.add(className);
         setTimeout(() => {
-            domElement.classList.remove("error");
-        }, 300);
+            domElement.classList.remove(className);
+        }, delay);
     };
 
     useKeypress((e) => {
@@ -233,54 +235,62 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
     // };
 
     return (
-        <div className="mx-auto max-w-[60rem] bg-white px-24 pb-8">
-            <Scoreboard
-                correctGuesses={game.correct}
-                incorrectGuesses={game.incorrect}
-                secondsTotal={gameOptions.seconds || 60}
-                millisecondsLeft={gameTimer.millisecondsLeft}
-            />
-            <div
-                className={`relative text-center duration-500  ease-out ${
-                    game.inProgress ? "" : ""
-                }`}
-            >
-                <div
-                    className={`l-0 t-0 absolute h-full w-full ${
-                        gameTimer.isPaused
-                            ? "z-10 bg-white/50 backdrop-blur-xl"
-                            : "-z-10 opacity-0"
-                    } flex items-center justify-center transition-all duration-200 ease-out`}
-                >
-                    <FontAwesomeIcon icon={faPause} size="5x" color={"white"} />
-                </div>
-                <GameContext.Provider value={{ inProgress: game.inProgress }}>
-                    {cubeSlot}
-                </GameContext.Provider>
-            </div>
-            {!game.inProgress && (
-                <div className="relative z-20 -mt-6 py-2">
-                    <ScrambleControls
-                        scramble={scramble}
-                        onClickScramble={handleScramble}
-                        onClickReset={handleResetScramble}
-                    />
-                </div>
-            )}
-            <div className="mx-auto mt-12 flex w-fit flex-col items-center gap-6">
-                {!game.inProgress && (
-                    <GameOptionButtons
-                        gameOptions={gameOptions}
-                        setGameOptions={setGameOptions}
-                    />
-                )}
-                <PlayModeControls
-                    isPaused={gameTimer.isPaused}
-                    isRunning={gameTimer.isRunning}
-                    onClickStart={gameTimer.start}
-                    onClickPause={gameTimer.togglePause}
-                    onClickStop={gameTimer.stop}
+        <div className="min-h-screen w-full bg-white">
+            <div className="mx-auto max-w-[60rem] px-24 pb-8">
+                <Scoreboard
+                    correctGuesses={game.correct}
+                    incorrectGuesses={game.incorrect}
+                    secondsTotal={gameOptions.seconds || 60}
+                    millisecondsLeft={gameTimer.millisecondsLeft}
                 />
+                <div
+                    className={`relative text-center duration-500  ease-out ${
+                        game.inProgress ? "" : ""
+                    }`}
+                >
+                    <div
+                        className={`l-0 t-0 absolute h-full w-full ${
+                            gameTimer.isPaused
+                                ? "z-10 bg-white/50 backdrop-blur-xl"
+                                : "-z-10 opacity-0"
+                        } flex items-center justify-center transition-all duration-200 ease-out`}
+                    >
+                        <FontAwesomeIcon
+                            icon={faPause}
+                            size="5x"
+                            color={"white"}
+                        />
+                    </div>
+                    <GameContext.Provider
+                        value={{ inProgress: game.inProgress }}
+                    >
+                        {cubeSlot}
+                    </GameContext.Provider>
+                </div>
+                {!game.inProgress && (
+                    <div className="relative z-20 -mt-6 py-2">
+                        <ScrambleControls
+                            scramble={scramble}
+                            onClickScramble={handleScramble}
+                            onClickReset={handleResetScramble}
+                        />
+                    </div>
+                )}
+                <div className="mx-auto mt-12 flex w-fit flex-col items-center gap-6">
+                    {!game.inProgress && (
+                        <GameOptionButtons
+                            gameOptions={gameOptions}
+                            setGameOptions={setGameOptions}
+                        />
+                    )}
+                    <PlayModeControls
+                        isPaused={gameTimer.isPaused}
+                        isRunning={gameTimer.isRunning}
+                        onClickStart={gameTimer.start}
+                        onClickPause={gameTimer.togglePause}
+                        onClickStop={gameTimer.stop}
+                    />
+                </div>
             </div>
         </div>
     );
