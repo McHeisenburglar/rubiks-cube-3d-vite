@@ -75,7 +75,8 @@ import HighlightContextWrapper from "../scene-refactor/HighlightContextProvider"
 import { useSpotlightContext } from "../scene-refactor/useSpotlight";
 import { CorrectGuessLog, GuessLogEntry } from "../timer/TimerMain";
 import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
-import { PlayButton, RadioOption, SwitchList } from "../input/InputPage";
+// import { PlayButton } from "../input/InputPage";
+import { RadioOption, SwitchList } from "../input/SwitchList";
 import {
     CubeContext,
     useCube,
@@ -323,14 +324,16 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                     </div>
 
                     <div className="flex justify-end p-4">
-                        <PlayButton
+                        <NewButton
+                            style="filled"
+                            color="green"
                             disabled={
                                 !gameOptions.pieceType || !gameOptions.seconds
                             }
-                            handleClick={() => {}}
+                            onClick={() => {}}
                         >
                             Start game
-                        </PlayButton>
+                        </NewButton>
                     </div>
                 </>
             )}

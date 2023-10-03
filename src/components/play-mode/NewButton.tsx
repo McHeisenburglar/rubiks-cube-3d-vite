@@ -2,8 +2,9 @@ import React from "react";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-interface NewButtonProps {
+export interface NewButtonProps {
     children: ChildElement;
+    disabled?: boolean;
     icon?: IconDefinition;
     iconPlacement?: "left" | "right";
     color?: "slate" | "blue" | "green" | "red";
@@ -15,6 +16,7 @@ interface NewButtonProps {
 export const NewButton: React.FC<NewButtonProps> = ({
     children,
     icon,
+    disabled = false,
     iconPlacement = "left",
     color = "grey",
     style = "outline",
@@ -27,9 +29,9 @@ export const NewButton: React.FC<NewButtonProps> = ({
     };
 
     const sizeClasses: Record<typeof size, string> = {
-        sm: "text-sm mb-4 mr-2 px-3 py-2 rounded-lg",
-        md: "text-base mb-4 mr-2 px-4 py-2 rounded-lg",
-        lg: "text-lg mb-4 mr-2 px-4 py-2 rounded-lg",
+        sm: "text-sm px-3 py-2 rounded-lg",
+        md: "text-base px-4 py-2 rounded-lg",
+        lg: "text-lg px-4 py-2 rounded-lg",
     };
 
     const styleClasses: Record<typeof style, string> = {
@@ -45,19 +47,20 @@ export const NewButton: React.FC<NewButtonProps> = ({
             green: "border-green-600  shadow-green-700/20 border bg-green-600",
         },
         outline: {
-            slate: "border border-slate-300  text-slate-700",
-            blue: "border border-blue-500  text-blue-700",
-            red: "border border-red-400  text-red-700",
+            slate: "border border-slate-300 text-slate-700",
+            blue: "border border-blue-500 text-blue-700",
+            red: "border border-red-400 text-red-700",
             green: "border border-green-600  text-green-700",
         },
     };
 
-    const transition = "squeeze-click";
+    const transition = "squeeze-click-cubic disabled:opacity-50";
 
     return (
         <button
             className={`${sizeClasses[size]} ${styleClasses[style]} ${colorClasses[style][color]} ${transition}`}
             onClick={handleClick}
+            disabled={disabled}
         >
             {icon && iconPlacement === "left" && (
                 <FontAwesomeIcon icon={icon} className="mr-2" />

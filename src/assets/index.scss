@@ -20,7 +20,10 @@
     .wide {
         @apply font-wide font-semibold tracking-wide;
     }
-    .squeeze-click {
+    .squeeze-click-cubic {
         @apply duration-500 ease-[cubic-bezier(.17,.67,.28,1.21)] active:scale-90 hover:active:scale-90;
+    }
+    .squeeze-click {
+        @apply active:scale-90 hover:active:scale-90;
     }
 }
