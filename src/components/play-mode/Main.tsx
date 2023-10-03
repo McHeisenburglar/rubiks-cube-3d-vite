@@ -190,21 +190,18 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             if (sticker) setSpotlight(sticker);
             return;
         }
-        if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress) {
+        if (timer.isRunning && !timer.isPaused && game.inProgress) {
             game.checkGuess(e.key);
         }
     });
 
-    const gameTimer = useCountdown({
+    const timer = useCountdown({
         seconds: gameOptions.seconds!,
         onStart: () => {
             game.start();
         },
         onStop: () => {
             game.stop();
-        },
-        onUnpause: () => {
-            if (game.currentSticker) setSpotlight(game.currentSticker);
         },
         onCompletion() {
             game.stop();
@@ -213,7 +210,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
     });
 
     const logCorrectGuess = (sticker: ISticker) => {
-        const ms = gameTimer.newMarker();
+        const ms = timer.newMarker();
         const logEntry: GuessLogEntry = {
             no: game.guessLog.length + 1,
             sticker: sticker.name,
@@ -222,10 +219,6 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         game.addGuessLogEntry(logEntry);
     };
 
-    // const handleStickerClick = (sticker: ISticker) => {
-    //     if (!game.inProgress) setSpotlight(sticker);
-    // };
-
     return (
         <div className="min-h-screen w-full bg-white">
             <div className="mx-auto max-w-[60rem] px-24 pb-8">
@@ -233,7 +226,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                     correctGuesses={game.correct}
                     incorrectGuesses={game.incorrect}
                     secondsTotal={gameOptions.seconds || 60}
-                    millisecondsLeft={gameTimer.millisecondsLeft}
+                    millisecondsLeft={timer.millisecondsLeft}
                 />
                 <div
                     className={`relative text-center duration-500  ease-out ${
@@ -242,7 +235,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                 >
                     <div
                         className={`l-0 t-0 absolute h-full w-full ${
-                            gameTimer.isPaused
+                            timer.isPaused
                                 ? "z-10 bg-white/50 backdrop-blur-xl"
                                 : "-z-10 opacity-0"
                         } flex items-center justify-center transition-all duration-200 ease-out`}
@@ -276,11 +269,11 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         />
                     )}
                     <PlayModeControls
-                        isPaused={gameTimer.isPaused}
-                        isRunning={gameTimer.isRunning}
-                        onClickStart={gameTimer.start}
-                        onClickPause={gameTimer.togglePause}
-                        onClickStop={gameTimer.stop}
+                        isPaused={timer.isPaused}
+                        isRunning={timer.isRunning}
+                        onClickStart={timer.start}
+                        onClickPause={timer.togglePause}
+                        onClickStop={timer.stop}
                     />
                 </div>
             </div>
