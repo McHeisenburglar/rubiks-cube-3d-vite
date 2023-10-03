@@ -1,7 +1,9 @@
 // import { CubeWithPos } from '../../ts/CubeClass3'
+import { useContext } from "react";
 import CubePerspectiveWrapper from "../new/CubePerspectiveWrapper";
 import CubeRotationController from "../new/CubeRotationWrapper";
 import CubeStyleProvider from "../new/CubeStyleConfigWrapper";
+import { GameContext } from "../play-mode/Main";
 import Cube from "../scene-refactor/components/Cube";
 import { useCubeContext } from "./useCubeContext";
 

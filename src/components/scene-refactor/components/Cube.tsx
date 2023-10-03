@@ -61,6 +61,7 @@ export const CubeSide: React.FC<CubeSideProps> = ({
                 const position = `${side}-${index}`;
                 return (
                     <Sticker
+                        debug
                         key={index}
                         sticker={sticker}
                         index={index}

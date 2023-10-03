@@ -50,7 +50,7 @@ const Main = () => {
         },
         {
             label: "60s",
-            value: 30,
+            value: 60,
         },
         {
             label: "120s",

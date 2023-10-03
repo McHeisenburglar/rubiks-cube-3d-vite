@@ -38,13 +38,9 @@ const Sticker: React.FC<StickerProps> = ({
 
     const highlight = useHighlightContext();
 
-    const gameContext = useContext(GameContext);
-
     const extraClass = highlight.classForSticker(sticker);
     // const mode = highlight.currentHighlight ? 'none' : 'letter'
     // const mode = "letter";
-
-    const mode = gameContext?.inProgress ? "none" : "letter";
 
     // const handleClick = () => highlight.highlightSticker(sticker)
 
@@ -54,7 +50,7 @@ const Sticker: React.FC<StickerProps> = ({
             onClick={() => onClick?.(sticker)}
             {...dataAttributes}
         >
-            <StickerContent mode={mode} sticker={sticker} index={index} />
+            <StickerContent mode="letter" sticker={sticker} index={index} />
         </div>
     );
 };

@@ -7,6 +7,7 @@ import {
     faPause,
     faPlay,
     faCopy,
+    faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -118,7 +119,7 @@ interface PlayModeProps {
 }
 
 interface GameOptions {
-    pieceType: "corner" | "edge" | null;
+    pieceType: PieceType;
     seconds: number | null;
 }
 
@@ -153,7 +154,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 
     const game = useGame({
         cube,
-        pieceType: "edge",
+        pieceType: gameOptions.pieceType,
         onStickerChange: (sticker) => {
             setSpotlight(sticker);
         },
@@ -191,9 +192,6 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 
     useKeypress((e) => {
         e.preventDefault();
-        if (e.key === " " && !game.inProgress) {
-            return gameTimer.start();
-        }
         if (!game.inProgress) {
             const sticker = cube.getStickerByLetter(e.key, "edge");
             if (sticker) setSpotlight(sticker);
@@ -245,7 +243,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             />
             <div
                 className={`relative text-center duration-500  ease-out ${
-                    game.inProgress ? "my-12" : "my-0"
+                    game.inProgress ? "" : ""
                 }`}
             >
                 <div
@@ -262,7 +260,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                 </GameContext.Provider>
             </div>
             {!game.inProgress && (
-                <div className="relative z-20 -mt-12 py-2">
+                <div className="relative z-20 -mt-6 py-2">
                     <ScrambleControls
                         scramble={scramble}
                         onClickScramble={handleScramble}
@@ -340,6 +338,14 @@ const ScrambleControls: React.FC<ScrambleControlsProps> = ({
                 <NewButton
                     style="ghost"
                     color="slate"
+                    icon={faPencil}
+                    onClick={() => {}}
+                >
+                    Customize cube
+                </NewButton>
+                <NewButton
+                    style="ghost"
+                    color="slate"
                     icon={faShuffle}
                     onClick={onClickScramble}
                 >
@@ -349,7 +355,7 @@ const ScrambleControls: React.FC<ScrambleControlsProps> = ({
                     <NewButton
                         icon={faArrowRotateLeft}
                         style="ghost"
-                        color="red"
+                        color="green"
                         onClick={onClickReset}
                     >
                         Reset
