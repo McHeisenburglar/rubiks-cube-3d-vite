@@ -8,8 +8,9 @@ export interface NewButtonProps {
     icon?: IconDefinition;
     iconPlacement?: "left" | "right";
     color?: "slate" | "blue" | "green" | "red";
-    style?: "filled" | "outline";
+    style?: "filled" | "outline" | "ghost";
     size?: "sm" | "md" | "lg";
+    className?: CSSClass;
     onClick: () => void;
 }
 
@@ -18,9 +19,10 @@ export const NewButton: React.FC<NewButtonProps> = ({
     icon,
     disabled = false,
     iconPlacement = "left",
-    color = "grey",
+    color = "slate",
     style = "outline",
     size = "sm",
+    className = "",
     onClick,
 }) => {
     const handleClick = (e: React.MouseEvent) => {
@@ -37,6 +39,7 @@ export const NewButton: React.FC<NewButtonProps> = ({
     const styleClasses: Record<typeof style, string> = {
         filled: "shadow-md text-white font-medium",
         outline: "border",
+        ghost: "bordere",
     };
 
     const colorClasses: Record<typeof style, Record<typeof color, string>> = {
@@ -47,10 +50,16 @@ export const NewButton: React.FC<NewButtonProps> = ({
             green: "border-green-600  shadow-green-700/20 border bg-green-600",
         },
         outline: {
-            slate: "border border-slate-300 text-slate-700",
-            blue: "border border-blue-500 text-blue-700",
-            red: "border border-red-400 text-red-700",
-            green: "border border-green-600  text-green-700",
+            slate: "border-slate-300 text-slate-700",
+            blue: "border-blue-500 text-blue-700",
+            red: "border-red-400 text-red-700",
+            green: "border-green-600  text-green-700",
+        },
+        ghost: {
+            slate: "text-slate-500 hover:text-slate-600",
+            blue: "text-blue-600 hover:text-blue-700",
+            red: "text-red-600 hover:text-red-700",
+            green: "text-green-600 hover:text-green-700",
         },
     };
 
@@ -58,7 +67,7 @@ export const NewButton: React.FC<NewButtonProps> = ({
 
     return (
         <button
-            className={`${sizeClasses[size]} ${styleClasses[style]} ${colorClasses[style][color]} ${transition}`}
+            className={`${sizeClasses[size]} ${styleClasses[style]} ${colorClasses[style][color]} ${transition} ${className}`}
             onClick={handleClick}
             disabled={disabled}
         >

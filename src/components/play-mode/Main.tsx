@@ -6,11 +6,13 @@ import {
     faArrowRotateLeft,
     faPause,
     faPlay,
+    faCopy,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import useKeypress from "../new/useKeypress";
 import useGame from "./useGame";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 interface PlayModeControlsProps {
     debug?: boolean;
@@ -29,19 +31,28 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
 
     if (!isRunning) {
         return (
-            <div className="text-center">
-                <button className="btn-primary success" onClick={onClickStart}>
+            <div className="w-full">
+                <NewButton
+                    key="start"
+                    size="md"
+                    color="green"
+                    style="filled"
+                    className="w-full"
+                    onClick={onClickStart}
+                >
                     Start game
-                </button>
+                </NewButton>
             </div>
         );
     } else {
         return (
             <div className="text-center">
-                <NewButton onClick={onClickPause}>
+                <NewButton key="pause" onClick={onClickPause} className="mr-2">
                     {isPaused ? "Unpause" : "Pause"}
                 </NewButton>
-                <NewButton onClick={onClickStop}>End game</NewButton>
+                <NewButton key="stop" onClick={onClickStop}>
+                    End game
+                </NewButton>
             </div>
         );
     }
@@ -82,7 +93,7 @@ import {
 } from "../new-structure/useCubeContext";
 import { CubeView } from "../new-structure/CubeView";
 import { NewButton } from "./NewButton";
-import { GameOptionButtons } from "../input/InputPage";
+import { GameOptionButtons, TooltipWrapper } from "../input/InputPage";
 
 const SeparateTimerComponent = () => {
     const gameTimer = useCountdown({
@@ -110,6 +121,10 @@ interface GameOptions {
     pieceType: "corner" | "edge" | null;
     seconds: number | null;
 }
+
+export const GameContext = React.createContext<{ inProgress: boolean } | null>(
+    null,
+);
 
 const PlayModeComponent2: React.FC<PlayModeProps> = ({
     cubeSlot,
@@ -225,10 +240,14 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             <Scoreboard
                 correctGuesses={game.correct}
                 incorrectGuesses={game.incorrect}
-                secondsTotal={gameOptions.seconds}
+                secondsTotal={gameOptions.seconds || 60}
                 millisecondsLeft={gameTimer.millisecondsLeft}
             />
-            <div className="relative text-center">
+            <div
+                className={`relative text-center duration-500  ease-out ${
+                    game.inProgress ? "my-12" : "my-0"
+                }`}
+            >
                 <div
                     className={`l-0 t-0 absolute h-full w-full ${
                         gameTimer.isPaused
@@ -238,65 +257,34 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                 >
                     <FontAwesomeIcon icon={faPause} size="5x" color={"white"} />
                 </div>
-                {cubeSlot}
+                <GameContext.Provider value={{ inProgress: game.inProgress }}>
+                    {cubeSlot}
+                </GameContext.Provider>
             </div>
             {!game.inProgress && (
-                <>
-                    {scramble && (
-                        <div className="relative -top-8 text-center">
-                            <span className="text-xs">
-                                Scramble: {scramble}
-                            </span>
-                        </div>
-                    )}
-                    <div className="text-center">
-                        <NewButton icon={faShuffle} onClick={handleScramble}>
-                            {scramble ? "Scramble again" : "Scramble cube"}
-                        </NewButton>
-                        {scramble && (
-                            <NewButton
-                                icon={faArrowRotateLeft}
-                                onClick={handleResetScramble}
-                            >
-                                Reset
-                            </NewButton>
-                        )}
-                    </div>
-                </>
+                <div className="relative z-20 -mt-12 py-2">
+                    <ScrambleControls
+                        scramble={scramble}
+                        onClickScramble={handleScramble}
+                        onClickReset={handleResetScramble}
+                    />
+                </div>
             )}
-            {!game.inProgress && (
-                <>
+            <div className="mx-auto mt-12 flex w-fit flex-col items-center gap-6">
+                {!game.inProgress && (
                     <GameOptionButtons
                         gameOptions={gameOptions}
                         setGameOptions={setGameOptions}
                     />
-                    <div className="flex justify-end p-4">
-                        <NewButton
-                            style="filled"
-                            color="green"
-                            disabled={
-                                !gameOptions.pieceType || !gameOptions.seconds
-                            }
-                            onClick={() => {}}
-                        >
-                            Start game
-                        </NewButton>
-                    </div>
-                </>
-            )}
-            <PlayModeControls
-                isPaused={gameTimer.isPaused}
-                isRunning={gameTimer.isRunning}
-                onClickStart={gameTimer.start}
-                onClickPause={gameTimer.togglePause}
-                onClickStop={gameTimer.stop}
-            />
-            <div className="mt-16">
-                <GameComponentDev game={game} />
+                )}
+                <PlayModeControls
+                    isPaused={gameTimer.isPaused}
+                    isRunning={gameTimer.isRunning}
+                    onClickStart={gameTimer.start}
+                    onClickPause={gameTimer.togglePause}
+                    onClickStop={gameTimer.stop}
+                />
             </div>
-            {/* {!game.inProgress && game.guessLog.length > 0 && (
-                <CorrectGuessLog log={game.guessLog} />
-            )} */}
         </div>
     );
 };
@@ -323,6 +311,66 @@ const PlayModeExport = () => {
                 </RotationContextWrapper>
             </HighlightContextWrapper>
         </CubeContext.Provider>
+    );
+};
+
+interface ScrambleControlsProps {
+    scramble: string | null;
+    onClickScramble: () => void;
+    onClickReset: () => void;
+}
+
+const ScrambleControls: React.FC<ScrambleControlsProps> = ({
+    scramble,
+    onClickScramble,
+    onClickReset,
+}) => {
+    const [isCopied, setIsCopied] = useState(false);
+
+    const onCopy = () => {
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 1000);
+    };
+
+    return (
+        <>
+            <div className="text-center">
+                <NewButton
+                    style="ghost"
+                    color="slate"
+                    icon={faShuffle}
+                    onClick={onClickScramble}
+                >
+                    {scramble ? "Scramble again" : "Scramble cube"}
+                </NewButton>
+                {scramble && (
+                    <NewButton
+                        icon={faArrowRotateLeft}
+                        style="ghost"
+                        color="red"
+                        onClick={onClickReset}
+                    >
+                        Reset
+                    </NewButton>
+                )}
+            </div>
+            {scramble && (
+                <div className="text-center text-sm text-slate-400">
+                    <span>{scramble}</span>
+                    <TooltipWrapper
+                        content={isCopied ? "Copied" : "Click to copy"}
+                        color={isCopied ? "green" : "slate"}
+                        className="ml-2 cursor-pointer duration-200 hover:text-slate-500"
+                    >
+                        <CopyToClipboard text={scramble} onCopy={onCopy}>
+                            <FontAwesomeIcon icon={faCopy} />
+                        </CopyToClipboard>
+                    </TooltipWrapper>
+                </div>
+            )}
+        </>
     );
 };
 

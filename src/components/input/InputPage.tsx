@@ -159,7 +159,7 @@ export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
 
     return (
         <div className="flex gap-6">
-            <div className="inline-flex items-center gap-2 py-8">
+            <div className="inline-flex items-center gap-2">
                 <TooltipWrapper content="Piece type">
                     <FontAwesomeIcon
                         icon={faCube}
@@ -175,7 +175,7 @@ export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
                     />
                 </ul>
             </div>
-            <div className="inline-flex items-center gap-2 py-8">
+            <div className="inline-flex items-center gap-2">
                 <TooltipWrapper content="Game timer">
                     <FontAwesomeIcon
                         icon={faStopwatch}
@@ -197,13 +197,29 @@ export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
 
 interface TooltipProps {
     content: string;
+    color?: "slate" | "green";
+    className?: CSSClass;
     children: ChildElement;
 }
 
-const TooltipWrapper: React.FC<TooltipProps> = ({ children, content }) => {
+export const TooltipWrapper: React.FC<TooltipProps> = ({
+    children,
+    content,
+    className = "",
+    color = "slate",
+}) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showTooltipClass, setShowTooltipClass] = useState(false);
-    const bgColor = "bg-slate-800";
+
+    const bgColor = {
+        slate: "bg-slate-800",
+        green: "bg-green-700",
+    };
+
+    const borderColor = {
+        slate: "border-slate-800",
+        green: "border-green-700",
+    };
 
     let enterTimeout: number;
     let exitTimeout: number;
@@ -226,7 +242,7 @@ const TooltipWrapper: React.FC<TooltipProps> = ({ children, content }) => {
 
     return (
         <div
-            className="relative inline-block"
+            className={`relative inline-block ${className}`}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
@@ -240,11 +256,13 @@ const TooltipWrapper: React.FC<TooltipProps> = ({ children, content }) => {
                     } duration-300`}
                 >
                     <span
-                        className={`inline-block rounded-md ${bgColor} text-medium w-max max-w-xs px-3 py-2 text-xs text-white`}
+                        className={`inline-block rounded-md ${bgColor[color]} text-medium w-max max-w-xs px-3 py-2 text-xs text-white`}
                     >
                         {content}
                     </span>
-                    <span className="-m-[1px] w-[16px] border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-slate-800"></span>
+                    <span
+                        className={`-m-[1px] w-[16px] border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent ${borderColor[color]}`}
+                    ></span>
                 </span>
             )}
         </div>
