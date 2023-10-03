@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStopwatch } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
+import { faInfinity, faStopwatch } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import { NewButton } from "../play-mode/NewButton";
-import { SmallSwitchButton } from "./SmallSwitchButton";
 import { ButtonGrid } from "./ButtonGrid";
 import { RadioOption, SwitchList } from "./SwitchList";
 import { SmallSwitchList } from "./SmallSwitchList";
@@ -54,7 +53,7 @@ const Main = () => {
             value: "120",
         },
         {
-            label: <FontAwesomeIcon icon={faStopwatch} />,
+            label: <FontAwesomeIcon icon={faInfinity} />,
             value: "infinite",
         },
     ];
@@ -95,11 +94,11 @@ const Main = () => {
                     </NewButton>
                 </div>
                 <ButtonGrid />
-                <div className="flex items-center gap-3 py-8 text-slate-500">
+                <div className="flex items-center gap-3 py-8">
                     <FontAwesomeIcon
                         icon={faStopwatch}
                         size="lg"
-                        className="-mt-[2px]"
+                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
                     />
                     <ul className="flex gap-1">
                         <SmallSwitchList
