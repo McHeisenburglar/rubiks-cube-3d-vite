@@ -95,11 +95,13 @@ const Main = () => {
                 </div>
                 <ButtonGrid />
                 <div className="flex items-center gap-3 py-8">
-                    <FontAwesomeIcon
-                        icon={faStopwatch}
-                        size="lg"
-                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                    />
+                    <TooltipWrapper content="Seconds">
+                        <FontAwesomeIcon
+                            icon={faStopwatch}
+                            size="lg"
+                            className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
+                        />
+                    </TooltipWrapper>
                     <ul className="flex gap-1">
                         <SmallSwitchList
                             options={timeOptions}
@@ -107,15 +109,6 @@ const Main = () => {
                             handleClick={handleRadioClick("seconds")}
                         />
                     </ul>
-                </div>
-                <div className="mt-8">
-                    <TooltipWrapper>
-                        <FontAwesomeIcon
-                            icon={faStopwatch}
-                            size="lg"
-                            className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                        />
-                    </TooltipWrapper>
                 </div>
             </div>
         </>
@@ -127,22 +120,27 @@ interface TooltipProps {
     children: ChildElement;
 }
 
-const TooltipWrapper: React.FC<TooltipProps> = ({ children }) => {
+const TooltipWrapper: React.FC<TooltipProps> = ({ children, content }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showTooltipClass, setShowTooltipClass] = useState(false);
     const bgColor = "bg-slate-800";
 
+    let enterTimeout: number;
+    let exitTimeout: number;
+
     const onMouseEnter = () => {
         setShowTooltip(true);
-        setTimeout(() => {
+        clearTimeout(exitTimeout);
+        enterTimeout = setTimeout(() => {
             setShowTooltipClass(true);
-        }, 10);
+        }, 100);
     };
 
     const onMouseLeave = () => {
         setShowTooltipClass(false);
-        setTimeout(() => {
-            if (!showTooltipClass) setShowTooltip(false);
+        clearTimeout(enterTimeout);
+        exitTimeout = setTimeout(() => {
+            setShowTooltip(false);
         }, 200);
     };
 
@@ -152,19 +150,19 @@ const TooltipWrapper: React.FC<TooltipProps> = ({ children }) => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <FontAwesomeIcon icon={faStopwatch} />
+            {children}
             {showTooltip && (
                 <span
-                    className={`absolute left-1/2 top-0 inline-flex max-w-xl -translate-x-1/2 -translate-y-full flex-col items-center text-center ${
+                    className={`absolute left-1/2 top-0 inline-flex max-w-xl -translate-x-1/2 translate-y-[calc(-100%-3px)] flex-col items-center text-center ${
                         showTooltipClass
                             ? "opacity-1 z-10"
-                            : "pointer-events-none invisible translate-y-[-90%] opacity-0"
+                            : "pointer-events-none invisible top-1 opacity-0"
                     } duration-300`}
                 >
                     <span
                         className={`inline-block rounded-md ${bgColor} text-medium w-max max-w-xs px-3 py-2 text-xs text-white`}
                     >
-                        Seconds in game
+                        {content}
                     </span>
                     <span className="-m-[1px] w-[16px] border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-slate-800"></span>
                 </span>
