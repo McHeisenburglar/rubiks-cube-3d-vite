@@ -5,7 +5,6 @@ import {
     faShuffle,
     faArrowRotateLeft,
     faPause,
-    faPlay,
     faCopy,
     faPencil,
 } from "@fortawesome/free-solid-svg-icons";
