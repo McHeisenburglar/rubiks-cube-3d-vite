@@ -55,9 +55,9 @@ export const useGame = (options: useGameOptions) => {
         }
     }, [currentSticker]);
 
-    const checkGuess = (e: KeyboardEvent) => {
+    const checkGuess = (key: string) => {
         const guessedSticker = cube.getStickerByLetter(
-            e.key.toLowerCase(),
+            key,
             currentSticker!.type,
         );
         if (!guessedSticker || !currentSticker) return;

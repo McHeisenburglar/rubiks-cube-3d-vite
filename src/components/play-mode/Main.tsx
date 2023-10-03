@@ -199,7 +199,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             return;
         }
         if (gameTimer.isRunning && !gameTimer.isPaused && game.inProgress) {
-            game.checkGuess(e);
+            game.checkGuess(e.key);
         }
     });
 
