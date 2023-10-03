@@ -1,6 +1,7 @@
 import { SIDES } from "../../../ts/helper";
 import Sticker from "./Sticker";
 import { CubeWithPos } from "../../../ts/CubeClass3";
+import React from "react";
 
 interface CubeProps {
     cube: CubeWithPos;
@@ -18,15 +19,14 @@ export const Cube: React.FC<CubeProps> = ({ cube, onStickerClick, debug }) => {
         <div className={`cube`}>
             {SIDES.map((side, index) => {
                 return (
-                    <>
+                    <React.Fragment key={index}>
                         <CubeSide
                             side={side}
                             stickers={cube.state[side]}
-                            key={index}
                             onStickerClick={handleStickerClick}
                         />
                         <div className={`side backside side-${side}`}></div>
-                    </>
+                    </React.Fragment>
                 );
             })}
             <div className="side inner x"></div>
