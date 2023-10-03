@@ -25,7 +25,8 @@ import {
 } from "../new-structure/useCubeContext";
 import { CubeView } from "../new-structure/CubeView";
 import { NewButton } from "./NewButton";
-import { GameOptionButtons, TooltipWrapper } from "../input/InputPage";
+import { TooltipWrapper } from "../input/InputPage";
+import { GameOptionButtons } from "./GameOptionButtons";
 
 interface PlayModeControlsProps {
     debug?: boolean;
@@ -114,8 +115,8 @@ interface PlayModeProps {
     onScramble: (scramble: string | null) => void;
 }
 
-interface GameOptions {
-    pieceType: PieceType;
+export interface GameOptions {
+    pieceTypes: PieceType[];
     seconds: number | null;
 }
 
@@ -142,7 +143,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
     }, [scramble]);
 
     const [gameOptions, setGameOptions] = useState<GameOptions>({
-        pieceType: "corner",
+        pieceTypes: ["corner"],
         seconds: 60,
     });
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { SmallSwitchButton } from "./SmallSwitchButton";
+import { SmallRadioButton } from "./SmallRadioButton";
 
 export interface RadioOption<T = unknown> {
     value: T;
@@ -7,11 +7,11 @@ export interface RadioOption<T = unknown> {
 }
 interface SwitchListProps {
     options: RadioOption[];
-    selectedValue: string | number | null;
+    selectedValue: unknown;
     handleClick: (option: RadioOption) => void;
 }
 
-export const SmallSwitchList: React.FC<SwitchListProps> = ({
+export const SmallRadioList: React.FC<SwitchListProps> = ({
     options,
     selectedValue,
     handleClick,
@@ -20,13 +20,13 @@ export const SmallSwitchList: React.FC<SwitchListProps> = ({
         <>
             {options.map((option, index) => {
                 return (
-                    <SmallSwitchButton
+                    <SmallRadioButton
                         key={index}
                         active={option.value === selectedValue}
                         handleClick={() => handleClick(option)}
                     >
                         {option.label}
-                    </SmallSwitchButton>
+                    </SmallRadioButton>
                 );
             })}
         </>

@@ -1,16 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faCube,
-    faInfinity,
-    faStopwatch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faInfinity } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { NewButton } from "../play-mode/NewButton";
 import { ButtonGrid } from "./ButtonGrid";
 import { RadioOption, SwitchList } from "./SwitchList";
-import { SmallSwitchList } from "./SmallSwitchList";
+import { GameOptionButtons } from "../play-mode/GameOptionButtons";
 
-interface GameOptions {
+export interface GameOptions {
     pieceType: "corner" | "edge" | null;
     seconds: number | null;
 }
@@ -104,94 +100,6 @@ const Main = () => {
                 />
             </div>
         </>
-    );
-};
-
-interface GameOptionButtonsProps {
-    gameOptions: GameOptions;
-    setGameOptions: (value: React.SetStateAction<GameOptions>) => void;
-}
-
-export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
-    gameOptions,
-    setGameOptions,
-}) => {
-    const handleRadioClick = (key: "pieceType" | "seconds") => {
-        return (option: RadioOption) => {
-            setGameOptions((cur) => {
-                return {
-                    ...cur,
-                    [key]: option.value,
-                };
-            });
-        };
-    };
-
-    const pieceOptions = [
-        {
-            label: "Corners",
-            value: "corner",
-        },
-        {
-            label: "Edges",
-            value: "edge",
-        },
-    ];
-
-    const timeOptions = [
-        {
-            label: "30s",
-            value: 30,
-        },
-        {
-            label: "60s",
-            value: 60,
-        },
-        {
-            label: "120s",
-            value: 120,
-        },
-        {
-            label: <FontAwesomeIcon icon={faInfinity} />,
-            value: 0,
-        },
-    ];
-
-    return (
-        <div className="flex gap-6">
-            <div className="inline-flex items-center gap-2">
-                <TooltipWrapper content="Piece type">
-                    <FontAwesomeIcon
-                        icon={faCube}
-                        size="lg"
-                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                    />
-                </TooltipWrapper>
-                <ul className="flex gap-1">
-                    <SmallSwitchList
-                        options={pieceOptions}
-                        selectedValue={gameOptions.pieceType}
-                        handleClick={handleRadioClick("pieceType")}
-                    />
-                </ul>
-            </div>
-            <div className="inline-flex items-center gap-2">
-                <TooltipWrapper content="Game timer">
-                    <FontAwesomeIcon
-                        icon={faStopwatch}
-                        size="lg"
-                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                    />
-                </TooltipWrapper>
-                <ul className="flex gap-1">
-                    <SmallSwitchList
-                        options={timeOptions}
-                        selectedValue={gameOptions.seconds}
-                        handleClick={handleRadioClick("seconds")}
-                    />
-                </ul>
-            </div>
-        </div>
     );
 };
 

@@ -5,7 +5,7 @@ interface SmallSwitchButtonProps {
     handleClick?: () => void;
     children: ChildElement;
 }
-export const SmallSwitchButton: React.FC<SmallSwitchButtonProps> = ({
+export const SmallRadioButton: React.FC<SmallSwitchButtonProps> = ({
     active,
     children,
     handleClick = () => {},
