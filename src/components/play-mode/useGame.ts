@@ -5,7 +5,6 @@ import { randomElement } from "../../ts/helper";
 
 interface useGameOptions {
     cube: CubeWithPos;
-    pieceType: PieceType;
     pieceTypes: PieceType[];
     onStickerChange?: (sticker: ISticker) => void;
     onCorrectGuess?: (sticker: ISticker) => void;
@@ -15,7 +14,7 @@ interface useGameOptions {
 }
 
 export const useGame = (options: useGameOptions) => {
-    const { cube, pieceType, pieceTypes } = options;
+    const { cube, pieceTypes } = options;
 
     const [inProgress, setInProgress] = useState(false);
     const [correct, setCorrect] = useState(0);
@@ -27,7 +26,7 @@ export const useGame = (options: useGameOptions) => {
 
     const availableStickers = useMemo(() => {
         return cube.getAllStickersInFilter((s) => pieceTypes.includes(s.type));
-    }, [pieceType, pieceTypes]);
+    }, [pieceTypes]);
 
     const nextRandomSticker = () => {
         const newSticker = generateNextSticker(currentSticker);
