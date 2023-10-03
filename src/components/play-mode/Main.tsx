@@ -154,7 +154,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 
     const game = useGame({
         cube,
-        pieceType: gameOptions.pieceType,
+        pieceType: gameOptions.pieceType!,
         onStickerChange: (sticker) => {
             setSpotlight(sticker);
         },
@@ -203,7 +203,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
     });
 
     const gameTimer = useCountdown({
-        seconds: gameOptions.seconds,
+        seconds: gameOptions.seconds!,
         onStart: () => {
             game.start();
         },
