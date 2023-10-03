@@ -1,7 +1,5 @@
 import { FaPalette } from "react-icons/fa";
 import { useHighlightContext } from "../useHighlight";
-import { GameContext } from "../../play-mode/Main";
-import { useContext } from "react";
 // import { useHighlight } from '../useHighlight'
 // import useSpaceHold from './useSpaceHold'
 // import { useKeyhold } from '../../hooks/useKeyhold'
