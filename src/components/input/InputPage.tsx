@@ -10,12 +10,12 @@ import { ButtonGrid } from "./ButtonGrid";
 import { RadioOption, SwitchList } from "./SwitchList";
 import { SmallSwitchList } from "./SmallSwitchList";
 
-const Main = () => {
-    interface GameOptions {
-        pieceType: "corners" | "edges" | null;
-        seconds: "60s" | "30s" | "infinite" | null;
-    }
+interface GameOptions {
+    pieceType: "corner" | "edge" | null;
+    seconds: number | null;
+}
 
+const Main = () => {
     const [gameOptions, setGameOptions] = useState<GameOptions>({
         pieceType: null,
         seconds: null,
@@ -35,30 +35,30 @@ const Main = () => {
     const pieceOptions = [
         {
             label: "Corners",
-            value: "corners",
+            value: "corner",
         },
         {
             label: "Edges",
-            value: "edges",
+            value: "edge",
         },
     ];
 
     const timeOptions = [
         {
             label: "30s",
-            value: "30",
+            value: 30,
         },
         {
             label: "60s",
-            value: "60",
+            value: 30,
         },
         {
             label: "120s",
-            value: "120",
+            value: 120,
         },
         {
             label: <FontAwesomeIcon icon={faInfinity} />,
-            value: "infinite",
+            value: 0,
         },
     ];
 
@@ -98,42 +98,100 @@ const Main = () => {
                     </NewButton>
                 </div>
                 <ButtonGrid />
-                <div className="flex gap-6">
-                    <div className="inline-flex items-center gap-2 py-8">
-                        <TooltipWrapper content="Piece type">
-                            <FontAwesomeIcon
-                                icon={faCube}
-                                size="lg"
-                                className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                            />
-                        </TooltipWrapper>
-                        <ul className="flex gap-1">
-                            <SmallSwitchList
-                                options={pieceOptions}
-                                selectedValue={gameOptions.pieceType}
-                                handleClick={handleRadioClick("pieceType")}
-                            />
-                        </ul>
-                    </div>
-                    <div className="inline-flex items-center gap-2 py-8">
-                        <TooltipWrapper content="Game timer">
-                            <FontAwesomeIcon
-                                icon={faStopwatch}
-                                size="lg"
-                                className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                            />
-                        </TooltipWrapper>
-                        <ul className="flex gap-1">
-                            <SmallSwitchList
-                                options={timeOptions}
-                                selectedValue={gameOptions.seconds}
-                                handleClick={handleRadioClick("seconds")}
-                            />
-                        </ul>
-                    </div>
-                </div>
+                <GameOptionButtons
+                    gameOptions={gameOptions}
+                    setGameOptions={setGameOptions}
+                />
             </div>
         </>
+    );
+};
+
+interface GameOptionButtonsProps {
+    gameOptions: GameOptions;
+    setGameOptions: (value: React.SetStateAction<GameOptions>) => void;
+}
+
+export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
+    gameOptions,
+    setGameOptions,
+}) => {
+    const handleRadioClick = (key: "pieceType" | "seconds") => {
+        return (option: RadioOption) => {
+            setGameOptions((cur) => {
+                return {
+                    ...cur,
+                    [key]: option.value,
+                };
+            });
+        };
+    };
+
+    const pieceOptions = [
+        {
+            label: "Corners",
+            value: "corner",
+        },
+        {
+            label: "Edges",
+            value: "edge",
+        },
+    ];
+
+    const timeOptions = [
+        {
+            label: "30s",
+            value: 30,
+        },
+        {
+            label: "60s",
+            value: 60,
+        },
+        {
+            label: "120s",
+            value: 120,
+        },
+        {
+            label: <FontAwesomeIcon icon={faInfinity} />,
+            value: 0,
+        },
+    ];
+
+    return (
+        <div className="flex gap-6">
+            <div className="inline-flex items-center gap-2 py-8">
+                <TooltipWrapper content="Piece type">
+                    <FontAwesomeIcon
+                        icon={faCube}
+                        size="lg"
+                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
+                    />
+                </TooltipWrapper>
+                <ul className="flex gap-1">
+                    <SmallSwitchList
+                        options={pieceOptions}
+                        selectedValue={gameOptions.pieceType}
+                        handleClick={handleRadioClick("pieceType")}
+                    />
+                </ul>
+            </div>
+            <div className="inline-flex items-center gap-2 py-8">
+                <TooltipWrapper content="Game timer">
+                    <FontAwesomeIcon
+                        icon={faStopwatch}
+                        size="lg"
+                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
+                    />
+                </TooltipWrapper>
+                <ul className="flex gap-1">
+                    <SmallSwitchList
+                        options={timeOptions}
+                        selectedValue={gameOptions.seconds}
+                        handleClick={handleRadioClick("seconds")}
+                    />
+                </ul>
+            </div>
+        </div>
     );
 };
 

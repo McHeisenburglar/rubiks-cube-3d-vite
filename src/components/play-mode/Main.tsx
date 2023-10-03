@@ -9,8 +9,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { CubeComponent } from "../scene-refactor/Main";
-import { CubeWithPos } from "../../ts/CubeClass3";
 import useKeypress from "../new/useKeypress";
 import useGame from "./useGame";
 
@@ -73,10 +71,10 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
 import RotationContextWrapper from "../scene-refactor/RotationContextWrapper";
 import HighlightContextWrapper from "../scene-refactor/HighlightContextProvider";
 import { useSpotlightContext } from "../scene-refactor/useSpotlight";
-import { CorrectGuessLog, GuessLogEntry } from "../timer/TimerMain";
+import { GuessLogEntry } from "../timer/TimerMain";
 import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
 // import { PlayButton } from "../input/InputPage";
-import { RadioOption, SwitchList } from "../input/SwitchList";
+import { RadioOption } from "../input/SwitchList";
 import {
     CubeContext,
     useCube,
@@ -84,6 +82,7 @@ import {
 } from "../new-structure/useCubeContext";
 import { CubeView } from "../new-structure/CubeView";
 import { NewButton } from "./NewButton";
+import { GameOptionButtons } from "../input/InputPage";
 
 const SeparateTimerComponent = () => {
     const gameTimer = useCountdown({
@@ -107,6 +106,11 @@ interface PlayModeProps {
     onScramble: (scramble: string | null) => void;
 }
 
+interface GameOptions {
+    pieceType: "corner" | "edge" | null;
+    seconds: number | null;
+}
+
 const PlayModeComponent2: React.FC<PlayModeProps> = ({
     cubeSlot,
     onScramble,
@@ -125,26 +129,10 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         onScramble(scramble);
     }, [scramble]);
 
-    interface GameOptions {
-        pieceType: "corner" | "edge";
-        seconds: number;
-    }
-
     const [gameOptions, setGameOptions] = useState<GameOptions>({
         pieceType: "corner",
         seconds: 60,
     });
-
-    const handleRadioClick = (key: "pieceType" | "seconds") => {
-        return (option: RadioOption) => {
-            setGameOptions((cur) => {
-                return {
-                    ...cur,
-                    [key]: option.value,
-                };
-            });
-        };
-    };
 
     const { setSpotlight, clearSpotlight } = useSpotlightContext();
 
@@ -278,51 +266,10 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             )}
             {!game.inProgress && (
                 <>
-                    <div className="flex flex-row p-4">
-                        <div className="flex flex-col items-start justify-between gap-3 p-4">
-                            <h3 className="text-lg">Piece types</h3>
-                            <div className="flex items-center justify-center">
-                                <SwitchList
-                                    options={[
-                                        {
-                                            label: "Corners",
-                                            value: "corner",
-                                        },
-                                        {
-                                            label: "Edges",
-                                            value: "edge",
-                                        },
-                                    ]}
-                                    selectedValue={gameOptions.pieceType}
-                                    handleClick={handleRadioClick("pieceType")}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-start justify-between gap-3 p-4">
-                            <h3 className="text-lg">Seconds in game</h3>
-                            <div className="flex items-center justify-center">
-                                <SwitchList
-                                    options={[
-                                        {
-                                            label: "30s",
-                                            value: 30,
-                                        },
-                                        {
-                                            label: "60s",
-                                            value: 60,
-                                        },
-                                        {
-                                            label: "120s",
-                                            value: 120,
-                                        },
-                                    ]}
-                                    selectedValue={gameOptions.seconds}
-                                    handleClick={handleRadioClick("seconds")}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
+                    <GameOptionButtons
+                        gameOptions={gameOptions}
+                        setGameOptions={setGameOptions}
+                    />
                     <div className="flex justify-end p-4">
                         <NewButton
                             style="filled"
