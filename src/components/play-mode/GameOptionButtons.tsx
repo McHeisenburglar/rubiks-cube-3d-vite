@@ -18,7 +18,7 @@ export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
     gameOptions,
     setGameOptions,
 }) => {
-    const handleRadioClick = (key: "pieceType" | "seconds") => {
+    const handleRadioClick = (key: keyof GameOptions) => {
         return (option: RadioOption) => {
             setGameOptions((cur) => {
                 return {
@@ -77,7 +77,7 @@ export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
                     <SmallRadioList
                         options={pieceOptions}
                         selectedValue={gameOptions.pieceTypes}
-                        handleClick={handleRadioClick("pieceType")}
+                        handleClick={handleRadioClick("pieceTypes")}
                     />
                 </ul>
             </div>
