@@ -20,6 +20,21 @@ import { GameOptionButtons } from "./GameOptionButtons";
 import ScrambleControls from "./ScrambleControls";
 import PauseOverlay from "./PauseOverlay";
 
+const StartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    return (
+        <NewButton
+            key="start"
+            size="md"
+            color="green"
+            style="filled"
+            className="w-full"
+            onClick={onClick}
+        >
+            Start game
+        </NewButton>
+    );
+};
+
 interface PlayModeControlsProps {
     debug?: boolean;
     isRunning: boolean;
@@ -36,20 +51,7 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
         props;
 
     if (!isRunning) {
-        return (
-            <div className="w-full">
-                <NewButton
-                    key="start"
-                    size="md"
-                    color="green"
-                    style="filled"
-                    className="w-full"
-                    onClick={onClickStart}
-                >
-                    Start game
-                </NewButton>
-            </div>
-        );
+        return <StartButton onClick={onClickStart} />;
     } else {
         return (
             <div className="text-center">
@@ -191,13 +193,15 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         />
                     </div>
                 )}
-                <div className="mx-auto mt-12 flex w-fit flex-col items-center gap-6">
-                    {!game.inProgress && (
+                {!game.inProgress ? (
+                    <div className="mx-auto mt-12 flex w-fit flex-col items-center gap-6">
                         <GameOptionButtons
                             gameOptions={gameOptions}
                             setGameOptions={setGameOptions}
                         />
-                    )}
+                        <StartButton onClick={timer.start} />
+                    </div>
+                ) : (
                     <PlayModeControls
                         isPaused={timer.isPaused}
                         isRunning={timer.isRunning}
@@ -205,7 +209,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         onClickPause={timer.togglePause}
                         onClickStop={timer.stop}
                     />
-                </div>
+                )}
             </div>
         </div>
     );
