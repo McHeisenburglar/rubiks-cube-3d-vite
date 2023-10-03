@@ -50,7 +50,7 @@ const Main = () => {
         },
         {
             label: "60s",
-            value: 30,
+            value: 60,
         },
         {
             label: "120s",
@@ -213,12 +213,12 @@ export const TooltipWrapper: React.FC<TooltipProps> = ({
 
     const bgColor = {
         slate: "bg-slate-800",
-        green: "bg-green-700",
+        green: "bg-green-600",
     };
 
     const borderColor = {
         slate: "border-slate-800",
-        green: "border-green-700",
+        green: "border-green-600",
     };
 
     let enterTimeout: number;

@@ -12,10 +12,10 @@ export const SmallSwitchButton: React.FC<SmallSwitchButtonProps> = ({
 }) => {
     return (
         <button
-            className={`slate-500 rounded-md border border-transparent px-2 py-[3px] text-sm duration-300 ease-out
+            className={`slate-500 rounded-md border border-transparent px-2 py-0.5 text-sm duration-300 ease-out
         ${
             active
-                ? "border-slate-500 text-slate-700"
+                ? "bg-gray-100 text-slate-700"
                 : "text-slate-400 hover:border-slate-200 hover:text-slate-500"
         }
         squeeze-click

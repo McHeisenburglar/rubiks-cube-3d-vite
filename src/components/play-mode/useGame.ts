@@ -26,7 +26,7 @@ export const useGame = (options: useGameOptions) => {
     const nextRandomSticker = () => {
         const newSticker = cube.getRandomStickerInFilter(
             (sticker) =>
-                sticker.type === pieceType && sticker.id !== currentSticker?.id
+                sticker.type === pieceType && sticker.id !== currentSticker?.id,
         );
         setCurrentSticker(newSticker);
     };
@@ -47,7 +47,7 @@ export const useGame = (options: useGameOptions) => {
     const checkGuess = (e: KeyboardEvent) => {
         const guessedSticker = cube.getStickerByLetter(
             e.key.toLowerCase(),
-            pieceType
+            currentSticker!.type,
         );
         if (!guessedSticker || !currentSticker) return;
 
