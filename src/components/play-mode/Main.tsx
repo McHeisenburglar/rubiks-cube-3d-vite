@@ -151,7 +151,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 
     const game = useGame({
         cube,
-        pieceTypes: ["corner", "edge"],
+        pieceTypes: gameOptions.pieceTypes,
         onStickerChange: (sticker) => {
             setSpotlight(sticker);
         },
