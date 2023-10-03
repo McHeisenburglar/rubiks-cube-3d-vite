@@ -13,6 +13,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useKeypress from "../new/useKeypress";
 import useGame from "./useGame";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import RotationContextWrapper from "../scene-refactor/RotationContextWrapper";
+import HighlightContextWrapper from "../scene-refactor/HighlightContextProvider";
+import { useSpotlightContext } from "../scene-refactor/useSpotlight";
+import { GuessLogEntry } from "../timer/TimerMain";
+import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
+import {
+    CubeContext,
+    useCube,
+    useCubeContext,
+} from "../new-structure/useCubeContext";
+import { CubeView } from "../new-structure/CubeView";
+import { NewButton } from "./NewButton";
+import { GameOptionButtons, TooltipWrapper } from "../input/InputPage";
 
 interface PlayModeControlsProps {
     debug?: boolean;
@@ -78,20 +91,6 @@ const GameComponentDev: React.FC<{ game: ReturnType<typeof useGame> }> = ({
         </>
     );
 };
-
-import RotationContextWrapper from "../scene-refactor/RotationContextWrapper";
-import HighlightContextWrapper from "../scene-refactor/HighlightContextProvider";
-import { useSpotlightContext } from "../scene-refactor/useSpotlight";
-import { GuessLogEntry } from "../timer/TimerMain";
-import { useDocumentTitle } from "../ui/customize/useDocumentTitle";
-import {
-    CubeContext,
-    useCube,
-    useCubeContext,
-} from "../new-structure/useCubeContext";
-import { CubeView } from "../new-structure/CubeView";
-import { NewButton } from "./NewButton";
-import { GameOptionButtons, TooltipWrapper } from "../input/InputPage";
 
 const SeparateTimerComponent = () => {
     const gameTimer = useCountdown({
