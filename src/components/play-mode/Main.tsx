@@ -128,15 +128,8 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
     cubeSlot,
     onScramble,
 }) => {
-    // console.log("rendered");
-    const [scramble, setScramble] = useState<string | null>(null);
-    // const cube: CubeWithPos = useMemo<CubeWithPos>(() => {
-    //     const cube = new CubeWithPos();
-    //     if (scramble) cube.performAlgorithm(scramble);
-    //     return cube;
-    // }, [scramble]);
-
     const cube = useCubeContext();
+    const [scramble, setScramble] = useState<string | null>(null);
 
     useEffect(() => {
         onScramble(scramble);
@@ -159,10 +152,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
             logCorrectGuess(sticker);
         },
         onIncorrectGuess: (sticker) => {
-            const domElement = document.querySelector(
-                `[data-sticker-id=${sticker.id}]`,
-            );
-            if (domElement) pulseAnimation(domElement);
+            pulseSticker(sticker);
         },
         onGameStop: () => {
             clearSpotlight();
@@ -180,15 +170,17 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         setScramble(null);
     };
 
-    const pulseAnimation = (
-        domElement: Element,
-        className: CSSClass = "error",
-        delay: number = 300,
-    ) => {
+    const pulseSticker = (sticker: ISticker) => {
+        const selector = `[data-sticker-id=${sticker.id}]`;
+        const domElement = document.querySelector(selector);
+        if (domElement) pulseAnimation(domElement, "error");
+    };
+
+    const pulseAnimation = (domElement: Element, className: string) => {
         domElement.classList.add(className);
         setTimeout(() => {
             domElement.classList.remove(className);
-        }, delay);
+        }, 300);
     };
 
     useKeypress((e) => {
@@ -297,12 +289,6 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
 };
 
 const PlayModeExport = () => {
-    // const cube: CubeWithPos = useMemo<CubeWithPos>(() => {
-    //     const cube = new CubeWithPos();
-    //     // if (scramble) cube.performAlgorithm(scramble);
-    //     return cube;
-    // }, []);
-
     const [scramble, setScramble] = useState<string | null>(null);
     const cube = useCube(scramble);
 
