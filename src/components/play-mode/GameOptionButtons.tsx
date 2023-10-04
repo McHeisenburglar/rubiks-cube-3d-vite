@@ -8,6 +8,7 @@ import { RadioOption } from "../input/SwitchList";
 import { SmallRadioList } from "../input/SmallRadioList";
 import { TooltipWrapper } from "../input/InputPage";
 import { GameOptions } from "./Main";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface GameOptionButtonsProps {
     gameOptions: GameOptions;
@@ -65,38 +66,55 @@ export const GameOptionButtons: React.FC<GameOptionButtonsProps> = ({
 
     return (
         <div className="flex gap-6">
-            <div className="inline-flex items-center gap-2">
-                <TooltipWrapper content="Piece type">
-                    <FontAwesomeIcon
-                        icon={faCube}
-                        size="lg"
-                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                    />
-                </TooltipWrapper>
-                <ul className="flex gap-1">
-                    <SmallRadioList
-                        options={pieceOptions}
-                        selectedValue={gameOptions.pieceTypes}
-                        handleClick={handleRadioClick("pieceTypes")}
-                    />
-                </ul>
-            </div>
-            <div className="inline-flex items-center gap-2">
-                <TooltipWrapper content="Game timer">
-                    <FontAwesomeIcon
-                        icon={faStopwatch}
-                        size="lg"
-                        className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
-                    />
-                </TooltipWrapper>
-                <ul className="flex gap-1">
-                    <SmallRadioList
-                        options={timeOptions}
-                        selectedValue={gameOptions.seconds}
-                        handleClick={handleRadioClick("seconds")}
-                    />
-                </ul>
-            </div>
+            <GameOptionsList
+                options={pieceOptions}
+                selectedValue={gameOptions.pieceTypes}
+                icon={faCube}
+                tooltipLabel="Piece type"
+                handleOptionClick={handleRadioClick("pieceTypes")}
+            />
+            <GameOptionsList
+                options={timeOptions}
+                selectedValue={gameOptions.seconds}
+                icon={faStopwatch}
+                tooltipLabel="Seconds in game"
+                handleOptionClick={handleRadioClick("seconds")}
+            />
+        </div>
+    );
+};
+
+interface GameOptionsListProps {
+    options: RadioOption[];
+    selectedValue: unknown;
+    icon: IconProp;
+    tooltipLabel: string;
+    handleOptionClick: (option: RadioOption) => void;
+}
+
+const GameOptionsList: React.FC<GameOptionsListProps> = ({
+    options,
+    selectedValue,
+    handleOptionClick,
+    tooltipLabel,
+    icon,
+}) => {
+    return (
+        <div className="inline-flex items-center gap-2">
+            <TooltipWrapper content={tooltipLabel}>
+                <FontAwesomeIcon
+                    icon={icon}
+                    size="lg"
+                    className="-mt-[2px] text-slate-500 duration-200 hover:text-slate-600"
+                />
+            </TooltipWrapper>
+            <ul className="flex gap-1">
+                <SmallRadioList
+                    options={options}
+                    selectedValue={selectedValue}
+                    handleClick={handleOptionClick}
+                />
+            </ul>
         </div>
     );
 };
