@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfinity } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { NewButton } from "../play-mode/NewButton";
+import { Button } from "../play-mode/Button";
 import { ButtonGrid } from "./ButtonGrid";
 import { RadioOption, SwitchList } from "./SwitchList";
 import { GameOptionButtons } from "../play-mode/GameOptionButtons";
@@ -59,47 +59,51 @@ const Main = () => {
     ];
 
     return (
-        <>
-            <div className="m-auto max-w-3xl bg-white p-4">
-                <div className="flex items-center justify-between p-4">
-                    <h3 className="wide text-xl">Piece types</h3>
-                    <div className="flex items-center justify-center">
-                        <SwitchList
-                            options={pieceOptions}
-                            selectedValue={gameOptions.pieceType}
-                            handleClick={handleRadioClick("pieceType")}
-                        />
-                    </div>
+        <div className="m-auto max-w-3xl bg-white p-4">
+            <div className="flex items-center justify-between p-4">
+                <h3 className="wide text-xl">Piece types</h3>
+                <div className="flex items-center justify-center">
+                    <SwitchList
+                        options={pieceOptions}
+                        selectedValue={gameOptions.pieceType}
+                        handleClick={handleRadioClick("pieceType")}
+                    />
                 </div>
-                <div className="flex items-center justify-between p-4">
-                    <h3 className="wide text-xl">Seconds in game</h3>
-                    <div className="flex items-center justify-center">
-                        <SwitchList
-                            options={timeOptions}
-                            selectedValue={gameOptions.seconds}
-                            handleClick={handleRadioClick("seconds")}
-                        />
-                    </div>
-                </div>
-                <div className="flex justify-end p-4">
-                    <NewButton
-                        disabled={
-                            !gameOptions.pieceType || !gameOptions.seconds
-                        }
-                        onClick={() => {}}
-                        style={"filled"}
-                        color={"green"}
-                    >
-                        Start game
-                    </NewButton>
-                </div>
-                <ButtonGrid />
-                <GameOptionButtons
-                    gameOptions={gameOptions}
-                    setGameOptions={setGameOptions}
-                />
             </div>
-        </>
+            <div className="flex items-center justify-between p-4">
+                <h3 className="wide text-xl">Seconds in game</h3>
+                <div className="flex items-center justify-center">
+                    <SwitchList
+                        options={timeOptions}
+                        selectedValue={gameOptions.seconds}
+                        handleClick={handleRadioClick("seconds")}
+                    />
+                </div>
+            </div>
+            <div className="flex justify-end p-4">
+                <Button
+                    disabled={!gameOptions.pieceType || !gameOptions.seconds}
+                    onClick={() => {}}
+                    style={"filled"}
+                    color={"green"}
+                >
+                    Start game
+                </Button>
+            </div>
+            <ButtonGrid />
+            {/* <GameOptionButtons
+                gameOptions={gameOptions}
+                setGameOptions={setGameOptions}
+            /> */}
+            <div>
+                <h3 className="wide mb-4 text-xl">Button templates</h3>
+                <ul className="flex flex-col items-start gap-4">
+                    <Button.Success>Start your free trial</Button.Success>
+                    <Button.Danger>Delete item</Button.Danger>
+                    <Button.Confirm>Saved to files</Button.Confirm>
+                </ul>
+            </div>
+        </div>
     );
 };
 

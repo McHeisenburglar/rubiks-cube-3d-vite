@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { NewButton } from "./NewButton";
+import { Button } from "./Button";
 import { TooltipWrapper } from "../input/InputPage";
 
 interface ScrambleControlsProps {
@@ -32,31 +32,31 @@ const ScrambleControls: React.FC<ScrambleControlsProps> = ({
     return (
         <>
             <div className="text-center">
-                <NewButton
+                <Button
                     style="ghost"
                     color="slate"
                     icon={faPencil}
                     onClick={() => {}}
                 >
                     Customize cube
-                </NewButton>
-                <NewButton
+                </Button>
+                <Button
                     style="ghost"
                     color="slate"
                     icon={faShuffle}
                     onClick={onClickScramble}
                 >
                     {scramble ? "Scramble again" : "Scramble cube"}
-                </NewButton>
+                </Button>
                 {scramble && (
-                    <NewButton
+                    <Button
                         icon={faArrowRotateLeft}
                         style="ghost"
                         color="green"
                         onClick={onClickReset}
                     >
                         Reset
-                    </NewButton>
+                    </Button>
                 )}
             </div>
             {scramble && (
@@ -77,4 +77,4 @@ const ScrambleControls: React.FC<ScrambleControlsProps> = ({
     );
 };
 
-export default ScrambleControls
+export default ScrambleControls;

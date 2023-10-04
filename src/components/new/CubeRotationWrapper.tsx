@@ -73,14 +73,13 @@ const CubeRotationController: React.FC<IProps> = ({
         previousX.current = e.clientX;
         previousY.current = e.clientY;
 
+        // to toggle 'smooth' class
         setIsDragging(true);
     };
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (disabled) return;
         if (isDraggingRef.current) {
-            // to toggle 'smooth' class
-
             // Get difference from previous frame
             const diffX = e.clientX - previousX!.current!;
             const diffY = e.clientY - previousY!.current!;

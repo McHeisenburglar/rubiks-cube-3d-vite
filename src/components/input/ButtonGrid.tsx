@@ -1,11 +1,11 @@
 import { faShuffle } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { NewButton } from "../play-mode/NewButton";
+import { Button } from "../play-mode/Button";
 
 export const ButtonGrid = () => {
-    type sizeProp = Parameters<typeof NewButton>[0]["size"];
-    type colorProp = Parameters<typeof NewButton>[0]["color"];
-    type styleProp = Parameters<typeof NewButton>[0]["style"];
+    type sizeProp = Parameters<typeof Button>[0]["size"];
+    type colorProp = Parameters<typeof Button>[0]["color"];
+    type styleProp = Parameters<typeof Button>[0]["style"];
     return (
         <>
             {(["sm", "md", "lg"] as sizeProp[]).map((size) => {
@@ -23,7 +23,7 @@ export const ButtonGrid = () => {
                                         ] as colorProp[]
                                     ).map((color) => {
                                         return (
-                                            <NewButton
+                                            <Button
                                                 onClick={() => {}}
                                                 color={color}
                                                 size={size}
@@ -31,7 +31,7 @@ export const ButtonGrid = () => {
                                                 style={style}
                                             >
                                                 {color} {style}
-                                            </NewButton>
+                                            </Button>
                                         );
                                     })}
                                 </div>

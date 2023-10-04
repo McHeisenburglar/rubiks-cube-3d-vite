@@ -1,8 +1,16 @@
 import React from "react";
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export interface NewButtonProps {
+type ButtonType = React.FC<ButtonProps>;
+type ButtonTemplates = {
+    Success: ButtonType;
+    Danger: ButtonType;
+    Confirm: ButtonType;
+};
+type ButtonBase = ButtonType & ButtonTemplates;
+
+export interface ButtonProps {
     children?: ChildElement;
     disabled?: boolean;
     icon?: IconDefinition;
@@ -11,10 +19,10 @@ export interface NewButtonProps {
     style?: "filled" | "outline" | "ghost";
     size?: "sm" | "md" | "lg";
     className?: CSSClass;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
-export const NewButton: React.FC<NewButtonProps> = ({
+const Button: ButtonBase = ({
     children = "",
     icon,
     disabled = false,
@@ -23,7 +31,7 @@ export const NewButton: React.FC<NewButtonProps> = ({
     style = "outline",
     size = "sm",
     className = "",
-    onClick,
+    onClick = () => {},
 }) => {
     const handleClick = (e: React.MouseEvent) => {
         (e.currentTarget as HTMLButtonElement).blur();
@@ -81,3 +89,38 @@ export const NewButton: React.FC<NewButtonProps> = ({
         </button>
     );
 };
+
+Button.Success = (props) => {
+    const myProps: ButtonProps = {
+        ...props,
+        style: "filled",
+        color: "green",
+        size: "md",
+    };
+
+    return <Button {...myProps} />;
+};
+
+Button.Danger = (props) => {
+    const myProps: ButtonProps = {
+        ...props,
+        style: "filled",
+        color: "red",
+    };
+
+    return <Button {...myProps} />;
+};
+
+Button.Confirm = (props) => {
+    const myProps: ButtonProps = {
+        ...props,
+        style: "filled",
+        color: "blue",
+        icon: faCheck,
+        iconPlacement: "right",
+    };
+
+    return <Button {...myProps} />;
+};
+
+export { Button };

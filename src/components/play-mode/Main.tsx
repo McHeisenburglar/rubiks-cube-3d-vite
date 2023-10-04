@@ -15,14 +15,14 @@ import {
     useCubeContext,
 } from "../new-structure/useCubeContext";
 import { CubeView } from "../new-structure/CubeView";
-import { NewButton } from "./NewButton";
+import { Button } from "./Button";
 import { GameOptionButtons } from "./GameOptionButtons";
 import ScrambleControls from "./ScrambleControls";
 import PauseOverlay from "./PauseOverlay";
 
 const StartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
-        <NewButton
+        <Button
             key="start"
             size="md"
             color="green"
@@ -31,7 +31,7 @@ const StartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
             onClick={onClick}
         >
             Start game
-        </NewButton>
+        </Button>
     );
 };
 
@@ -171,6 +171,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                     secondsTotal={gameOptions.seconds || 60}
                     millisecondsLeft={timer.millisecondsLeft}
                 />
+
                 <div className="relative text-center duration-500 ease-out ">
                     <PauseOverlay active={timer.isPaused} />
                     {cubeSlot}
@@ -192,20 +193,23 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                             gameOptions={gameOptions}
                             setGameOptions={setGameOptions}
                         />
-                        <StartButton onClick={timer.start} />
+                        <Button.Success
+                            className="w-full"
+                            onClick={timer.start}
+                        >
+                            Start game
+                        </Button.Success>
                     </div>
                 )}
 
                 {game.inProgress && (
                     <div className="flex justify-center gap-2">
                         {timer.isPaused ? (
-                            <NewButton onClick={timer.unpause}>
-                                Unpause
-                            </NewButton>
+                            <Button onClick={timer.unpause}>Unpause</Button>
                         ) : (
-                            <NewButton onClick={timer.pause}>Pause</NewButton>
+                            <Button onClick={timer.pause}>Pause</Button>
                         )}
-                        <NewButton onClick={timer.stop}>End game</NewButton>
+                        <Button onClick={timer.stop}>End game</Button>
                     </div>
                 )}
             </div>
