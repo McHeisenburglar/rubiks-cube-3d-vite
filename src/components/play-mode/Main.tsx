@@ -53,16 +53,7 @@ const PlayModeControls: React.FC<PlayModeControlsProps> = (props) => {
     if (!isRunning) {
         return <StartButton onClick={onClickStart} />;
     } else {
-        return (
-            <div className="text-center">
-                <NewButton key="pause" onClick={onClickPause} className="mr-2">
-                    {isPaused ? "Unpause" : "Pause"}
-                </NewButton>
-                <NewButton key="stop" onClick={onClickStop}>
-                    End game
-                </NewButton>
-            </div>
-        );
+        return <></>;
     }
 };
 
@@ -184,6 +175,7 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                     <PauseOverlay active={timer.isPaused} />
                     {cubeSlot}
                 </div>
+
                 {!game.inProgress && (
                     <div className="relative z-20 -mt-6 py-2">
                         <ScrambleControls
@@ -193,7 +185,8 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         />
                     </div>
                 )}
-                {!game.inProgress ? (
+
+                {!game.inProgress && (
                     <div className="mx-auto mt-12 flex w-fit flex-col items-center gap-6">
                         <GameOptionButtons
                             gameOptions={gameOptions}
@@ -201,14 +194,19 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
                         />
                         <StartButton onClick={timer.start} />
                     </div>
-                ) : (
-                    <PlayModeControls
-                        isPaused={timer.isPaused}
-                        isRunning={timer.isRunning}
-                        onClickStart={timer.start}
-                        onClickPause={timer.togglePause}
-                        onClickStop={timer.stop}
-                    />
+                )}
+
+                {game.inProgress && (
+                    <div className="flex justify-center gap-2">
+                        {timer.isPaused ? (
+                            <NewButton onClick={timer.unpause}>
+                                Unpause
+                            </NewButton>
+                        ) : (
+                            <NewButton onClick={timer.pause}>Pause</NewButton>
+                        )}
+                        <NewButton onClick={timer.stop}>End game</NewButton>
+                    </div>
                 )}
             </div>
         </div>

@@ -92,6 +92,7 @@ interface GameOptionsListProps {
     handleOptionClick: (option: RadioOption) => void;
 }
 
+// TODO: Abstract out and rename
 const GameOptionsList: React.FC<GameOptionsListProps> = ({
     options,
     selectedValue,

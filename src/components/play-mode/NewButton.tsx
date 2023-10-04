@@ -3,7 +3,7 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export interface NewButtonProps {
-    children: ChildElement;
+    children?: ChildElement;
     disabled?: boolean;
     icon?: IconDefinition;
     iconPlacement?: "left" | "right";
@@ -15,7 +15,7 @@ export interface NewButtonProps {
 }
 
 export const NewButton: React.FC<NewButtonProps> = ({
-    children,
+    children = "",
     icon,
     disabled = false,
     iconPlacement = "left",
