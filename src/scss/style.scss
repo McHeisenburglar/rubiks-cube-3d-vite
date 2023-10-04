@@ -108,3 +108,30 @@ h4 {
     color: #666;
     text-align: center;
 }
+
+:root {
+    --progress-angle: 45deg;
+    --progress-color-1: #00ff00;
+    --progress-color-2: transparent;
+}
+
+.progress-gradient {
+    transition: all 200s ease-out;
+    background-image: conic-gradient(
+        var(--progress-color-1) var(--progress-angle),
+        var(--progress-color-2) var(--progress-angle)
+    );
+}
+.progress-gradient.success {
+    background-image: conic-gradient(
+        transparent var(--progress-angle),
+        #bbf7d0 var(--progress-angle)
+    );
+}
+
+.progress-gradient.error {
+    background-image: conic-gradient(
+        transparent var(--progress-angle),
+        #fecaca var(--progress-angle)
+    );
+}

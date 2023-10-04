@@ -19,6 +19,7 @@ import { Button } from "./Button";
 import { GameOptionButtons } from "./GameOptionButtons";
 import ScrambleControls from "./ScrambleControls";
 import PauseOverlay from "./PauseOverlay";
+import { ProgressCircle } from "../../Playground";
 
 const StartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
@@ -93,9 +94,11 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         },
         onCorrectGuess: (sticker) => {
             logCorrectGuess(sticker);
+            pulseRing("success")
         },
         onIncorrectGuess: (sticker) => {
             pulseSticker(sticker);
+            pulseRing("error")
         },
         onGameStop: () => {
             clearSpotlight();
@@ -117,6 +120,13 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         const selector = `[data-sticker-id=${sticker.id}]`;
         const domElement = document.querySelector(selector);
         if (domElement) pulseAnimation(domElement, "error");
+    };
+
+    const pulseRing = (className: "error" | "success") => {
+        const selector = ".progress-gradient";
+        const domElement = document.querySelector(selector);
+        console.log("YOOO", domElement)
+        if (domElement) pulseAnimation(domElement, className);
     };
 
     const pulseAnimation = (domElement: Element, className: string) => {
@@ -162,18 +172,27 @@ const PlayModeComponent2: React.FC<PlayModeProps> = ({
         game.addGuessLogEntry(logEntry);
     };
 
+    const circlePercentage = !game.inProgress
+        ? 0
+        : 1 - timer.millisecondsLeft / 1000 / gameOptions.seconds!;
+
     return (
         <div className="min-h-screen w-full bg-white">
             <div className="mx-auto max-w-[60rem] px-24 pb-8">
-                <Scoreboard
+                {/* <Scoreboard
                     correctGuesses={game.correct}
                     incorrectGuesses={game.incorrect}
                     secondsTotal={gameOptions.seconds || 60}
                     millisecondsLeft={timer.millisecondsLeft}
-                />
+                /> */}
 
                 <div className="relative text-center duration-500 ease-out ">
                     <PauseOverlay active={timer.isPaused} />
+                    {game.inProgress && (
+                        <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center">
+                            <ProgressCircle percentage={circlePercentage} />
+                        </div>
+                    )}
                     {cubeSlot}
                 </div>
 
