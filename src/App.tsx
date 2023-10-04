@@ -22,6 +22,7 @@ import Main from "./components/sticker-cards/Main";
 import PlayWithCubeSlot from "./components/cube-slots/PlayWithCubeSlot";
 import PlayModeStructure from "./components/new-structure/MainStructure";
 import InputPage from "./components/input/InputPage";
+import Playground from "./Playground";
 
 const routes = [
     {
@@ -73,6 +74,11 @@ const routes = [
         path: "/input-elements",
         element: <InputPage />,
         name: "Input",
+    },
+    {
+        path: "/playground",
+        element: <Playground />,
+        name: "Playground",
     },
 ];
 
